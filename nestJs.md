@@ -237,6 +237,8 @@ services:
 volumes:
   pgdata:
 
+
+talvez se a gente tentar colocar ele para rodar usando o sudo antes do comando ele não funcione. ai se a gente fizer apenas o docker-compose up -d sem usar o sudo antes ele funciona e tambem passa a aparecer no docker desktop
 e esse funcionou.
 porem agora aquela peristencia vai ficar no proprio docker como explicado aqui:
 Quando você define um volume no Docker, especialmente um volume gerenciado pelo Docker como no seu caso, os dados armazenados dentro desse volume são persistentes. Isso significa que, mesmo se você remover o container, os dados dentro do volume permanecerão intactos e disponíveis para serem usados novamente quando você criar um novo container com o mesmo volume.
