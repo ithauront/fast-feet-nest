@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Recipient {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  name      String
+  email     String   @unique
+  adress    String
+
+  PackageItem PackageItem[]
+
+  @@map("recipient")
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  name      String
+  email     String   @unique
+  cpf       String   @unique
+  password  String
+  isActive  Boolean  @default(true)
+  isAdmin   Boolean  @default(true)
+
+  @@map("admin")
+}
+
+model Courier {
+  id        String        @id @default(uuid())
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @updatedAt @map("updated_at")
+  name      String
+  email     String        @unique
+  cpf       String        @unique
+  password  String
+  phone     String
+  isAdmin   Boolean       @default(false)
+  status    CourierStatus @default(ACTIVE)
+  latitude  Float
+  longitude Float
+
+  PackageItem PackageItem[]
+
+  @@map("courier")
+}
+
+model PackageItem {
+  id              String        @id @default(uuid())
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+  title           String
+  deliveryAddress String
+  courierId       String?       @map("courier_id")
+  recipientId     String        @map("recipient_id")
+  status          PackageStatus @default(AWAITING_PICKUP)
+
+  courier   Courier?  @relation(fields: [courierId], references: [id])
+  recipient Recipient @relation(fields: [recipientId], references: [id])
+
+  attachments Attachment[]
+
+  @@map("package_item")
+}
+
+model Attachment {
+  id            String  @id @default(uuid())
+  title         String
+  link          String
+  packageItemId String? @map("package_item_id")
+  isImmutable   Boolean @default(false)
+
+  packageItem PackageItem? @relation(fields: [packageItemId], references: [id])
+
+  @@map("attachments")
+}
+
+enum PackageStatus {
+  AWAITING_PICKUP
+  IN_TRANSIT
+  DELIVERED
+  RETURNED
+  LOST
+}
+
+enum CourierStatus {
+  ACTIVE
+  INACTIVE
+  ON_VACATION
+  DISMISSED
+}
