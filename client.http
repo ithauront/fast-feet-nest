@@ -1,0 +1,12 @@
+POST http://localhost:3353/users/courier
+Content-Type: application/json
+
+{
+    "name": "john doe",
+    "email": "john@doe.com", // unique
+    "cpf":"10248392812", // unique
+    "password": "123456",
+    "phone": "0392450387",
+    "latitude": 1.248291,
+    "longitude": 124.45324
+}

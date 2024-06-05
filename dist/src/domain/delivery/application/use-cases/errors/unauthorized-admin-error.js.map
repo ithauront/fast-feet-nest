@@ -1,1 +1,0 @@
-{"version":3,"file":"unauthorized-admin-error.js","sourceRoot":"","sources":["../../../../../../../src/domain/delivery/application/use-cases/errors/unauthorized-admin-error.ts"],"names":[],"mappings":";;;AAEA,MAAa,sBAAuB,SAAQ,KAAK;IAC/C,YACE,UAAkB,8CAA8C;QAEhE,KAAK,CAAC,OAAO,CAAC,CAAA;IAChB,CAAC;CACF;AAND,wDAMC"}

@@ -10,8 +10,8 @@ const createAccountBodySchema = z.object({
     cpf: z.string(),
     password: z.string(),
     phone: z.string(),
-    latitude: z.number(),
-    longitude: z.number()
+    latitude: z.number().optional(),
+    longitude: z.number().optional()
 
 })
 
@@ -39,8 +39,7 @@ export class CreateCourierController {
                 name,
                 email,
                 cpf,
-                password: hashedPassword
-                ,
+                password: hashedPassword,
                 phone,
                 latitude: latitude ?? null,
                 longitude: longitude ?? null
