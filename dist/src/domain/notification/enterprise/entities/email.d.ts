@@ -11,6 +11,6 @@ export declare class Email extends Entity<EmailProps> {
     get recipientEmail(): string;
     get subject(): string;
     get body(): string;
-    get sentAt(): Date;
+    get sentAt(): Date | undefined;
     static create(props: Optional<EmailProps, 'sentAt'>, id?: UniqueEntityId): Email;
 }

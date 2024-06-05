@@ -51,8 +51,8 @@ model Courier {
   phone     String
   isAdmin   Boolean       @default(false)
   status    CourierStatus @default(ACTIVE)
-  latitude  Float
-  longitude Float
+  latitude  Float?
+  longitude Float?
 
   PackageItem PackageItem[]
 

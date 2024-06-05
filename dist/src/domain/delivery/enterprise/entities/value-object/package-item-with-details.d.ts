@@ -15,13 +15,13 @@ export interface PackageItemWithDetailsProps {
 }
 export declare class PackageItemWithDetails extends ValueObject<PackageItemWithDetailsProps> {
     get packageItemId(): UniqueEntityId;
-    get courierId(): UniqueEntityId;
+    get courierId(): UniqueEntityId | null;
     get recipientId(): UniqueEntityId;
     get deliveryAddress(): string;
     get title(): string;
     get status(): PackageStatus;
     get attachments(): Attachment[];
     get createdAt(): Date;
-    get updatedAt(): Date;
+    get updatedAt(): Date | null | undefined;
     static create(props: PackageItemWithDetailsProps): PackageItemWithDetails;
 }

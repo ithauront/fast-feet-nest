@@ -11,7 +11,7 @@ export declare class Notification extends Entity<NotificationProps> {
     get recipientId(): UniqueEntityId;
     get title(): string;
     get content(): string;
-    get readAt(): Date;
+    get readAt(): Date | undefined;
     read(): void;
     static create(props: Optional<NotificationProps, 'createdAt'>, id?: UniqueEntityId): Notification;
 }
