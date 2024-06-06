@@ -1,12 +1,30 @@
-POST http://localhost:3353/users/courier
+@baseUrl = http://[::1]:3353
+
+
+
+# @name create_account
+POST {{baseUrl}}/users/courier
 Content-Type: application/json
 
 {
     "name": "john doe",
-    "email": "john@doe.com", // unique
-    "cpf":"10248392812", // unique
+    "email": "john@doe.com", 
+    "cpf":"10248392812", 
     "password": "123456",
     "phone": "0392450387",
     "latitude": 1.248291,
     "longitude": 124.45324
 }
+
+###
+
+# @name autenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+    "cpf": "10248392812",
+    "password": "123456"
+}
+
+###
