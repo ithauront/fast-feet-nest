@@ -1,4 +1,7 @@
 @baseUrl = http://[::1]:3353
+@AdminToken = {{autenticate_admin.response.body.access_token}}
+@CourierToken ={{autenticate_courier.response.body.access_token}}
+
 
 
 
@@ -55,3 +58,8 @@ Content-Type: application/json
 }
 
 ###
+
+# @name create_package_item
+POST {{baseUrl}}/package_item
+Content-Type: application/json
+Authorization: Bearer {{AdminToken}}

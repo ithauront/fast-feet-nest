@@ -1528,7 +1528,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return tokenSchema.parse(payload)
   }
 }
-
+iy
 
 agora para a gente garantir que uma rota seja protegia a gente vai no controller que queremos proteger o createQuestion e vamos logo antes da classe passar o decorator @UseGuardse e passamos o guard que é AuthGuard que importamos do nest passport e passamos coo parametro a strategy que é a jwt
 
