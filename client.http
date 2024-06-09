@@ -63,3 +63,12 @@ Content-Type: application/json
 POST {{baseUrl}}/package_item
 Content-Type: application/json
 Authorization: Bearer {{AdminToken}}
+
+{
+    "title": "Package 1",
+    "deliveryAddress": "Package Street 01 2845013",
+    "recipientId": "9f591dc1-6560-4aa6-add0-68c668ebb49f",
+    "status": "IN_TRANSIT"
+}
+
+###
