@@ -13,6 +13,8 @@ const createAccountBodySchema = z.object({
 
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
 
+
+//controller ainda sem o autoriaztion service então não esta apenas para admin ainda
 @Controller('/users/admin')
 export class CreateAdminController {
     constructor(private prisma: PrismaService) { }

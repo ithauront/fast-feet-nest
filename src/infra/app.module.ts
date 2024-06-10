@@ -7,6 +7,7 @@ import { authModule } from './auth/auth.module'
 import { AutenticateController } from './controllers/autentication.controller'
 import { CreateAdminController } from './controllers/admin-controllers/create-admin.controller'
 import { CreatePackageItemController } from './controllers/package-item-controllers/create-package-item.controller'
+import { ListAllPackageItemsToAdminController } from './controllers/package-item-controllers/list-all-package-items-to-admin.controller'
 
 @Module({
   imports: [
@@ -17,9 +18,14 @@ import { CreatePackageItemController } from './controllers/package-item-controll
     authModule
   ],
   controllers: [
+    //courier controllers
     CreateCourierController,
+    //admin controllers
     CreateAdminController,
+    //package item controllers
     CreatePackageItemController,
+    ListAllPackageItemsToAdminController,
+    //other controllers
     AutenticateController
   ],
   providers: [PrismaService],

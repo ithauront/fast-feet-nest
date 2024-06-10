@@ -72,3 +72,10 @@ Authorization: Bearer {{AdminToken}}
 }
 
 ###
+
+# @name list_all-package_items_to_admin
+GET {{baseUrl}}/package_item?page=1
+Content-Type: application/json
+Authorization: Bearer {{CourierToken}}
+
+###

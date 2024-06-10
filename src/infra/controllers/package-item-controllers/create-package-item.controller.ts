@@ -28,6 +28,8 @@ const bodyValidationPipe = new ZodValidationPipe(createPackageItemBodySchema)
 
 type CreatePackageItemBodySchema = z.infer<typeof createPackageItemBodySchema>
 
+
+//controller ainda sem o autoriaztion service então não esta apenas para admin ainda
 @Controller('/package_item')
 @UseGuards(JwtAuthGuard)
 export class CreatePackageItemController {
