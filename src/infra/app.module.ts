@@ -15,19 +15,19 @@ import { ListAllPackageItemsToAdminController } from './controllers/package-item
       validate: (env) => envSchema.parse(env),
       isGlobal: true,
     }),
-    authModule
+    authModule,
   ],
   controllers: [
-    //courier controllers
+    // courier controllers
     CreateCourierController,
-    //admin controllers
+    // admin controllers
     CreateAdminController,
-    //package item controllers
+    // package item controllers
     CreatePackageItemController,
     ListAllPackageItemsToAdminController,
-    //other controllers
-    AutenticateController
+    // other controllers
+    AutenticateController,
   ],
   providers: [PrismaService],
 })
-export class AppModule { }
+export class AppModule {}
