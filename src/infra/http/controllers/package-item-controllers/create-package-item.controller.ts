@@ -5,13 +5,13 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common'
-import { PrismaService } from '../../prisma/prisma.service'
+import { PrismaService } from '../../../prisma/prisma.service'
 import { JwtService } from '@nestjs/jwt'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { CurentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { z } from 'zod'
-import { ZodValidationPipe } from '@/infra/pipes/zod-validation-pipe'
+import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 
 const PackageStatusEnum = z.enum([
   'AWAITING_PICKUP',
