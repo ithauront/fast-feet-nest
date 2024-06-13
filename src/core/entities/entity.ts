@@ -2,7 +2,7 @@ import { UniqueEntityId } from './unique-entity-id'
 
 export interface BasicEntityProps {
   createdAt?: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
 }
 
 export class Entity<Props extends BasicEntityProps> {

@@ -5,7 +5,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common'
-import { PrismaService } from '../../../prisma/prisma.service'
+import { PrismaService } from '../../../database/prisma/prisma.service'
 import { JwtService } from '@nestjs/jwt'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { CurentUser } from '@/infra/auth/current-user-decorator'

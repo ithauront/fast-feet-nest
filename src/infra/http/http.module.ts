@@ -4,9 +4,10 @@ import { CreateAdminController } from './controllers/admin-controllers/create-ad
 import { CreatePackageItemController } from './controllers/package-item-controllers/create-package-item.controller'
 import { ListAllPackageItemsToAdminController } from './controllers/package-item-controllers/list-all-package-items-to-admin.controller'
 import { AutenticateController } from './controllers/autentication.controller'
-import { PrismaService } from '../prisma/prisma.service'
+import { DatabaseModule } from '../database/database.module'
 
 @Module({
+  imports: [DatabaseModule],
   controllers: [
     // courier controllers
     CreateCourierController,
@@ -18,6 +19,6 @@ import { PrismaService } from '../prisma/prisma.service'
     // other controllers
     AutenticateController,
   ],
-  providers: [PrismaService],
+  providers: [],
 })
 export class HttpModule {}
