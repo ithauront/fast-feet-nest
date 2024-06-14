@@ -14,11 +14,11 @@ datasource db {
 }
 
 model Recipient {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
   name      String
-  email     String   @unique
+  email     String    @unique
   adress    String
 
   PackageItem PackageItem[]
@@ -27,15 +27,15 @@ model Recipient {
 }
 
 model Admin {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
   name      String
-  email     String   @unique
-  cpf       String   @unique
+  email     String    @unique
+  cpf       String    @unique
   password  String
-  isActive  Boolean  @default(true)
-  isAdmin   Boolean  @default(true)
+  isActive  Boolean   @default(true)
+  isAdmin   Boolean   @default(true)
 
   @@map("admin")
 }
@@ -43,7 +43,7 @@ model Admin {
 model Courier {
   id        String        @id @default(uuid())
   createdAt DateTime      @default(now()) @map("created_at")
-  updatedAt DateTime      @updatedAt @map("updated_at")
+  updatedAt DateTime?     @updatedAt @map("updated_at")
   name      String
   email     String        @unique
   cpf       String        @unique
@@ -62,7 +62,7 @@ model Courier {
 model PackageItem {
   id              String        @id @default(uuid())
   createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt @map("updated_at")
+  updatedAt       DateTime?     @updatedAt @map("updated_at")
   title           String
   deliveryAddress String
   courierId       String?       @map("courier_id")

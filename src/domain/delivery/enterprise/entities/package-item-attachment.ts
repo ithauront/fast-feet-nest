@@ -1,11 +1,13 @@
 import { BasicEntityProps, Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
+import { Attachment } from './attachment'
 
 export interface PackageItemAttachmentProps extends BasicEntityProps {
   packageItemId: UniqueEntityId
   attachmentId: UniqueEntityId
   isImmutable?: boolean
+  attachment: Attachment
 }
 
 export class PackageItemAttachment extends Entity<PackageItemAttachmentProps> {

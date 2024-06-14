@@ -6,9 +6,11 @@ import {
 import {
   PackageItem as PrismaPackageItem,
   Attachment as PrismaAttachment,
+  Prisma,
 } from '@prisma/client'
 import { PrismaPackageItemAttachmentMapper } from './prisma-package-item-attachment-mapper'
 import { PackageItemAttachmentList } from '@/domain/delivery/enterprise/entities/package-item-attachment-list'
+import { Attachment } from '@/domain/delivery/enterprise/entities/attachment'
 
 export class PrismaPackageItemMapper {
   static toDomain(
@@ -31,5 +33,28 @@ export class PrismaPackageItemMapper {
       },
       new UniqueEntityId(raw.id),
     )
+  }
+
+  static toPrisa(
+    packageItem: PackageItem,
+    attachment: Attachment,
+  ): Prisma.PackageItemUncheckedCreateInput {
+    const attachments = packageItem.attachment
+      .getItems()
+      .map((item) => PrismaPackageItemAttachmentMapper.toPrisma(item))
+
+    return {
+      id: packageItem.id.toString(),
+      title: packageItem.title,
+      deliveryAddress: packageItem.deliveryAddress,
+      recipientId: packageItem.recipientId.toString(),
+      courierId: packageItem.courierId?.toString(),
+      createdAt: packageItem.createdAt,
+      updatedAt: packageItem.updatedAt,
+      status: PackageStatus[packageItem.status],
+      attachments: {
+        create: attachments,
+      },
+    }
   }
 }

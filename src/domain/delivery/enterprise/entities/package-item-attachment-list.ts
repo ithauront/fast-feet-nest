@@ -5,4 +5,8 @@ export class PackageItemAttachmentList extends WatchedList<PackageItemAttachment
   compareItems(a: PackageItemAttachment, b: PackageItemAttachment): boolean {
     return a.attachmentId.equals(b.attachmentId)
   }
+
+  getItems(): PackageItemAttachment[] {
+    return this.currentItems
+  }
 }
