@@ -9,11 +9,19 @@ export class PrismaAttachmentMapper {
     })
   }
 
-  static toPrisma(attachment: Attachment): Prisma.AttachmentCreateInput {
+  static toPrisma(
+    attachment: Attachment,
+    packageItemId: string | null,
+    isImmutable: boolean,
+  ): Prisma.AttachmentCreateInput {
     return {
       id: attachment.id.toString(),
       title: attachment.title,
       link: attachment.link,
+      packageItem: packageItemId
+        ? { connect: { id: packageItemId } }
+        : undefined,
+      isImmutable,
     }
   }
 }
