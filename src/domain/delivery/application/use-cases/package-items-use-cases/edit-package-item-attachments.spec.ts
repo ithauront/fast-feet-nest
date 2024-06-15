@@ -7,6 +7,7 @@ import { makePackageItemAttachments } from 'test/factories/make-package-item-att
 import { PackageItemNotFoundError } from '../errors/package-item-not-found-error'
 import { PackageStatus } from '@/domain/delivery/enterprise/entities/package-item'
 import { InMemoryAttachmentsRepository } from '../../../../../../test/repositories/in-memory-attachment-repository'
+import { makeAttachment } from 'test/factories/make-attachment'
 
 let inMemoryPackageItemAttachmentsRepository: InMemoryPackageItemAttachmentRepository
 let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
@@ -28,6 +29,7 @@ describe('edit package item attachments', () => {
     sut = new EditPackageItemAttachmentUseCase(
       inMemoryPackageItemRepository,
       inMemoryPackageItemAttachmentRepository,
+      inMemoryAttachmentsRepository,
     )
   })
   test('if can edit package item attachments using id', async () => {
@@ -37,16 +39,35 @@ describe('edit package item attachments', () => {
     )
 
     await inMemoryPackageItemRepository.create(newPackageItem)
+    const attachment1 = makeAttachment(
+      { title: 'Attachment 1', link: 'link1' },
+      new UniqueEntityId('1'),
+    )
+    const attachment2 = makeAttachment(
+      { title: 'Attachment 2', link: 'link2' },
+      new UniqueEntityId('2'),
+    )
+    const attachment3 = makeAttachment(
+      { title: 'Attachment 3', link: 'link3' },
+      new UniqueEntityId('3'),
+    )
+
+    await inMemoryAttachmentsRepository.create(attachment1)
+    await inMemoryAttachmentsRepository.create(attachment2)
+    await inMemoryAttachmentsRepository.create(attachment3)
+
     await inMemoryPackageItemAttachmentRepository.items.push(
       makePackageItemAttachments({
         packageItemId: newPackageItem.id,
         attachmentId: new UniqueEntityId('1'),
+        attachment: attachment1,
       }),
     )
     await inMemoryPackageItemAttachmentRepository.items.push(
       makePackageItemAttachments({
         packageItemId: newPackageItem.id,
         attachmentId: new UniqueEntityId('2'),
+        attachment: attachment2,
       }),
     )
 
@@ -101,11 +122,34 @@ describe('edit package item attachments', () => {
     )
 
     await inMemoryPackageItemRepository.create(newPackageItem)
+    const attachment1 = makeAttachment(
+      { title: 'Attachment 1', link: 'link1' },
+      new UniqueEntityId('1'),
+    )
+    const attachment2 = makeAttachment(
+      { title: 'Attachment 2', link: 'link2' },
+      new UniqueEntityId('2'),
+    )
+    const attachment3 = makeAttachment(
+      { title: 'Attachment 3', link: 'link3' },
+      new UniqueEntityId('3'),
+    )
+    const attachment4 = makeAttachment(
+      { title: 'Attachment 4', link: 'link4' },
+      new UniqueEntityId('4'),
+    )
+
+    await inMemoryAttachmentsRepository.create(attachment1)
+    await inMemoryAttachmentsRepository.create(attachment2)
+    await inMemoryAttachmentsRepository.create(attachment3)
+    await inMemoryAttachmentsRepository.create(attachment4)
+
     await inMemoryPackageItemAttachmentRepository.items.push(
       makePackageItemAttachments({
         packageItemId: newPackageItem.id,
         attachmentId: new UniqueEntityId('1'),
         isImmutable: true,
+        attachment: attachment1,
       }),
     )
     expect(inMemoryPackageItemAttachmentRepository.items[0].isImmutable).toBe(
@@ -115,6 +159,7 @@ describe('edit package item attachments', () => {
       makePackageItemAttachments({
         packageItemId: newPackageItem.id,
         attachmentId: new UniqueEntityId('2'),
+        attachment: attachment2,
       }),
     )
 

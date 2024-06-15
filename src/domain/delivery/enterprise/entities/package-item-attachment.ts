@@ -23,6 +23,10 @@ export class PackageItemAttachment extends Entity<PackageItemAttachmentProps> {
     return this.props.isImmutable || false
   }
 
+  getAttachment() {
+    return this.props.attachment
+  }
+
   static create(
     props: Optional<PackageItemAttachmentProps, 'isImmutable'>,
     id?: UniqueEntityId,

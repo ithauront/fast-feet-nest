@@ -7,6 +7,7 @@ import { InvalidActionError } from '../errors/invalid-action-error'
 import { PackageItem } from '@/domain/delivery/enterprise/entities/package-item'
 import { PackageItemAttachment } from '@/domain/delivery/enterprise/entities/package-item-attachment'
 import { PackageItemAttachmentList } from '@/domain/delivery/enterprise/entities/package-item-attachment-list'
+import { AttachmentsRepository } from '../../repositories/attachment-repository'
 
 interface MarkPackageItemAsDeliveredUseCaseRequest {
   creatorId: string
@@ -20,7 +21,10 @@ type MarkPackageItemAsDeliveredUseCaseResponse = Either<
 >
 
 export class MarkPackageItemAsDeliveredUseCase {
-  constructor(private packageItemRepository: PackageItemRepository) {}
+  constructor(
+    private packageItemRepository: PackageItemRepository,
+    private attachmentRepository: AttachmentsRepository,
+  ) {}
 
   async execute({
     creatorId,
@@ -46,15 +50,30 @@ export class MarkPackageItemAsDeliveredUseCase {
         ),
       )
     }
-    const packageItemAttachment = attachmentIds.map((attachmentId) => {
+    const attachments = await Promise.all(
+      attachmentIds.map((attachmentId) =>
+        this.attachmentRepository.findById(attachmentId),
+      ),
+    )
+
+    if (attachments.includes(null)) {
+      return left(new InvalidActionError('Invalid attachment ID'))
+    }
+
+    const packageItemAttachments = attachments.map((attachment, index) => {
+      if (!attachment) {
+        throw new InvalidActionError('Invalid attachment ID')
+      }
       return PackageItemAttachment.create({
         packageItemId: packageItem.id,
-        attachmentId: new UniqueEntityId(attachmentId),
+        attachmentId: new UniqueEntityId(attachmentIds[index]),
         isImmutable: true,
+        attachment,
       })
     })
+
     packageItem.attachment = new PackageItemAttachmentList(
-      packageItemAttachment,
+      packageItemAttachments,
     )
     packageItem.markAsDelivered(new UniqueEntityId(creatorId))
 

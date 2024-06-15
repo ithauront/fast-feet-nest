@@ -10,7 +10,6 @@ import {
 } from '@prisma/client'
 import { PrismaPackageItemAttachmentMapper } from './prisma-package-item-attachment-mapper'
 import { PackageItemAttachmentList } from '@/domain/delivery/enterprise/entities/package-item-attachment-list'
-import { Attachment } from '@/domain/delivery/enterprise/entities/attachment'
 
 export class PrismaPackageItemMapper {
   static toDomain(
@@ -37,7 +36,6 @@ export class PrismaPackageItemMapper {
 
   static toPrisa(
     packageItem: PackageItem,
-    attachment: Attachment,
   ): Prisma.PackageItemUncheckedCreateInput {
     const attachments = packageItem.attachment
       .getItems()
