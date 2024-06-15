@@ -7,13 +7,15 @@ import { PrismaService } from '../prisma.service'
 import { PrismaPackageItemMapper } from '../mappers/prisma-package-item-mapper'
 import { PrismaPackageItemWithDetailsMapper } from '../mappers/prisma-package-item-with-details-mapper'
 import { PackageStatus } from '@prisma/client'
-import { Attachment } from '@/domain/delivery/enterprise/entities/attachment'
 
 @Injectable()
 export class PrismaPackageItemRepository implements PackageItemRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(packageItem: PackageItem): Promise<void> {}
+  async create(packageItem: PackageItem): Promise<void> {
+    const data = PrismaPackageItemMapper.toPrisa(packageItem)
+    await this.prisma.packageItem.create({ data })
+  }
 
   async findById(packageId: string): Promise<PackageItem | null> {
     const packageItem = await this.prisma.packageItem.findUnique({
@@ -83,7 +85,11 @@ export class PrismaPackageItemRepository implements PackageItemRepository {
     )
   }
 
-  async save(packageItem: PackageItem, attachment: Attachment): Promise<void> {
+  async save(packageItem: PackageItem): Promise<void> {
     const data = PrismaPackageItemMapper.toPrisa(packageItem)
+    await this.prisma.packageItem.update({
+      where: { id: data.id },
+      data,
+    })
   }
 }

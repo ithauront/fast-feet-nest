@@ -10,4 +10,6 @@ export class PrismaAttachmentRepository implements AttachmentsRepository {
   create(attachment: Attachment): Promise<void> {
     throw new Error('Method not implemented.')
   }
+
+  findById(attachmentId: string): Promise<Attachment | null> {}
 }
