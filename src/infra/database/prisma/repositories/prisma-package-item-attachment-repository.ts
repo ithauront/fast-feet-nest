@@ -2,6 +2,7 @@ import { PackageItemAttachmentRepository } from '@/domain/delivery/application/r
 import { PackageItemAttachment } from '@/domain/delivery/enterprise/entities/package-item-attachment'
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
+import { PrismaPackageItemAttachmentMapper } from '../mappers/prisma-package-item-attachment-mapper'
 
 @Injectable()
 export class PrismaPackageItemAttachmentRepository
@@ -9,7 +10,12 @@ export class PrismaPackageItemAttachmentRepository
 {
   constructor(private prisma: PrismaService) {}
 
-  findByPackageItemId(packageId: string): Promise<PackageItemAttachment[]> {
-    throw new Error('Method not implemented.')
+  async findByPackageItemId(
+    packageId: string,
+  ): Promise<PackageItemAttachment[]> {
+    const packageItem = await this.prisma.attachment.findMany({
+      where: { packageItemId: packageId },
+    })
+    return packageItem.map(PrismaPackageItemAttachmentMapper.toDomain)
   }
 }

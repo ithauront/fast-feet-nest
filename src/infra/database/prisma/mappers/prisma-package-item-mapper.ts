@@ -34,7 +34,7 @@ export class PrismaPackageItemMapper {
     )
   }
 
-  static toPrisa(
+  static toPrisma(
     packageItem: PackageItem,
   ): Prisma.PackageItemUncheckedCreateInput {
     const attachments = packageItem.attachment

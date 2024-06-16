@@ -13,7 +13,7 @@ export class PrismaPackageItemRepository implements PackageItemRepository {
   constructor(private prisma: PrismaService) {}
 
   async create(packageItem: PackageItem): Promise<void> {
-    const data = PrismaPackageItemMapper.toPrisa(packageItem)
+    const data = PrismaPackageItemMapper.toPrisma(packageItem)
     await this.prisma.packageItem.create({ data })
   }
 
@@ -86,7 +86,7 @@ export class PrismaPackageItemRepository implements PackageItemRepository {
   }
 
   async save(packageItem: PackageItem): Promise<void> {
-    const data = PrismaPackageItemMapper.toPrisa(packageItem)
+    const data = PrismaPackageItemMapper.toPrisma(packageItem)
     await this.prisma.packageItem.update({
       where: { id: data.id },
       data,

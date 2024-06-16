@@ -1,12 +1,16 @@
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Attachment } from '@/domain/delivery/enterprise/entities/attachment'
 import { Prisma, Attachment as PrismaAttachment } from '@prisma/client'
 
 export class PrismaAttachmentMapper {
   static toDomain(raw: PrismaAttachment): Attachment {
-    return Attachment.create({
-      title: raw.title,
-      link: raw.link,
-    })
+    return Attachment.create(
+      {
+        title: raw.title,
+        link: raw.link,
+      },
+      new UniqueEntityId(raw.id),
+    )
   }
 
   static toPrisma(
