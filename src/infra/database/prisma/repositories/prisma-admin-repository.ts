@@ -3,32 +3,57 @@ import { AdminRepository } from '@/domain/delivery/application/repositories/admi
 import { Admin } from '@/domain/delivery/enterprise/entities/admin'
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
+import { PrismaAdminMapper } from '../mappers/prisma-admin-mapper'
 
 @Injectable()
 export class PrismaAdminRepository implements AdminRepository {
   constructor(private prisma: PrismaService) {}
 
-  create(admin: Admin): Promise<void> {
-    throw new Error('Method not implemented.')
+  async create(admin: Admin): Promise<void> {
+    const data = PrismaAdminMapper.toPrisma(admin)
+    await this.prisma.admin.create({ data })
   }
 
-  findById(packageId: string): Promise<Admin | null> {
-    throw new Error('Method not implemented.')
+  async findById(adminId: string): Promise<Admin | null> {
+    const admin = await this.prisma.admin.findUnique({
+      where: { id: adminId },
+    })
+    if (!admin) {
+      return null
+    }
+    return PrismaAdminMapper.toDomain(admin)
   }
 
-  findByEmail(email: string): Promise<Admin | null> {
-    throw new Error('Method not implemented.')
+  async findByEmail(email: string): Promise<Admin | null> {
+    const admin = await this.prisma.admin.findUnique({
+      where: { email },
+    })
+    if (!admin) {
+      return null
+    }
+    return PrismaAdminMapper.toDomain(admin)
   }
 
-  findByCpf(cpf: string): Promise<Admin | null> {
-    throw new Error('Method not implemented.')
+  async findByCpf(cpf: string): Promise<Admin | null> {
+    const admin = await this.prisma.admin.findUnique({
+      where: { cpf },
+    })
+    if (!admin) {
+      return null
+    }
+    return PrismaAdminMapper.toDomain(admin)
   }
 
-  save(admin: Admin): Promise<void> {
-    throw new Error('Method not implemented.')
+  async save(admin: Admin): Promise<void> {
+    const data = PrismaAdminMapper.toPrisma(admin)
+    await this.prisma.admin.update({ where: { id: data.id }, data })
   }
 
-  findMany(params: QueryParams): Promise<Admin[]> {
-    throw new Error('Method not implemented.')
+  async findMany({ page }: QueryParams): Promise<Admin[]> {
+    const admins = await this.prisma.admin.findMany({
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+    return admins.map(PrismaAdminMapper.toDomain)
   }
 }
