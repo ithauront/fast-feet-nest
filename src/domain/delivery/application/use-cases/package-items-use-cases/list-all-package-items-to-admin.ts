@@ -4,6 +4,7 @@ import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized
 import { AuthorizationService } from '../../../application/services/authorization'
 import { PackageItemRepository } from '../../repositories/package-item-repository'
 import { PackageItemWithDetails } from '@/domain/delivery/enterprise/entities/value-object/package-item-with-details'
+import { Injectable } from '@nestjs/common'
 
 interface ListAllPackageItemsToAdminUseCaseRequest {
   page: number
@@ -12,11 +13,9 @@ interface ListAllPackageItemsToAdminUseCaseRequest {
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
 type ListAllPackageItemsToAdminUseCaseResponse = Either<
   AuthorizationError,
-  {
-    packageItems: PackageItemWithDetails[]
-  }
+  PackageItemWithDetails[]
 >
-
+@Injectable()
 export class ListAllPackageItemsToAdminUseCase {
   constructor(
     private packageItemRepository: PackageItemRepository,
@@ -37,6 +36,6 @@ export class ListAllPackageItemsToAdminUseCase {
       page,
     })
 
-    return right({ packageItems: allPackageItems })
+    return right(allPackageItems)
   }
 }

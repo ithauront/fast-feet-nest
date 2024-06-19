@@ -6,7 +6,7 @@ import { Test } from '@nestjs/testing'
 import request from 'supertest'
 import { fakeCPFGenerator } from 'test/utils/fake-cpf-generator'
 
-describe('list all package item to admin tests (e2e)', () => {
+describe('Get package item by Id (e2e)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -23,7 +23,7 @@ describe('list all package item to admin tests (e2e)', () => {
     await app.init()
   })
 
-  test('[get]/package_item', async () => {
+  test('[get]/package_item/:packageItemId', async () => {
     const cpf = fakeCPFGenerator()
     const admin = await prisma.admin.create({
       data: {
@@ -43,43 +43,25 @@ describe('list all package item to admin tests (e2e)', () => {
         email: 'john@doe.com',
       },
     })
-    await prisma.packageItem.createMany({
-      data: [
-        {
-          title: 'package 1',
-          deliveryAddress: '1 package street 987654',
-          recipientId: recipient.id,
-        },
-        {
-          title: 'package 2',
-          deliveryAddress: '2 package street 987654',
-          recipientId: recipient.id,
-        },
-        {
-          title: 'package 3',
-          deliveryAddress: '3 package street 987654',
-          recipientId: recipient.id,
-        },
-        {
-          title: 'package 4',
-          deliveryAddress: '4 package street 987654',
-          recipientId: recipient.id,
-        },
-      ],
+
+    await prisma.packageItem.create({
+      data: {
+        id: '1',
+        title: 'package 1',
+        deliveryAddress: '1 package street 987654',
+        recipientId: recipient.id,
+      },
     })
     const response = await request(app.getHttpServer())
-      .get('/package_item')
+      .get('/package_item/1')
       .set('Authorization', `Bearer ${token}`)
 
     expect(response.statusCode).toBe(200)
-    expect(response.body).toEqual(
+    expect(response.body.packageItem).toEqual(
       expect.objectContaining({
-        packageItems: expect.arrayContaining([
-          expect.objectContaining({ title: 'package 1' }),
-          expect.objectContaining({ title: 'package 2' }),
-          expect.objectContaining({ title: 'package 3' }),
-          expect.objectContaining({ title: 'package 4' }),
-        ]),
+        title: 'package 1',
+        deliveryAddress: '1 package street 987654',
+        recipientId: recipient.id.toString(),
       }),
     )
   })

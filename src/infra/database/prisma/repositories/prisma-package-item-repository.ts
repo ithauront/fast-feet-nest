@@ -53,13 +53,14 @@ export class PrismaPackageItemRepository implements PackageItemRepository {
       ...(courierId && { courierId }),
     }
 
-    const PackageItemWithDetails = await this.prisma.packageItem.findMany({
+    const packageItemWithDetails = await this.prisma.packageItem.findMany({
       where,
       take: 20,
       skip: (page - 1) * 20,
+      orderBy: { createdAt: 'desc' },
       include: { attachments: true },
     })
-    return PackageItemWithDetails.map(
+    return packageItemWithDetails.map(
       PrismaPackageItemWithDetailsMapper.toDomain,
     )
   }
@@ -74,13 +75,14 @@ export class PrismaPackageItemRepository implements PackageItemRepository {
       ...(address && { deliveryAddress: address }),
     }
 
-    const PackageItemWithDetails = await this.prisma.packageItem.findMany({
+    const packageItemWithDetails = await this.prisma.packageItem.findMany({
       where,
       take: 20,
       skip: (page - 1) * 20,
+      orderBy: { createdAt: 'desc' },
       include: { attachments: true },
     })
-    return PackageItemWithDetails.map(
+    return packageItemWithDetails.map(
       PrismaPackageItemWithDetailsMapper.toDomain,
     )
   }

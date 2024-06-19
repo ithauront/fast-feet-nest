@@ -1,4 +1,11 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { CurentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
@@ -28,13 +35,19 @@ export class CreatePackageItemController {
     @Body(bodyValidationPipe) body: CreatePackageItemBodySchema,
   ) {
     const { title, deliveryAddress, courierId, recipientId } = body
-
-    await this.createPackageItem.execute({
+    const result = await this.createPackageItem.execute({
       title,
       deliveryAddress,
       courierId,
       recipientId,
       creatorId: user.sub,
     })
+
+    if (result.isLeft()) {
+      const errorMessage = result.value.message || 'Unauthorized or not found'
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST)
+    }
+
+    return { packageItem: result.value }
   }
 }

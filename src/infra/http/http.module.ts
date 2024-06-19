@@ -9,6 +9,7 @@ import { CreatePackageItemUseCase } from '@/domain/delivery/application/use-case
 import { GetPackageItemByIdUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/get-package-item-by-id'
 import { AuthorizationService } from '@/domain/delivery/application/services/authorization'
 import { GetPackageItemByIdController } from './controllers/package-item-controllers/get-package-item-by-id-controller'
+import { ListAllPackageItemsToAdminUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-all-package-items-to-admin'
 
 @Module({
   imports: [DatabaseModule],
@@ -27,6 +28,7 @@ import { GetPackageItemByIdController } from './controllers/package-item-control
   providers: [
     CreatePackageItemUseCase,
     GetPackageItemByIdUseCase,
+    ListAllPackageItemsToAdminUseCase,
     AuthorizationService,
   ],
 })
