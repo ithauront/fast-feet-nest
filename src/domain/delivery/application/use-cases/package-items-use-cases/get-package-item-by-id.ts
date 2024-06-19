@@ -3,6 +3,7 @@ import { PackageItemRepository } from '../../repositories/package-item-repositor
 import { AuthorizationService } from '../../../application/services/authorization'
 import { PackageItemNotFoundError } from '../errors/package-item-not-found-error'
 import { PackageItemWithDetails } from '@/domain/delivery/enterprise/entities/value-object/package-item-with-details'
+import { Injectable } from '@nestjs/common'
 
 interface GetPackageItemByIdUseCaseRequest {
   creatorId: string
@@ -12,6 +13,8 @@ type AssingPackageItemUseCaseResponse = Either<
   PackageItemNotFoundError,
   PackageItemWithDetails
 >
+
+@Injectable()
 export class GetPackageItemByIdUseCase {
   constructor(
     private packageItemRepository: PackageItemRepository,

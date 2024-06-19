@@ -79,3 +79,11 @@ Content-Type: application/json
 Authorization: Bearer {{CourierToken}}
 
 ###
+
+
+# @name get_package_items_by_id
+GET {{baseUrl}}/package_item/24b9333a-1f63-4869-b2fa-bb76af534559
+Content-Type: application/json
+Authorization: Bearer {{AdminToken}}
+
+###

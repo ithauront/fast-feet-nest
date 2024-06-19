@@ -1,69 +1,40 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Post,
-  UseGuards,
-} from '@nestjs/common'
-import { PrismaService } from '../../../database/prisma/prisma.service'
-import { JwtService } from '@nestjs/jwt'
+import { Body, Controller, Post, UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { CurentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-
-const PackageStatusEnum = z.enum([
-  'AWAITING_PICKUP',
-  'IN_TRANSIT',
-  'DELIVERED',
-  'RETURNED',
-  'LOST',
-])
+import { CreatePackageItemUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/create-package-item'
 
 const createPackageItemBodySchema = z.object({
   title: z.string(),
   deliveryAddress: z.string(),
   courierId: z.string().optional(),
   recipientId: z.string(),
-  status: PackageStatusEnum.default('AWAITING_PICKUP'),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(createPackageItemBodySchema)
 
 type CreatePackageItemBodySchema = z.infer<typeof createPackageItemBodySchema>
 
-// controller ainda sem o autoriaztion service então não esta apenas para admin ainda
 @Controller('/package_item')
 @UseGuards(JwtAuthGuard)
 export class CreatePackageItemController {
-  constructor(
-    private prisma: PrismaService,
-    private jwt: JwtService,
-  ) {}
+  constructor(private createPackageItem: CreatePackageItemUseCase) {}
 
   @Post()
   async handle(
     @CurentUser() user: UserPayload,
     @Body(bodyValidationPipe) body: CreatePackageItemBodySchema,
   ) {
-    const { title, deliveryAddress, courierId, recipientId, status } = body
-    //  const authorId = user.sub quando integrarmos com o useCase vamos usar isso para passar o authorId
-    const recipientExists = await this.prisma.recipient.findUnique({
-      where: { id: recipientId },
-    })
+    const { title, deliveryAddress, courierId, recipientId } = body
 
-    if (!recipientExists) {
-      throw new BadRequestException('Recipient does not exist.')
-    }
-    await this.prisma.packageItem.create({
-      data: {
-        title,
-        deliveryAddress,
-        courierId,
-        recipientId,
-        status,
-      },
+    await this.createPackageItem.execute({
+      title,
+      deliveryAddress,
+      courierId,
+      recipientId,
+      creatorId: user.sub,
     })
   }
 }

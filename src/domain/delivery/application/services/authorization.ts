@@ -4,7 +4,9 @@ import { CourierRepository } from '../repositories/courier-repository'
 import { UnauthorizedAdminError } from '../use-cases/errors/unauthorized-admin-error'
 import { NotFoundOrUnauthorizedError } from '../use-cases/errors/not-found-or-unauthorized-error'
 import { CourierStatus } from '../../enterprise/entities/courier'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class AuthorizationService {
   constructor(
     private courierRepository: CourierRepository,

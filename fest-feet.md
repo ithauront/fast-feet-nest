@@ -115,3 +115,10 @@ somente o admin pode alterar a senha do usuario. eu fiz um fluxo mais complexo o
 
 
 ## estou tentando resolver o problema do attachment no prismaToDomain. agora eu estou fazendo uma conexão para o attachment dentro do dominio no attachmentList e tirei isso de opcional. agora eu preciso tambem no toDomain passar o link e title mas ainda não fiz. apos isso a ideia é que consiga usar o toPrisma do packageItemMapper sem precisar de passar attachments e assim poder usar ele no repositorio.
+
+## fazer o mapper e implementar o repositorio do log. assim como fazer os repositorios e mappers da parte de notification. e fazer tudo isso nas tabelas do prisma porque ainda não tem.
+
+
+## ver se vamos mesmo precisar do packageItem presenter. e se não deletar ele. eu acho que no getById não precisa porque nesse caso queremos mesmo todas as informações do package.
+
+## verificar porque não o autorizationService esta liberando criar um package mesmo com courier que néæo é admin. acho que por enquanto porque ele não esta pegando no banco. ver depois de criar os outros controllers. temos que revisar tambem no getPAckageByIdcontroller porque ele não autoriza o courier a pegar o package, porem ele da erro de badrequest e não de não autorizado. o que é estranho.

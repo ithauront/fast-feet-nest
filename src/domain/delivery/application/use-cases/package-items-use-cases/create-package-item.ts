@@ -5,6 +5,7 @@ import { Either, left, right } from '@/core/either'
 import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized-error'
 import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
 import { AuthorizationService } from '../../services/authorization'
+import { Injectable } from '@nestjs/common'
 
 interface CreatePackageItemUseCaseRequest {
   creatorId: string
@@ -17,6 +18,7 @@ interface CreatePackageItemUseCaseRequest {
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
 type CreatePackageItemUseCaseResponse = Either<AuthorizationError, PackageItem>
 
+@Injectable()
 export class CreatePackageItemUseCase {
   constructor(
     private packageItemRepository: PackageItemRepository,
