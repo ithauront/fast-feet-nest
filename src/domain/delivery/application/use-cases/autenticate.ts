@@ -7,6 +7,7 @@ import { Admin } from '../../enterprise/entities/admin'
 import { HashComparer } from '../cryptography/hash-comparer'
 import { Encrypter } from '../cryptography/encrypter'
 import { InvalidActionError } from './errors/invalid-action-error'
+import { Injectable } from '@nestjs/common'
 
 interface AutenticateUseCaseRequest {
   cpf: string
@@ -19,7 +20,7 @@ type AutenticateUseCaseResponse = Either<
     accessToken: string
   }
 >
-
+@Injectable()
 export class AutenticateUseCase {
   constructor(
     private courierRepository: CourierRepository,

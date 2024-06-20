@@ -118,5 +118,6 @@ somente o admin pode alterar a senha do usuario. eu fiz um fluxo mais complexo o
 
 ## fazer o mapper e implementar o repositorio do log. assim como fazer os repositorios e mappers da parte de notification. e fazer tudo isso nas tabelas do prisma porque ainda não tem.
 
+## talvez o controller para mark courier ou package as mucança de status a gente pode fazer um so controller para chamar diversos useCase a depender de o que vai vir na requisição.
 
 ## colocar expiração nos tokens

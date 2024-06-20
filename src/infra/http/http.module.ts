@@ -10,9 +10,11 @@ import { GetPackageItemByIdUseCase } from '@/domain/delivery/application/use-cas
 import { AuthorizationService } from '@/domain/delivery/application/services/authorization'
 import { GetPackageItemByIdController } from './controllers/package-item-controllers/get-package-item-by-id-controller'
 import { ListAllPackageItemsToAdminUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-all-package-items-to-admin'
+import { AutenticateUseCase } from '@/domain/delivery/application/use-cases/autenticate'
+import { CryptographyModule } from '../cryptography/cryptography.module'
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, CryptographyModule],
   controllers: [
     // courier controllers
     CreateCourierController,
@@ -26,9 +28,12 @@ import { ListAllPackageItemsToAdminUseCase } from '@/domain/delivery/application
     AutenticateController,
   ],
   providers: [
+    // package item useCases
     CreatePackageItemUseCase,
     GetPackageItemByIdUseCase,
     ListAllPackageItemsToAdminUseCase,
+    // others
+    AutenticateUseCase,
     AuthorizationService,
   ],
 })
