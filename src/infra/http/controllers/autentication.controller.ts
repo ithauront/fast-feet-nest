@@ -1,9 +1,10 @@
 import {
+  BadRequestException,
   Body,
   Controller,
-  HttpException,
-  HttpStatus,
+  ForbiddenException,
   Post,
+  UnauthorizedException,
   UsePipes,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
@@ -11,6 +12,7 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { AutenticateUseCase } from '@/domain/delivery/application/use-cases/autenticate'
 import { InvalidCredentialsError } from '@/domain/delivery/application/use-cases/errors/invalid-credentials-error'
+import { InvalidActionError } from '@/domain/delivery/application/use-cases/errors/invalid-action-error'
 
 const autenticateBodySchema = z.object({
   cpf: z.string(),
@@ -37,13 +39,16 @@ export class AutenticateController {
     })
 
     if (result.isLeft()) {
-      const errorCode =
-        result.value instanceof InvalidCredentialsError
-          ? HttpStatus.UNAUTHORIZED
-          : HttpStatus.FORBIDDEN
-      const errorMessage =
-        result.value.message || 'An unexpected error occurred'
-      throw new HttpException(errorMessage, errorCode)
+      const error = result.value
+
+      switch (error.constructor) {
+        case InvalidCredentialsError:
+          throw new UnauthorizedException(error.message)
+        case InvalidActionError:
+          throw new ForbiddenException(error.message)
+        default:
+          throw new BadRequestException(error.message)
+      }
     }
 
     const { accessToken } = result.value

@@ -1,11 +1,11 @@
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import {
+  BadRequestException,
   Controller,
   Get,
-  HttpException,
-  HttpStatus,
   Query,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
 import { z } from 'zod'
@@ -14,6 +14,7 @@ import { CurentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { UnauthorizedAdminError } from '@/domain/delivery/application/use-cases/errors/unauthorized-admin-error'
 import { PackageItemPresenter } from '../../presenters/package-item-presenter'
+import { NotFoundOrUnauthorizedError } from '@/domain/delivery/application/use-cases/errors/not-found-or-unauthorized-error'
 
 const pageQueryParamsSchema = z
   .string()
@@ -44,13 +45,18 @@ export class ListAllPackageItemsToAdminController {
     })
 
     if (result.isLeft()) {
-      const errorCode =
-        result.value instanceof UnauthorizedAdminError
-          ? HttpStatus.FORBIDDEN
-          : HttpStatus.NOT_FOUND
-      const errorMessage = result.value.message || 'Unauthorized or not found'
-      throw new HttpException(errorMessage, errorCode)
+      const error = result.value
+
+      switch (error.constructor) {
+        case UnauthorizedAdminError:
+          throw new UnauthorizedException(error.message)
+        case NotFoundOrUnauthorizedError:
+          throw new UnauthorizedException(error.message)
+        default:
+          throw new BadRequestException(error.message)
+      }
     }
+
     return {
       packageItems: result.value.map(PackageItemPresenter.toHTTP),
     }

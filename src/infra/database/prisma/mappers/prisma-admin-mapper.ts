@@ -24,7 +24,7 @@ export class PrismaAdminMapper {
       name: admin.name,
       email: admin.email,
       cpf: admin.cpf,
-      password: admin.password,
+      password: admin.props.password,
       isAdmin: true,
       isActive: admin.isActive,
       createdAt: admin.createdAt,

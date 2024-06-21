@@ -7,6 +7,7 @@ import { UserAlreadyExistsError } from '../errors/user-already-exists-error'
 import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
 import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized-error'
 import { AuthorizationService } from '../../services/authorization'
+import { Injectable } from '@nestjs/common'
 
 interface RegisterCourierUseCaseRequest {
   creatorId: string
@@ -26,6 +27,7 @@ type RegisterCourierUseCaseResponse = Either<
   Courier
 >
 
+@Injectable()
 export class RegisterCourierUseCase {
   constructor(
     private courierRepository: CourierRepository,
@@ -56,6 +58,7 @@ export class RegisterCourierUseCase {
     if (courierWithSameEmail) {
       return left(new UserAlreadyExistsError())
     }
+
     const hashedPassword = await this.hashGenerator.hash(password)
 
     const courier = Courier.create({

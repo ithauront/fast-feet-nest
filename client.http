@@ -24,11 +24,12 @@ Content-Type: application/json
 # @name create_admin
 POST {{baseUrl}}/users/admin
 Content-Type: application/json
+Authorization: Bearer {{AdminToken}}
 
 {
     "name": "jack doe",
-    "email": "jack@doe.com", 
-    "cpf":"54376587634", 
+    "email": "jacks@doe.com", 
+    "cpf":"543765876343", 
     "password": "123456",
     "phone": "0392450387",
     "latitude": 1.248291,

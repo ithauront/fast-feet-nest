@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { CreateCourierController } from './controllers/courier-controllers/create-courier.controller'
-import { CreateAdminController } from './controllers/admin-controllers/create-admin.controller'
+import { RegisterCourierController } from './controllers/courier-controllers/register-courier.controller'
+import { RegisterAdminController } from './controllers/admin-controllers/register-admin.controller'
 import { CreatePackageItemController } from './controllers/package-item-controllers/create-package-item.controller'
 import { ListAllPackageItemsToAdminController } from './controllers/package-item-controllers/list-all-package-items-to-admin.controller'
 import { AutenticateController } from './controllers/autentication.controller'
@@ -12,14 +12,16 @@ import { GetPackageItemByIdController } from './controllers/package-item-control
 import { ListAllPackageItemsToAdminUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-all-package-items-to-admin'
 import { AutenticateUseCase } from '@/domain/delivery/application/use-cases/autenticate'
 import { CryptographyModule } from '../cryptography/cryptography.module'
+import { RegisterCourierUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/register-courier'
+import { RegisterAdminUseCase } from '@/domain/delivery/application/use-cases/admin-use-cases/register-admin'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
   controllers: [
     // courier controllers
-    CreateCourierController,
+    RegisterCourierController,
     // admin controllers
-    CreateAdminController,
+    RegisterAdminController,
     // package item controllers
     CreatePackageItemController,
     ListAllPackageItemsToAdminController,
@@ -28,6 +30,10 @@ import { CryptographyModule } from '../cryptography/cryptography.module'
     AutenticateController,
   ],
   providers: [
+    // admin useCases
+    RegisterAdminUseCase,
+    // courier useCases
+    RegisterCourierUseCase,
     // package item useCases
     CreatePackageItemUseCase,
     GetPackageItemByIdUseCase,

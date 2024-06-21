@@ -4,14 +4,17 @@ import { CurentUser } from '@/infra/auth/current-user-decorator'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import {
+  BadRequestException,
   Controller,
   Get,
-  HttpException,
-  HttpStatus,
+  NotFoundException,
   Param,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
 import { PackageItemPresenter } from '../../presenters/package-item-presenter'
+import { PackageItemNotFoundError } from '@/domain/delivery/application/use-cases/errors/package-item-not-found-error'
+import { NotFoundOrUnauthorizedError } from '@/domain/delivery/application/use-cases/errors/not-found-or-unauthorized-error'
 
 @Controller('/package_item/:packageId')
 @UseGuards(JwtAuthGuard)
@@ -28,12 +31,18 @@ export class GetPackageItemByIdController {
       creatorId: user.sub,
     })
     if (result.isLeft()) {
-      const errorCode =
-        result.value instanceof UnauthorizedAdminError
-          ? HttpStatus.FORBIDDEN
-          : HttpStatus.NOT_FOUND
-      const errorMessage = result.value.message || 'Unauthorized or not found'
-      throw new HttpException(errorMessage, errorCode)
+      const error = result.value
+
+      switch (error.constructor) {
+        case UnauthorizedAdminError:
+          throw new UnauthorizedException(error.message)
+        case NotFoundOrUnauthorizedError:
+          throw new UnauthorizedException(error.message)
+        case PackageItemNotFoundError:
+          throw new NotFoundException(error.message)
+        default:
+          throw new BadRequestException(error.message)
+      }
     }
 
     return { packageItem: PackageItemPresenter.toHTTP(result.value) }

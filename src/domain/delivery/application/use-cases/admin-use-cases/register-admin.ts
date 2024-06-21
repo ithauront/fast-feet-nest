@@ -8,6 +8,7 @@ import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
 import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized-error'
 import { UserAlreadyExistsError } from '../errors/user-already-exists-error'
 import { AuthorizationService } from '../../services/authorization'
+import { Injectable } from '@nestjs/common'
 
 interface RegisterAdminUseCaseRequest {
   creatorId: string
@@ -24,6 +25,7 @@ type RegisterAdminUseCaseResponse = Either<
   Admin
 >
 
+@Injectable()
 export class RegisterAdminUseCase {
   constructor(
     private adminRepository: AdminRepository,

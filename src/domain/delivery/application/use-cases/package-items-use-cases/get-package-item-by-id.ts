@@ -4,13 +4,16 @@ import { AuthorizationService } from '../../../application/services/authorizatio
 import { PackageItemNotFoundError } from '../errors/package-item-not-found-error'
 import { PackageItemWithDetails } from '@/domain/delivery/enterprise/entities/value-object/package-item-with-details'
 import { Injectable } from '@nestjs/common'
+import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
+import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized-error'
 
 interface GetPackageItemByIdUseCaseRequest {
   creatorId: string
   packageId: string
 }
+type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
 type AssingPackageItemUseCaseResponse = Either<
-  PackageItemNotFoundError,
+  PackageItemNotFoundError | AuthorizationError,
   PackageItemWithDetails
 >
 

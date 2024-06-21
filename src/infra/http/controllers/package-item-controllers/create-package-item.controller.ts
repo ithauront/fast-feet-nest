@@ -3,8 +3,8 @@ import {
   Controller,
   Post,
   UseGuards,
-  HttpException,
-  HttpStatus,
+  UnauthorizedException,
+  BadRequestException,
 } from '@nestjs/common'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { CurentUser } from '@/infra/auth/current-user-decorator'
@@ -12,6 +12,8 @@ import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { CreatePackageItemUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/create-package-item'
+import { NotFoundOrUnauthorizedError } from '@/domain/delivery/application/use-cases/errors/not-found-or-unauthorized-error'
+import { UnauthorizedAdminError } from '@/domain/delivery/application/use-cases/errors/unauthorized-admin-error'
 
 const createPackageItemBodySchema = z.object({
   title: z.string(),
@@ -44,8 +46,16 @@ export class CreatePackageItemController {
     })
 
     if (result.isLeft()) {
-      const errorMessage = result.value.message || 'Unauthorized or not found'
-      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST)
+      const error = result.value
+
+      switch (error.constructor) {
+        case UnauthorizedAdminError:
+          throw new UnauthorizedException(error.message)
+        case NotFoundOrUnauthorizedError:
+          throw new UnauthorizedException(error.message)
+        default:
+          throw new BadRequestException(error.message)
+      }
     }
 
     return { packageItem: result.value }
