@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import {
   BadRequestException,
@@ -6,7 +5,6 @@ import {
   Get,
   Query,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ListAllPackageItemsToAdminUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-all-package-items-to-admin'
@@ -28,7 +26,6 @@ const queryValidationPipe = new ZodValidationPipe(pageQueryParamsSchema)
 type PageParamsTypeSchema = z.infer<typeof pageQueryParamsSchema>
 
 @Controller('/package_item')
-@UseGuards(JwtAuthGuard)
 export class ListAllPackageItemsToAdminController {
   constructor(
     private listAllPackageItemsToAdmin: ListAllPackageItemsToAdminUseCase,

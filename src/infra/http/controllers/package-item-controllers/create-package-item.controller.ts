@@ -2,11 +2,9 @@ import {
   Body,
   Controller,
   Post,
-  UseGuards,
   UnauthorizedException,
   BadRequestException,
 } from '@nestjs/common'
-import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { CurentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { z } from 'zod'
@@ -27,7 +25,6 @@ const bodyValidationPipe = new ZodValidationPipe(createPackageItemBodySchema)
 type CreatePackageItemBodySchema = z.infer<typeof createPackageItemBodySchema>
 
 @Controller('/package_item')
-@UseGuards(JwtAuthGuard)
 export class CreatePackageItemController {
   constructor(private createPackageItem: CreatePackageItemUseCase) {}
 

@@ -13,6 +13,7 @@ import { z } from 'zod'
 import { AutenticateUseCase } from '@/domain/delivery/application/use-cases/autenticate'
 import { InvalidCredentialsError } from '@/domain/delivery/application/use-cases/errors/invalid-credentials-error'
 import { InvalidActionError } from '@/domain/delivery/application/use-cases/errors/invalid-action-error'
+import { Public } from '@/infra/auth/public'
 
 const autenticateBodySchema = z.object({
   cpf: z.string(),
@@ -22,6 +23,7 @@ const autenticateBodySchema = z.object({
 type AutenticateBodySchema = z.infer<typeof autenticateBodySchema>
 
 @Controller('/sessions')
+@Public()
 export class AutenticateController {
   constructor(
     private jwt: JwtService,

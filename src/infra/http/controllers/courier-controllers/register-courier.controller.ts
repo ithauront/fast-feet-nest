@@ -5,9 +5,7 @@ import {
   Controller,
   Post,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common'
-
 import { z } from 'zod'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 import { RegisterCourierUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/register-courier'
@@ -17,7 +15,6 @@ import { CourierStatus } from '@/domain/delivery/enterprise/entities/courier'
 import { UnauthorizedAdminError } from '@/domain/delivery/application/use-cases/errors/unauthorized-admin-error'
 import { NotFoundOrUnauthorizedError } from '@/domain/delivery/application/use-cases/errors/not-found-or-unauthorized-error'
 import { UserAlreadyExistsError } from '@/domain/delivery/application/use-cases/errors/user-already-exists-error'
-import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 
 const createAccountBodySchema = z.object({
   name: z.string(),
@@ -36,7 +33,6 @@ const bodyValidationPipe = new ZodValidationPipe(createAccountBodySchema)
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
 
 @Controller('/users/courier')
-@UseGuards(JwtAuthGuard)
 export class RegisterCourierController {
   constructor(private registerCourier: RegisterCourierUseCase) {}
 
