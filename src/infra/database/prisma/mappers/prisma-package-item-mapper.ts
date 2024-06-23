@@ -1,17 +1,26 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import {
   PackageItem,
-  PackageStatus,
+  PackageStatus as EntityPackageStatus,
 } from '@/domain/delivery/enterprise/entities/package-item'
 import {
   PackageItem as PrismaPackageItem,
   Attachment as PrismaAttachment,
   Prisma,
+  PackageStatus as PrismaPackageStatus,
 } from '@prisma/client'
 import { PrismaPackageItemAttachmentMapper } from './prisma-package-item-attachment-mapper'
 import { PackageItemAttachmentList } from '@/domain/delivery/enterprise/entities/package-item-attachment-list'
 
 export class PrismaPackageItemMapper {
+  static PackageStatusMapping = {
+    [EntityPackageStatus.AWAITING_PICKUP]: 'AWAITING_PICKUP',
+    [EntityPackageStatus.IN_TRANSIT]: 'IN_TRANSIT',
+    [EntityPackageStatus.DELIVERED]: 'DELIVERED',
+    [EntityPackageStatus.RETURNED]: 'RETURNED',
+    [EntityPackageStatus.LOST]: 'LOST',
+  }
+
   static toDomain(
     raw: PrismaPackageItem & { attachments: PrismaAttachment[] },
   ): PackageItem {
@@ -27,7 +36,8 @@ export class PrismaPackageItemMapper {
         courierId: raw.courierId ? new UniqueEntityId(raw.courierId) : null,
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
-        status: PackageStatus[raw.status as keyof typeof PackageStatus],
+        status:
+          EntityPackageStatus[raw.status as keyof typeof EntityPackageStatus],
         attachment: attachmentList,
       },
       new UniqueEntityId(raw.id),
@@ -41,6 +51,9 @@ export class PrismaPackageItemMapper {
       .getItems()
       .map((item) => PrismaPackageItemAttachmentMapper.toPrisma(item))
 
+    const status =
+      PrismaPackageItemMapper.PackageStatusMapping[packageItem.status]
+
     return {
       id: packageItem.id.toString(),
       title: packageItem.title,
@@ -49,7 +62,7 @@ export class PrismaPackageItemMapper {
       courierId: packageItem.courierId?.toString(),
       createdAt: packageItem.createdAt,
       updatedAt: packageItem.updatedAt,
-      status: PackageStatus[packageItem.status],
+      status: status as PrismaPackageStatus,
       attachments: {
         create: attachments,
       },

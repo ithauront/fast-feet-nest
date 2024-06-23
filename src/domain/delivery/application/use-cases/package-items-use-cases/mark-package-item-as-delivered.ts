@@ -8,6 +8,7 @@ import { PackageItem } from '@/domain/delivery/enterprise/entities/package-item'
 import { PackageItemAttachment } from '@/domain/delivery/enterprise/entities/package-item-attachment'
 import { PackageItemAttachmentList } from '@/domain/delivery/enterprise/entities/package-item-attachment-list'
 import { AttachmentsRepository } from '../../repositories/attachment-repository'
+import { Injectable } from '@nestjs/common'
 
 interface MarkPackageItemAsDeliveredUseCaseRequest {
   creatorId: string
@@ -20,6 +21,7 @@ type MarkPackageItemAsDeliveredUseCaseResponse = Either<
   PackageItem
 >
 
+@Injectable()
 export class MarkPackageItemAsDeliveredUseCase {
   constructor(
     private packageItemRepository: PackageItemRepository,

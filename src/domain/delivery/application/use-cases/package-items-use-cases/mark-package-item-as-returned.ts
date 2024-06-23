@@ -6,6 +6,7 @@ import { PackageItemRepository } from '../../repositories/package-item-repositor
 import { PackageItem } from '@/domain/delivery/enterprise/entities/package-item'
 import { AuthorizationService } from '../../services/authorization'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 
 interface MarkPackageItemAsReturnedUseCaseRequest {
   creatorId: string
@@ -18,6 +19,7 @@ type MarkPackageItemAsReturnedUseCaseResponse = Either<
   PackageItem
 >
 
+@Injectable()
 export class MarkPackageItemAsReturnedUseCase {
   constructor(
     private packageItemRepository: PackageItemRepository,

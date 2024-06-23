@@ -14,6 +14,11 @@ import { AutenticateUseCase } from '@/domain/delivery/application/use-cases/aute
 import { CryptographyModule } from '../cryptography/cryptography.module'
 import { RegisterCourierUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/register-courier'
 import { RegisterAdminUseCase } from '@/domain/delivery/application/use-cases/admin-use-cases/register-admin'
+import { AlterPackageItemStatusController } from './controllers/package-item-controllers/alter-package-item-status-controller'
+import { MarkPackageItemAsInTransitUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/mark-package-item-as-in-transit'
+import { MarkPackageItemAsReturnedUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/mark-package-item-as-returned'
+import { MarkPackageItemAsLostUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/mark-package-item-as-lost'
+import { MarkPackageItemAsDeliveredUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/mark-package-item-as-delivered'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -26,6 +31,7 @@ import { RegisterAdminUseCase } from '@/domain/delivery/application/use-cases/ad
     CreatePackageItemController,
     ListAllPackageItemsToAdminController,
     GetPackageItemByIdController,
+    AlterPackageItemStatusController,
     // other controllers
     AutenticateController,
   ],
@@ -38,6 +44,11 @@ import { RegisterAdminUseCase } from '@/domain/delivery/application/use-cases/ad
     CreatePackageItemUseCase,
     GetPackageItemByIdUseCase,
     ListAllPackageItemsToAdminUseCase,
+    MarkPackageItemAsInTransitUseCase,
+    MarkPackageItemAsReturnedUseCase,
+    MarkPackageItemAsLostUseCase,
+    MarkPackageItemAsDeliveredUseCase,
+
     // others
     AutenticateUseCase,
     AuthorizationService,

@@ -55,6 +55,6 @@ export class CreatePackageItemController {
       }
     }
 
-    return { packageItem: result.value }
+    return { message: 'Package item created successfully' }
   }
 }

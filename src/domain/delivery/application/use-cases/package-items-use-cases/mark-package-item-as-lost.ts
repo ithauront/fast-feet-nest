@@ -8,6 +8,7 @@ import { PackageItemRepository } from '../../repositories/package-item-repositor
 import { PackageItem } from '@/domain/delivery/enterprise/entities/package-item'
 import { AuthorizationService } from '../../services/authorization'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 
 interface MarkPackageItemAsLostUseCaseRequest {
   creatorId: string
@@ -20,6 +21,7 @@ type MarkPackageItemAsLostUseCaseResponse = Either<
   PackageItem
 >
 
+@Injectable()
 export class MarkPackageItemAsLostUseCase {
   constructor(
     private packageItemRepository: PackageItemRepository,

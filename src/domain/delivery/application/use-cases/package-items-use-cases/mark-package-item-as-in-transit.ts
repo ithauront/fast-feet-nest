@@ -6,6 +6,7 @@ import { PackageItemRepository } from '../../repositories/package-item-repositor
 import { PackageItem } from '@/domain/delivery/enterprise/entities/package-item'
 import { AuthorizationService } from '../../services/authorization'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 
 interface MarkPackageItemAsInTransitUseCaseRequest {
   creatorId: string
@@ -18,6 +19,7 @@ type MarkPackageItemAsInTransitUseCaseResponse = Either<
   PackageItem
 >
 
+@Injectable()
 export class MarkPackageItemAsInTransitUseCase {
   constructor(
     private packageItemRepository: PackageItemRepository,
@@ -45,6 +47,7 @@ export class MarkPackageItemAsInTransitUseCase {
     packageItem.markAsInTransit(new UniqueEntityId(creatorId))
 
     await this.packageItemRepository.save(packageItem)
+
     return right(packageItem)
   }
 }

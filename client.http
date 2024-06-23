@@ -82,8 +82,18 @@ Authorization: Bearer {{AdminToken}}
 
 
 # @name get_package_items_by_id
-GET {{baseUrl}}/package_item/e04ecb23-96da-480b-af95-01efad20408f
+GET {{baseUrl}}/package_item/e2ba2c69-6b19-4983-b89d-cd8e82d62ff2
 Content-Type: application/json
 Authorization: Bearer {{AdminToken}}
 
+###
+
+# @name alter_package_items_status_to_in_transit
+PUT {{baseUrl}}/package_item/e2ba2c69-6b19-4983-b89d-cd8e82d62ff2/status
+Content-Type: application/json
+Authorization: Bearer {{AdminToken}}
+
+{
+    "status": "Delivered"
+}
 ###
