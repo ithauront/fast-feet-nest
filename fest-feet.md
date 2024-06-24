@@ -121,4 +121,4 @@ somente o admin pode alterar a senha do usuario. eu fiz um fluxo mais complexo o
 ## talvez o controller para mark courier ou package as mucança de status a gente pode fazer um so controller para chamar diversos useCase a depender de o que vai vir na requisição.
 
 
-## caso de delivered mudança de status ainda da erro 500 talvez tenha algo a ver com a referencia circuar no id do packageItem ou no id do attachments. testar apos criar attachments
+## caso de delivered mudança de status ainda da erro 500 talvez tenha algo a ver com a referencia circuar no id do packageItem ou no id do attachments. testar apos criar attachments temos tambem que adicionar o teste dele la nos testes do alter status
