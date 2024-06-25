@@ -1,55 +1,49 @@
 import { AppModule } from '@/infra/app.module'
+import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
-import { fakeCPFGenerator } from 'test/utils/fake-cpf-generator'
+import { AdminFactory } from 'test/factories/make-admin'
+import { RecipientFactory } from 'test/factories/make-recipient'
 
 describe('Create package item tests (e2e)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
+  let adminFactory: AdminFactory
+  let recipientFactory: RecipientFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [AdminFactory, RecipientFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
     prisma = moduleRef.get(PrismaService)
     jwt = moduleRef.get(JwtService)
+    adminFactory = moduleRef.get(AdminFactory)
+    recipientFactory = moduleRef.get(RecipientFactory)
 
     await app.init()
   })
 
   test('[POST]/package_item', async () => {
-    const cpf = fakeCPFGenerator()
-    const admin = await prisma.admin.create({
-      data: {
-        name: 'Jhon Doe',
-        cpf,
-        email: 'jhon@admin.com',
-        password: '123456',
-      },
-    })
+    const admin = await adminFactory.makePrismaAdmin()
 
-    const token = jwt.sign({ sub: admin.id })
+    const token = jwt.sign({ sub: admin.id.toString() })
 
-    const recipient = await prisma.recipient.create({
-      data: {
-        name: 'John Doe',
-        adress: '21 package street 987654',
-        email: 'john@doe.com',
-      },
-    })
+    const recipient = await recipientFactory.makePrismaRecipient()
+
     const response = await request(app.getHttpServer())
       .post('/package_item')
       .set('Authorization', `Bearer ${token}`)
       .send({
         title: 'package 1',
         deliveryAddress: '21 package street 987654',
-        recipientId: recipient.id,
+        recipientId: recipient.id.toString(),
       })
 
     expect(response.statusCode).toBe(201)

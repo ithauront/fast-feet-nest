@@ -8,7 +8,7 @@ export class PrismaRecipientMapper {
       {
         name: raw.name,
         email: raw.email,
-        address: raw.adress,
+        address: raw.address,
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
       },
@@ -18,9 +18,10 @@ export class PrismaRecipientMapper {
 
   static toPrisma(recipient: Recipient): Prisma.RecipientUncheckedCreateInput {
     return {
+      id: recipient.id.toString(),
       name: recipient.name,
       email: recipient.email,
-      adress: recipient.address,
+      address: recipient.address,
       createdAt: recipient.createdAt,
       updatedAt: recipient.updatedAt,
     }

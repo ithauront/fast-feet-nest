@@ -1,40 +1,53 @@
 import { AppModule } from '@/infra/app.module'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { DatabaseModule } from '@/infra/database/database.module'
 import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import { hash } from 'bcryptjs'
 import request from 'supertest'
-import { fakeCPFGenerator } from 'test/utils/fake-cpf-generator'
+import { AdminFactory } from 'test/factories/make-admin'
+import { CourierFactory } from 'test/factories/make-courier'
 
 describe('Autenticate tests (e2e)', () => {
   let app: INestApplication
-  let prisma: PrismaService
+  let adminFactory: AdminFactory
+  let courierFactory: CourierFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [AdminFactory, CourierFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
-    prisma = moduleRef.get(PrismaService)
+    adminFactory = moduleRef.get(AdminFactory)
+    courierFactory = moduleRef.get(CourierFactory)
 
     await app.init()
   })
 
-  test('[POST]/sessions', async () => {
-    const cpf = fakeCPFGenerator()
-    const courier = await prisma.courier.create({
-      data: {
-        name: 'Jhon Doe',
-        cpf,
-        email: 'jhon@doe.com',
-        password: await hash('123456', 8),
-        phone: '2345678',
-      },
+  test('[POST]/sessions - courier', async () => {
+    const courier = await courierFactory.makePrismaCourier({
+      cpf: '21043245323',
+      password: await hash('123456', 8),
     })
 
     const response = await request(app.getHttpServer()).post('/sessions').send({
       cpf: courier.cpf,
+      password: '123456',
+    })
+
+    expect(response.statusCode).toBe(201)
+    expect(response.body).toEqual({ access_token: expect.any(String) })
+  })
+
+  test('[POST]/sessions - admin', async () => {
+    const admin = await adminFactory.makePrismaAdmin({
+      cpf: '12343267543',
+      password: await hash('123456', 8),
+    })
+
+    const response = await request(app.getHttpServer()).post('/sessions').send({
+      cpf: admin.cpf,
       password: '123456',
     })
 

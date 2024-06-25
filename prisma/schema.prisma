@@ -19,7 +19,7 @@ model Recipient {
   updatedAt DateTime? @updatedAt @map("updated_at")
   name      String
   email     String    @unique
-  adress    String
+  address   String
 
   PackageItem PackageItem[]
 

@@ -1,59 +1,52 @@
 import { AppModule } from '@/infra/app.module'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { DatabaseModule } from '@/infra/database/database.module'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
-import { fakeCPFGenerator } from 'test/utils/fake-cpf-generator'
+import { AdminFactory } from 'test/factories/make-admin'
+import { PackageItemFactory } from 'test/factories/make-package-item'
+import { RecipientFactory } from 'test/factories/make-recipient'
 
 describe('Get package item by Id (e2e)', () => {
   let app: INestApplication
-  let prisma: PrismaService
   let jwt: JwtService
+  let adminFactory: AdminFactory
+  let recipientFactory: RecipientFactory
+  let packageItemFactory: PackageItemFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [AdminFactory, RecipientFactory, PackageItemFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
-    prisma = moduleRef.get(PrismaService)
     jwt = moduleRef.get(JwtService)
+    adminFactory = moduleRef.get(AdminFactory)
+    recipientFactory = moduleRef.get(RecipientFactory)
+    packageItemFactory = moduleRef.get(PackageItemFactory)
 
     await app.init()
   })
 
   test('[get]/package_item/:packageItemId', async () => {
-    const cpf = fakeCPFGenerator()
-    const admin = await prisma.admin.create({
-      data: {
-        name: 'Jhon Doe',
-        cpf,
-        email: 'jhon@admin.com',
-        password: '123456',
-      },
+    const admin = await adminFactory.makePrismaAdmin()
+
+    const token = jwt.sign({ sub: admin.id.toString() })
+
+    const recipient = await recipientFactory.makePrismaRecipient()
+
+    const packageItem = await packageItemFactory.makePrismaPackageItem({
+      title: 'package 1',
+      recipientId: recipient.id,
+      deliveryAddress: '1 package street 987654',
     })
 
-    const token = jwt.sign({ sub: admin.id })
+    const packageItemId = packageItem.id.toString()
 
-    const recipient = await prisma.recipient.create({
-      data: {
-        name: 'John Doe',
-        adress: '21 package street 987654',
-        email: 'john@doe.com',
-      },
-    })
-
-    await prisma.packageItem.create({
-      data: {
-        id: '1',
-        title: 'package 1',
-        deliveryAddress: '1 package street 987654',
-        recipientId: recipient.id,
-      },
-    })
     const response = await request(app.getHttpServer())
-      .get('/package_item/1')
+      .get(`/package_item/${packageItemId}`)
       .set('Authorization', `Bearer ${token}`)
 
     expect(response.statusCode).toBe(200)
