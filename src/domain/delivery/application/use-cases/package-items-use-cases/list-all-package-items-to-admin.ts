@@ -15,6 +15,7 @@ type ListAllPackageItemsToAdminUseCaseResponse = Either<
   AuthorizationError,
   PackageItemWithDetails[]
 >
+
 @Injectable()
 export class ListAllPackageItemsToAdminUseCase {
   constructor(

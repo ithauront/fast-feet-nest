@@ -5,6 +5,7 @@ import { AuthorizationService } from '../../services/authorization'
 import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
 import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized-error'
 import { UserAlreadyExistsError } from '../errors/user-already-exists-error'
+import { Injectable } from '@nestjs/common'
 
 interface RegisterRecipientUseCaseRequest {
   creatorId: string
@@ -19,6 +20,7 @@ type RegisterRecipientUseCaseResponse = Either<
   Recipient
 >
 
+@Injectable()
 export class RegisterRecipientUseCase {
   constructor(
     private recipientRepository: RecipientRepository,

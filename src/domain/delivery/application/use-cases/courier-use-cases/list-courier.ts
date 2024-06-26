@@ -4,6 +4,7 @@ import { CourierRepository } from '../../repositories/courier-repository'
 import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
 import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized-error'
 import { AuthorizationService } from '../../services/authorization'
+import { Injectable } from '@nestjs/common'
 
 interface ListCourierUseCaseRequest {
   page: number
@@ -17,6 +18,7 @@ type ListCourierUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class ListCourierUseCase {
   constructor(
     private courierRepository: CourierRepository,

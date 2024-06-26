@@ -5,6 +5,7 @@ import { AuthorizationService } from '../../../application/services/authorizatio
 import { PackageItemRepository } from '../../repositories/package-item-repository'
 import { QueryParams } from '@/core/repositories/query-params'
 import { PackageItemWithDetails } from '@/domain/delivery/enterprise/entities/value-object/package-item-with-details'
+import { Injectable } from '@nestjs/common'
 
 interface ListCourierPackageItemUseCaseRequest {
   page: number
@@ -19,6 +20,7 @@ type ListCourierPackageItemUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class ListCourierPackageItemUseCase {
   constructor(
     private packageItemRepository: PackageItemRepository,

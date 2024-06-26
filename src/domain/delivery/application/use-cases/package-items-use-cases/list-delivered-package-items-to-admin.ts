@@ -8,6 +8,7 @@ import { PackageStatus } from '../../../enterprise/entities/package-item'
 import { PackageItemRepository } from '../../repositories/package-item-repository'
 import { QueryParams } from '@/core/repositories/query-params'
 import { PackageItemWithDetails } from '@/domain/delivery/enterprise/entities/value-object/package-item-with-details'
+import { Injectable } from '@nestjs/common'
 
 interface ListDeliveredPackageItemToAdminUseCaseRequest {
   page: number
@@ -21,6 +22,7 @@ type ListDeliveredPackageItemToAdminUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class ListDeliveredPackageItemToAdminUseCase {
   constructor(
     private packageItemRepository: PackageItemRepository,

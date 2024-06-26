@@ -6,6 +6,7 @@ import { PackageStatus } from '../../../enterprise/entities/package-item'
 import { PackageItemRepository } from '../../repositories/package-item-repository'
 import { QueryParams } from '@/core/repositories/query-params'
 import { PackageItemWithDetails } from '@/domain/delivery/enterprise/entities/value-object/package-item-with-details'
+import { Injectable } from '@nestjs/common'
 
 interface ListLostPackageItemToAdminUseCaseRequest {
   page: number
@@ -19,6 +20,7 @@ type ListLostPackageItemToAdminUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class ListLostPackageItemToAdminUseCase {
   constructor(
     private packageItemRepository: PackageItemRepository,

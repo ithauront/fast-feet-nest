@@ -5,6 +5,7 @@ import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized
 import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
 import { UserNotFoundError } from '../errors/user-not-found-error'
 import { AuthorizationService } from '../../services/authorization'
+import { Injectable } from '@nestjs/common'
 
 interface GrantAdminStatusToCourierUseCaseRequest {
   creatorId: string
@@ -17,6 +18,7 @@ type GrantAdminStatusToCourierUseCaseResponse = Either<
   Courier
 >
 
+@Injectable()
 export class GrantAdminStatusToCourierUseCase {
   constructor(
     private courierRepository: CourierRepository,

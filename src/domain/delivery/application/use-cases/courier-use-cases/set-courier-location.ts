@@ -5,6 +5,7 @@ import { UserNotFoundError } from '../errors/user-not-found-error'
 import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
 import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized-error'
 import { GeoLocationProvider } from '../../services/geo-locationProvider'
+import { Injectable } from '@nestjs/common'
 
 interface SetCourierLocationUseCaseRequest {
   creatorId: string
@@ -17,6 +18,7 @@ type SetCourierLocationUseCaseResponse = Either<
   Courier
 >
 
+@Injectable()
 export class SetCourierLocationUseCase {
   constructor(
     private courierRepository: CourierRepository,

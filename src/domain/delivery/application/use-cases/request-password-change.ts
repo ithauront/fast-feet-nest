@@ -9,6 +9,7 @@ import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 import { DomainEvents } from '@/core/events/domain-events'
 import { RequestPasswordChangeEvent } from '../../enterprise/events/request-password-change'
 import { Encrypter } from '../cryptography/encrypter'
+import { Injectable } from '@nestjs/common'
 
 interface RequestPasswordChangeUseCaseRequest {
   creatorId: string
@@ -20,6 +21,7 @@ type RequestPasswordChangeUseCaseResponse = Either<
   { message: string }
 >
 
+@Injectable()
 export class RequestPasswordChangeUseCase {
   constructor(
     private courierRepository: CourierRepository,

@@ -7,6 +7,7 @@ import { AuthorizationService } from '../../services/authorization'
 import { UserNotFoundError } from '../errors/user-not-found-error'
 import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
 import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized-error'
+import { Injectable } from '@nestjs/common'
 
 interface ChangeRecipientAddressUseCaseRequest {
   creatorId: string
@@ -20,6 +21,7 @@ type ChangeRecipientAddressUseCaseResponse = Either<
   Recipient
 >
 
+@Injectable()
 export class ChangeRecipientAddressUseCase {
   constructor(
     private recipientRepository: RecipientRepository,

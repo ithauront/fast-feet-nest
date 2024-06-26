@@ -6,6 +6,7 @@ import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
 import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized-error'
 import { AuthorizationService } from '../../services/authorization'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 
 interface AssingPackageItemToCourierUseCaseRequest {
   creatorId: string
@@ -17,6 +18,8 @@ type AssingPackageItemToCourierUseCaseResponse = Either<
   AuthorizationError | PackageItemNotFoundError,
   PackageItem
 >
+
+@Injectable()
 export class AssingPackageItemToCourierUseCase {
   constructor(
     private packageItemRepository: PackageItemRepository,

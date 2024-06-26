@@ -5,6 +5,7 @@ import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized
 import { UserNotFoundError } from '../errors/user-not-found-error'
 import { AdminRepository } from '../../repositories/admin-repository'
 import { AuthorizationService } from '../../services/authorization'
+import { Injectable } from '@nestjs/common'
 
 interface MarkAdminAsInactiveUseCaseRequest {
   creatorId: string
@@ -17,6 +18,7 @@ type MarkAdminAsInactiveUseCaseResponse = Either<
   Admin
 >
 
+@Injectable()
 export class MarkAdminAsInactiveUseCase {
   constructor(
     private adminRepository: AdminRepository,

@@ -9,6 +9,7 @@ import { CourierRepository } from '../../repositories/courier-repository'
 import { GeoLocationProvider } from '../../services/geo-locationProvider'
 import { AuthorizationService } from '../../services/authorization'
 import { PackageItemWithDetails } from '@/domain/delivery/enterprise/entities/value-object/package-item-with-details'
+import { Injectable } from '@nestjs/common'
 
 interface ListPackageItemsNearCourierUseCaseRequest {
   page: number
@@ -24,6 +25,7 @@ type ListPackageItemsNearCourierUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class ListPackageItemsNearCourierUseCase {
   constructor(
     private packageItemRepository: PackageItemRepository,

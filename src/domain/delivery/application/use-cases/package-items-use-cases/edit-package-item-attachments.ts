@@ -11,6 +11,7 @@ import {
   PackageStatus,
 } from '@/domain/delivery/enterprise/entities/package-item'
 import { InvalidActionError } from '../errors/invalid-action-error'
+import { Injectable } from '@nestjs/common'
 
 interface EditPackageItemAttachmentUseCaseRequest {
   packageItemId: string
@@ -21,6 +22,7 @@ type EditPackageItemAttachmentUseCaseResponse = Either<
   PackageItem
 >
 
+@Injectable()
 export class EditPackageItemAttachmentUseCase {
   constructor(
     private packageItemRepository: PackageItemRepository,

@@ -4,6 +4,7 @@ import { AdminRepository } from '../../repositories/admin-repository'
 import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
 import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized-error'
 import { AuthorizationService } from '../../services/authorization'
+import { Injectable } from '@nestjs/common'
 
 interface ListAdminUseCaseRequest {
   page: number
@@ -17,6 +18,7 @@ type ListAdminUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class ListAdminUseCase {
   constructor(
     private adminRepository: AdminRepository,

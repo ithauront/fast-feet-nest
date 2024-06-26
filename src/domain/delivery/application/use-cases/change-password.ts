@@ -9,6 +9,7 @@ import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 import { HashGenerator } from '../cryptography/hash-generator'
 import { DecryptedTokenPayload, Encrypter } from '../cryptography/encrypter'
 import { TokenExpiredError } from './errors/token-expired-error'
+import { Injectable } from '@nestjs/common'
 
 interface ChangePasswordUseCaseRequest {
   uniqueAccessToken: string
@@ -20,6 +21,7 @@ type ChangePasswordUseCaseResponse = Either<
   { message: string }
 >
 
+@Injectable()
 export class ChangePasswordUseCase {
   constructor(
     private courierRepository: CourierRepository,

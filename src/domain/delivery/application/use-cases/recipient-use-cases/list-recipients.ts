@@ -4,6 +4,7 @@ import { RecipientRepository } from '../../repositories/recipient-repository'
 import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
 import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized-error'
 import { AuthorizationService } from '../../services/authorization'
+import { Injectable } from '@nestjs/common'
 
 interface ListRecipientsUseCaseRequest {
   page: number
@@ -17,6 +18,7 @@ type ListRecipientsUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class ListRecipientsUseCase {
   constructor(
     private recipientRepository: RecipientRepository,
