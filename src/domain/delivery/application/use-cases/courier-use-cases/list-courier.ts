@@ -11,12 +11,7 @@ interface ListCourierUseCaseRequest {
   creatorId: string
 }
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
-type ListCourierUseCaseResponse = Either<
-  AuthorizationError,
-  {
-    courier: Courier[]
-  }
->
+type ListCourierUseCaseResponse = Either<AuthorizationError, Courier[]>
 
 @Injectable()
 export class ListCourierUseCase {
@@ -37,6 +32,6 @@ export class ListCourierUseCase {
     }
     const courier = await this.courierRepository.findMany({ page })
 
-    return right({ courier })
+    return right(courier)
   }
 }
