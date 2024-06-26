@@ -11,12 +11,7 @@ interface ListAdminUseCaseRequest {
   creatorId: string
 }
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
-type ListAdminUseCaseResponse = Either<
-  AuthorizationError,
-  {
-    admin: Admin[]
-  }
->
+type ListAdminUseCaseResponse = Either<AuthorizationError, Admin[]>
 
 @Injectable()
 export class ListAdminUseCase {
@@ -37,6 +32,6 @@ export class ListAdminUseCase {
     }
     const admin = await this.adminRepository.findMany({ page })
 
-    return right({ admin })
+    return right(admin)
   }
 }

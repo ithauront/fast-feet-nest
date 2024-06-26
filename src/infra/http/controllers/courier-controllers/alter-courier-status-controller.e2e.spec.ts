@@ -8,7 +8,7 @@ import request from 'supertest'
 import { AdminFactory } from 'test/factories/make-admin'
 import { CourierFactory } from 'test/factories/make-courier'
 
-describe('Alter package item status tests (e2e)', () => {
+describe('Alter courier status tests (e2e)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService

@@ -27,16 +27,19 @@ import { MarkCourierAsOnVacationUseCase } from '@/domain/delivery/application/us
 import { AlterAdminStatusController } from './controllers/admin-controllers/alter-admin-status.controller'
 import { MarkAdminAsActiveUseCase } from '@/domain/delivery/application/use-cases/admin-use-cases/mark-admin-as-active'
 import { MarkAdminAsInactiveUseCase } from '@/domain/delivery/application/use-cases/admin-use-cases/mark-admin-as-inactive'
+import { ListAdminController } from './controllers/admin-controllers/list-admin.controller'
+import { ListAdminUseCase } from '@/domain/delivery/application/use-cases/admin-use-cases/list-admin'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
   controllers: [
-    // courier controllers
-    RegisterCourierController,
-    AlterCourierStatusController,
     // admin controllers
     RegisterAdminController,
     AlterAdminStatusController,
+    ListAdminController,
+    // courier controllers
+    RegisterCourierController,
+    AlterCourierStatusController,
     // package item controllers
     CreatePackageItemController,
     ListAllPackageItemsToAdminController,
@@ -50,6 +53,7 @@ import { MarkAdminAsInactiveUseCase } from '@/domain/delivery/application/use-ca
     RegisterAdminUseCase,
     MarkAdminAsActiveUseCase,
     MarkAdminAsInactiveUseCase,
+    ListAdminUseCase,
     // courier useCases
     RegisterCourierUseCase,
     MarkCourierAsActiveUseCase,
