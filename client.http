@@ -97,3 +97,14 @@ Authorization: Bearer {{AdminToken}}
     "status": "Delivered"
 }
 ###
+
+# @name alter_courier_status_to_inactive
+PUT {{baseUrl}}/user/courier/e2ba2c69-6b19-4983-b89d-cd8e82d62ff2/status
+Content-Type: application/json
+Authorization: Bearer {{AdminToken}}
+
+{
+    "status": "Inactive"
+}
+
+###

@@ -5,6 +5,7 @@ import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
 import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized-error'
 import { UserNotFoundError } from '../errors/user-not-found-error'
 import { AuthorizationService } from '../../services/authorization'
+import { Injectable } from '@nestjs/common'
 
 interface MarkCourierAsInactiveUseCaseRequest {
   creatorId: string
@@ -17,6 +18,7 @@ type MarkCourierAsInactiveUseCaseResponse = Either<
   Courier
 >
 
+@Injectable()
 export class MarkCourierAsInactiveUseCase {
   constructor(
     private courierRepository: CourierRepository,

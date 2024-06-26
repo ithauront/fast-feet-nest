@@ -19,12 +19,18 @@ import { MarkPackageItemAsReturnedUseCase } from '@/domain/delivery/application/
 import { MarkPackageItemAsLostUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/mark-package-item-as-lost'
 import { MarkPackageItemAsDeliveredUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/mark-package-item-as-delivered'
 import { GetPackageItemByIdController } from './controllers/package-item-controllers/get-package-item-by-id.controller'
+import { AlterCourierStatusController } from './controllers/courier-controllers/alter-courier-status.controller'
+import { MarkCourierAsActiveUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/mark-courier-as-active'
+import { MarkCourierAsDismissedUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/mark-courier-as-dismissed'
+import { MarkCourierAsInactiveUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/mark-courier-as-inactive'
+import { MarkCourierAsOnVacationUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/mark-courier-as-on-vacation'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
   controllers: [
     // courier controllers
     RegisterCourierController,
+    AlterCourierStatusController,
     // admin controllers
     RegisterAdminController,
     // package item controllers
@@ -40,6 +46,10 @@ import { GetPackageItemByIdController } from './controllers/package-item-control
     RegisterAdminUseCase,
     // courier useCases
     RegisterCourierUseCase,
+    MarkCourierAsActiveUseCase,
+    MarkCourierAsDismissedUseCase,
+    MarkCourierAsInactiveUseCase,
+    MarkCourierAsOnVacationUseCase,
     // package item useCases
     CreatePackageItemUseCase,
     GetPackageItemByIdUseCase,
