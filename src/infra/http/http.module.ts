@@ -31,6 +31,8 @@ import { ListAdminController } from './controllers/admin-controllers/list-admin.
 import { ListAdminUseCase } from '@/domain/delivery/application/use-cases/admin-use-cases/list-admin'
 import { ListCourierUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/list-courier'
 import { ListCourierController } from './controllers/courier-controllers/list-courier.controller'
+import { ChangeCourierPhoneController } from './controllers/courier-controllers/change-courier-phone.controller'
+import { ChangeCourierPhoneUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/change-courier-phone'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -43,6 +45,7 @@ import { ListCourierController } from './controllers/courier-controllers/list-co
     RegisterCourierController,
     AlterCourierStatusController,
     ListCourierController,
+    ChangeCourierPhoneController,
     // package item controllers
     CreatePackageItemController,
     ListAllPackageItemsToAdminController,
@@ -64,6 +67,7 @@ import { ListCourierController } from './controllers/courier-controllers/list-co
     MarkCourierAsInactiveUseCase,
     MarkCourierAsOnVacationUseCase,
     ListCourierUseCase,
+    ChangeCourierPhoneUseCase,
     // package item useCases
     CreatePackageItemUseCase,
     GetPackageItemByIdUseCase,
