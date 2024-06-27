@@ -14,7 +14,7 @@ interface GrantAdminStatusToCourierUseCaseRequest {
 
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
 type GrantAdminStatusToCourierUseCaseResponse = Either<
-  AuthorizationError,
+  AuthorizationError | UserNotFoundError,
   Courier
 >
 

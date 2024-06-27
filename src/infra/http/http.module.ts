@@ -33,6 +33,9 @@ import { ListCourierUseCase } from '@/domain/delivery/application/use-cases/cour
 import { ListCourierController } from './controllers/courier-controllers/list-courier.controller'
 import { ChangeCourierPhoneController } from './controllers/courier-controllers/change-courier-phone.controller'
 import { ChangeCourierPhoneUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/change-courier-phone'
+import { AlterCourierIsAdminController } from './controllers/courier-controllers/alter-courier-isAdmin.controller'
+import { GrantAdminStatusToCourierUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/grant-admin-status-to-courier'
+import { RevokeAdminStatusToCourierUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/revoke-admin-status-to-courier'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -46,6 +49,7 @@ import { ChangeCourierPhoneUseCase } from '@/domain/delivery/application/use-cas
     AlterCourierStatusController,
     ListCourierController,
     ChangeCourierPhoneController,
+    AlterCourierIsAdminController,
     // package item controllers
     CreatePackageItemController,
     ListAllPackageItemsToAdminController,
@@ -68,6 +72,8 @@ import { ChangeCourierPhoneUseCase } from '@/domain/delivery/application/use-cas
     MarkCourierAsOnVacationUseCase,
     ListCourierUseCase,
     ChangeCourierPhoneUseCase,
+    GrantAdminStatusToCourierUseCase,
+    RevokeAdminStatusToCourierUseCase,
     // package item useCases
     CreatePackageItemUseCase,
     GetPackageItemByIdUseCase,
