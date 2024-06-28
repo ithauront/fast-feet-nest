@@ -1,9 +1,8 @@
+// only the courier himself can set his location
 import { Either, left, right } from '@/core/either'
 import { Courier } from '../../../enterprise/entities/courier'
 import { CourierRepository } from '../../repositories/courier-repository'
 import { UserNotFoundError } from '../errors/user-not-found-error'
-import { UnauthorizedAdminError } from '../errors/unauthorized-admin-error'
-import { NotFoundOrUnauthorizedError } from '../errors/not-found-or-unauthorized-error'
 import { GeoLocationProvider } from '../../services/geo-locationProvider'
 import { Injectable } from '@nestjs/common'
 
@@ -12,11 +11,7 @@ interface SetCourierLocationUseCaseRequest {
   ip: string
 }
 
-type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
-type SetCourierLocationUseCaseResponse = Either<
-  AuthorizationError | UserNotFoundError,
-  Courier
->
+type SetCourierLocationUseCaseResponse = Either<UserNotFoundError, Courier>
 
 @Injectable()
 export class SetCourierLocationUseCase {
@@ -34,6 +29,7 @@ export class SetCourierLocationUseCase {
     if (!courier) {
       return left(new UserNotFoundError())
     }
+    console.log('useCase ip', ip)
     const geoLocation = await this.geoLocationProvider.getGeoLocationFromIp(ip)
     courier.setLocation(geoLocation.latitude, geoLocation.longitude)
 

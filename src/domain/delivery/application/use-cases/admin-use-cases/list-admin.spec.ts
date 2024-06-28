@@ -38,7 +38,7 @@ describe('list admin tests', () => {
       page: 1,
     })
     if (result.isRight()) {
-      expect(result.value.admin).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ name: 'admin1' }),
         expect.objectContaining({ name: 'admin2' }),
         expect.objectContaining({ name: 'admin3' }),
@@ -59,7 +59,7 @@ describe('list admin tests', () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.admin).toHaveLength(2)
+      expect(result.value).toHaveLength(2)
     }
   })
   test('if user that does the action is not admin it cannot get admin list', async () => {

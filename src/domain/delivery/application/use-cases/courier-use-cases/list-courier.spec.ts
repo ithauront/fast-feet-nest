@@ -38,7 +38,7 @@ describe('list courier tests', () => {
       page: 1,
     })
     if (result.isRight()) {
-      expect(result.value.courier).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ name: 'courier1' }),
         expect.objectContaining({ name: 'courier2' }),
         expect.objectContaining({ name: 'courier3' }),
@@ -59,7 +59,7 @@ describe('list courier tests', () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.courier).toHaveLength(2)
+      expect(result.value).toHaveLength(2)
     }
   })
   test('if user that does the action is not admin it cannot get courier list', async () => {

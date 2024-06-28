@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import { HttpModule as NestHttpModule } from '@nestjs/axios'
 import { RegisterCourierController } from './controllers/courier-controllers/register-courier.controller'
 import { RegisterAdminController } from './controllers/admin-controllers/register-admin.controller'
 import { CreatePackageItemController } from './controllers/package-item-controllers/create-package-item.controller'
@@ -36,9 +37,13 @@ import { ChangeCourierPhoneUseCase } from '@/domain/delivery/application/use-cas
 import { AlterCourierIsAdminController } from './controllers/courier-controllers/alter-courier-isAdmin.controller'
 import { GrantAdminStatusToCourierUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/grant-admin-status-to-courier'
 import { RevokeAdminStatusToCourierUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/revoke-admin-status-to-courier'
+import { SetCourierLocationUseCase } from '@/domain/delivery/application/use-cases/courier-use-cases/set-courier-location'
+import { SetCourierLocationController } from './controllers/courier-controllers/set-courier-location.controller'
+import { InfraGeoLocationProvider } from './services/infra-geo-location-provider'
+import { GeoLocationProvider } from '@/domain/delivery/application/services/geo-locationProvider'
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule],
+  imports: [DatabaseModule, CryptographyModule, NestHttpModule],
   controllers: [
     // admin controllers
     RegisterAdminController,
@@ -50,6 +55,7 @@ import { RevokeAdminStatusToCourierUseCase } from '@/domain/delivery/application
     ListCourierController,
     ChangeCourierPhoneController,
     AlterCourierIsAdminController,
+    SetCourierLocationController,
     // package item controllers
     CreatePackageItemController,
     ListAllPackageItemsToAdminController,
@@ -74,6 +80,7 @@ import { RevokeAdminStatusToCourierUseCase } from '@/domain/delivery/application
     ChangeCourierPhoneUseCase,
     GrantAdminStatusToCourierUseCase,
     RevokeAdminStatusToCourierUseCase,
+    SetCourierLocationUseCase,
     // package item useCases
     CreatePackageItemUseCase,
     GetPackageItemByIdUseCase,
@@ -86,6 +93,10 @@ import { RevokeAdminStatusToCourierUseCase } from '@/domain/delivery/application
     // others
     AutenticateUseCase,
     AuthorizationService,
+    {
+      provide: GeoLocationProvider,
+      useClass: InfraGeoLocationProvider,
+    },
   ],
 })
 export class HttpModule {}
