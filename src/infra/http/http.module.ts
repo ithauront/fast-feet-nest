@@ -45,6 +45,8 @@ import { RegisterRecipientController } from './controllers/recipient-controllers
 import { RegisterRecipientUseCase } from '@/domain/delivery/application/use-cases/recipient-use-cases/register-recipient'
 import { ListRecipientsController } from './controllers/recipient-controllers/list-recipients.controller'
 import { ListRecipientsUseCase } from '@/domain/delivery/application/use-cases/recipient-use-cases/list-recipients'
+import { GetRecipientEmailUseCase } from '@/domain/delivery/application/use-cases/recipient-use-cases/get-recipient-by-email'
+import { GetRecipientByEmailController } from './controllers/recipient-controllers/get-recipient-by-email.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, NestHttpModule],
@@ -69,6 +71,7 @@ import { ListRecipientsUseCase } from '@/domain/delivery/application/use-cases/r
     // recipient controllers
     RegisterRecipientController,
     ListRecipientsController,
+    GetRecipientByEmailController,
     // other controllers
     AutenticateController,
   ],
@@ -101,6 +104,7 @@ import { ListRecipientsUseCase } from '@/domain/delivery/application/use-cases/r
     // recipient useCases
     RegisterRecipientUseCase,
     ListRecipientsUseCase,
+    GetRecipientEmailUseCase,
 
     // others
     AutenticateUseCase,
