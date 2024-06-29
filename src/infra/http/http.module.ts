@@ -43,6 +43,8 @@ import { InfraGeoLocationProvider } from './services/infra-geo-location-provider
 import { GeoLocationProvider } from '@/domain/delivery/application/services/geo-locationProvider'
 import { RegisterRecipientController } from './controllers/recipient-controllers/register-recipient.controller'
 import { RegisterRecipientUseCase } from '@/domain/delivery/application/use-cases/recipient-use-cases/register-recipient'
+import { ListRecipientsController } from './controllers/recipient-controllers/list-recipients.controller'
+import { ListRecipientsUseCase } from '@/domain/delivery/application/use-cases/recipient-use-cases/list-recipients'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, NestHttpModule],
@@ -66,6 +68,7 @@ import { RegisterRecipientUseCase } from '@/domain/delivery/application/use-case
 
     // recipient controllers
     RegisterRecipientController,
+    ListRecipientsController,
     // other controllers
     AutenticateController,
   ],
@@ -97,6 +100,7 @@ import { RegisterRecipientUseCase } from '@/domain/delivery/application/use-case
 
     // recipient useCases
     RegisterRecipientUseCase,
+    ListRecipientsUseCase,
 
     // others
     AutenticateUseCase,

@@ -38,7 +38,7 @@ describe('list recipient tests', () => {
       page: 1,
     })
     if (result.isRight()) {
-      expect(result.value.recipients).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ name: 'recipient1' }),
         expect.objectContaining({ name: 'recipient2' }),
         expect.objectContaining({ name: 'recipient3' }),
@@ -59,7 +59,7 @@ describe('list recipient tests', () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.recipients).toHaveLength(2)
+      expect(result.value).toHaveLength(2)
     }
   })
   test('if user that does the action is not admin it cannot get recipient list', async () => {

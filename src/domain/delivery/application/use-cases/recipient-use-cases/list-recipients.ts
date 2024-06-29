@@ -11,12 +11,7 @@ interface ListRecipientsUseCaseRequest {
   creatorId: string
 }
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
-type ListRecipientsUseCaseResponse = Either<
-  AuthorizationError,
-  {
-    recipients: Recipient[]
-  }
->
+type ListRecipientsUseCaseResponse = Either<AuthorizationError, Recipient[]>
 
 @Injectable()
 export class ListRecipientsUseCase {
@@ -37,6 +32,6 @@ export class ListRecipientsUseCase {
     }
     const recipients = await this.recipientRepository.findMany({ page })
 
-    return right({ recipients })
+    return right(recipients)
   }
 }
