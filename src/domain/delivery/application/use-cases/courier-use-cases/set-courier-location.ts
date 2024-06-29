@@ -29,7 +29,7 @@ export class SetCourierLocationUseCase {
     if (!courier) {
       return left(new UserNotFoundError())
     }
-    console.log('useCase ip', ip)
+
     const geoLocation = await this.geoLocationProvider.getGeoLocationFromIp(ip)
     courier.setLocation(geoLocation.latitude, geoLocation.longitude)
 
