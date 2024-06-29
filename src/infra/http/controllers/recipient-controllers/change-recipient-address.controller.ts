@@ -14,10 +14,10 @@ import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { NotFoundOrUnauthorizedError } from '@/domain/delivery/application/use-cases/errors/not-found-or-unauthorized-error'
 import { UnauthorizedAdminError } from '@/domain/delivery/application/use-cases/errors/unauthorized-admin-error'
 import { UserNotFoundError } from '@/domain/delivery/application/use-cases/errors/user-not-found-error'
-import { ChangeRecipientEmailUseCase } from '@/domain/delivery/application/use-cases/recipient-use-cases/change-recipient-email'
+import { ChangeRecipientAddressUseCase } from '@/domain/delivery/application/use-cases/recipient-use-cases/change-recipient-address'
 
 const changeRecipientEmailBodySchema = z.object({
-  email: z.string(),
+  address: z.string(),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(changeRecipientEmailBodySchema)
@@ -26,9 +26,9 @@ type ChangeRecipientEmailBodySchema = z.infer<
   typeof changeRecipientEmailBodySchema
 >
 
-@Controller('/user/recipient/:recipientEmail/email')
-export class ChangeRecipientEmailController {
-  constructor(private changeRecipientEmail: ChangeRecipientEmailUseCase) {}
+@Controller('/user/recipient/:recipientEmail/address')
+export class ChangeRecipientAddressController {
+  constructor(private changeRecipientAddress: ChangeRecipientAddressUseCase) {}
 
   private async handleUseCaseResult(result) {
     if (result.isLeft()) {
@@ -45,7 +45,7 @@ export class ChangeRecipientEmailController {
       }
     }
     return {
-      message: `E-mail updated successfully to ${result.value.email}`,
+      message: `Address updated successfully to ${result.value.address}`,
     }
   }
 
@@ -55,12 +55,12 @@ export class ChangeRecipientEmailController {
     @CurentUser() user: UserPayload,
     @Body(bodyValidationPipe) body: ChangeRecipientEmailBodySchema,
   ) {
-    const { email } = body
+    const { address } = body
 
-    const result = await this.changeRecipientEmail.execute({
+    const result = await this.changeRecipientAddress.execute({
       creatorId: user.sub,
       recipientEmail,
-      newEmail: email,
+      address,
     })
     return this.handleUseCaseResult(result)
   }

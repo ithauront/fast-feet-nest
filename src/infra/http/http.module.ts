@@ -49,6 +49,8 @@ import { GetRecipientEmailUseCase } from '@/domain/delivery/application/use-case
 import { GetRecipientByEmailController } from './controllers/recipient-controllers/get-recipient-by-email.controller'
 import { ChangeRecipientEmailController } from './controllers/recipient-controllers/change-recipient-email.controller'
 import { ChangeRecipientEmailUseCase } from '@/domain/delivery/application/use-cases/recipient-use-cases/change-recipient-email'
+import { ChangeRecipientAddressUseCase } from '@/domain/delivery/application/use-cases/recipient-use-cases/change-recipient-address'
+import { ChangeRecipientAddressController } from './controllers/recipient-controllers/change-recipient-address.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, NestHttpModule],
@@ -75,6 +77,8 @@ import { ChangeRecipientEmailUseCase } from '@/domain/delivery/application/use-c
     ListRecipientsController,
     GetRecipientByEmailController,
     ChangeRecipientEmailController,
+    ChangeRecipientAddressController,
+
     // other controllers
     AutenticateController,
   ],
@@ -84,6 +88,7 @@ import { ChangeRecipientEmailUseCase } from '@/domain/delivery/application/use-c
     MarkAdminAsActiveUseCase,
     MarkAdminAsInactiveUseCase,
     ListAdminUseCase,
+
     // courier useCases
     RegisterCourierUseCase,
     MarkCourierAsActiveUseCase,
@@ -95,6 +100,7 @@ import { ChangeRecipientEmailUseCase } from '@/domain/delivery/application/use-c
     GrantAdminStatusToCourierUseCase,
     RevokeAdminStatusToCourierUseCase,
     SetCourierLocationUseCase,
+
     // package item useCases
     CreatePackageItemUseCase,
     GetPackageItemByIdUseCase,
@@ -109,6 +115,7 @@ import { ChangeRecipientEmailUseCase } from '@/domain/delivery/application/use-c
     ListRecipientsUseCase,
     GetRecipientEmailUseCase,
     ChangeRecipientEmailUseCase,
+    ChangeRecipientAddressUseCase,
 
     // others
     AutenticateUseCase,

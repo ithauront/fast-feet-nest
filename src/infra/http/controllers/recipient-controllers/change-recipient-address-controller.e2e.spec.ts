@@ -7,7 +7,7 @@ import request from 'supertest'
 import { AdminFactory } from 'test/factories/make-admin'
 import { RecipientFactory } from 'test/factories/make-recipient'
 
-describe('change recipient email tests (e2e)', () => {
+describe('change recipient address tests (e2e)', () => {
   let app: INestApplication
 
   let jwt: JwtService
@@ -35,18 +35,19 @@ describe('change recipient email tests (e2e)', () => {
 
     const recipient = await recipientFactory.makePrismaRecipient({
       email: 'recipient@recipient.com',
+      address: '21 old addreess street 42124',
     })
 
     const response = await request(app.getHttpServer())
-      .put(`/user/recipient/${recipient.email}/email`)
+      .put(`/user/recipient/${recipient.email}/address`)
       .set('Authorization', `Bearer ${token}`)
       .send({
-        email: 'new@email.com',
+        address: '12 new address street 42124',
       })
 
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
-      message: 'E-mail updated successfully to new@email.com',
+      message: 'Address updated successfully to 12 new address street 42124',
     })
   })
 })
