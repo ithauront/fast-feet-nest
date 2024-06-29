@@ -41,6 +41,8 @@ import { SetCourierLocationUseCase } from '@/domain/delivery/application/use-cas
 import { SetCourierLocationController } from './controllers/courier-controllers/set-courier-location.controller'
 import { InfraGeoLocationProvider } from './services/infra-geo-location-provider'
 import { GeoLocationProvider } from '@/domain/delivery/application/services/geo-locationProvider'
+import { RegisterRecipientController } from './controllers/recipient-controllers/register-recipient.controller'
+import { RegisterRecipientUseCase } from '@/domain/delivery/application/use-cases/recipient-use-cases/register-recipient'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, NestHttpModule],
@@ -61,6 +63,9 @@ import { GeoLocationProvider } from '@/domain/delivery/application/services/geo-
     ListAllPackageItemsToAdminController,
     GetPackageItemByIdController,
     AlterPackageItemStatusController,
+
+    // recipient controllers
+    RegisterRecipientController,
     // other controllers
     AutenticateController,
   ],
@@ -89,6 +94,9 @@ import { GeoLocationProvider } from '@/domain/delivery/application/services/geo-
     MarkPackageItemAsReturnedUseCase,
     MarkPackageItemAsLostUseCase,
     MarkPackageItemAsDeliveredUseCase,
+
+    // recipient useCases
+    RegisterRecipientUseCase,
 
     // others
     AutenticateUseCase,
