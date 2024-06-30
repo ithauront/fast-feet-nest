@@ -107,4 +107,9 @@ Authorization: Bearer {{AdminToken}}
     "status": "Inactive"
 }
 
+### @name get_package_unassigned
+GET {{baseUrl}}/package_item/unassigned
+Content-Type: application/json
+Authorization: Bearer {{AdminToken}}
+
 ###

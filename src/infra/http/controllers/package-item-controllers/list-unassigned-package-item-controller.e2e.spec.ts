@@ -8,7 +8,7 @@ import { AdminFactory } from 'test/factories/make-admin'
 import { PackageItemFactory } from 'test/factories/make-package-item'
 import { RecipientFactory } from 'test/factories/make-recipient'
 
-describe('list all package item to admin tests (e2e)', () => {
+describe('list unassigned package item to admin tests (e2e)', () => {
   let app: INestApplication
 
   let jwt: JwtService
@@ -31,7 +31,7 @@ describe('list all package item to admin tests (e2e)', () => {
     await app.init()
   })
 
-  test('[get]/package_item/list/all', async () => {
+  test('[get]/package_item/unassigned', async () => {
     const admin = await adminFactory.makePrismaAdmin()
 
     const token = jwt.sign({ sub: admin.id.toString() })
@@ -57,7 +57,7 @@ describe('list all package item to admin tests (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .get('/package_item/list/all')
+      .get('/package_item/list/unassigned')
       .set('Authorization', `Bearer ${token}`)
 
     expect(response.statusCode).toBe(200)

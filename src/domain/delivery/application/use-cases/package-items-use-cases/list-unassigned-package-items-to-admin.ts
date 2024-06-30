@@ -14,9 +14,7 @@ interface ListAllPackageItemsWithoutCourierToAdminUseCaseRequest {
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
 type ListAllPackageItemsWithoutCourierToAdminUseCaseResponse = Either<
   AuthorizationError,
-  {
-    packageItems: PackageItemWithDetails[]
-  }
+  PackageItemWithDetails[]
 >
 
 @Injectable()
@@ -44,6 +42,6 @@ export class ListAllPackageItemsWithoutCourierToAdminUseCase {
         null,
       )
 
-    return right({ packageItems: allPackageItemsWithoutCourier })
+    return right(allPackageItemsWithoutCourier)
   }
 }

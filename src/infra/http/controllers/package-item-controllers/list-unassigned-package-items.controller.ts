@@ -7,12 +7,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { z } from 'zod'
-import { ListAllPackageItemsToAdminUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-all-package-items-to-admin'
 import { CurentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { UnauthorizedAdminError } from '@/domain/delivery/application/use-cases/errors/unauthorized-admin-error'
 import { PackageItemPresenter } from '../../presenters/package-item-presenter'
 import { NotFoundOrUnauthorizedError } from '@/domain/delivery/application/use-cases/errors/not-found-or-unauthorized-error'
+import { ListAllPackageItemsWithoutCourierToAdminUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-unassigned-package-items-to-admin'
 
 const pageQueryParamsSchema = z
   .string()
@@ -25,10 +25,10 @@ const queryValidationPipe = new ZodValidationPipe(pageQueryParamsSchema)
 
 type PageParamsTypeSchema = z.infer<typeof pageQueryParamsSchema>
 
-@Controller('/package_item/list/all')
-export class ListAllPackageItemsToAdminController {
+@Controller('/package_item/list/unassigned')
+export class ListUnassignedPackageItemsToAdminController {
   constructor(
-    private listAllPackageItemsToAdmin: ListAllPackageItemsToAdminUseCase,
+    private listUnassignedPackageItemsToAdmin: ListAllPackageItemsWithoutCourierToAdminUseCase,
   ) {}
 
   @Get()
@@ -36,7 +36,7 @@ export class ListAllPackageItemsToAdminController {
     @Query('page', queryValidationPipe) page: PageParamsTypeSchema,
     @CurentUser() user: UserPayload,
   ) {
-    const result = await this.listAllPackageItemsToAdmin.execute({
+    const result = await this.listUnassignedPackageItemsToAdmin.execute({
       creatorId: user.sub,
       page,
     })
