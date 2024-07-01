@@ -53,6 +53,8 @@ import { ChangeRecipientAddressUseCase } from '@/domain/delivery/application/use
 import { ChangeRecipientAddressController } from './controllers/recipient-controllers/change-recipient-address.controller'
 import { ListAllPackageItemsWithoutCourierToAdminUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-unassigned-package-items-to-admin'
 import { ListUnassignedPackageItemsToAdminController } from './controllers/package-item-controllers/list-unassigned-package-items.controller'
+import { ListReturnedPackageItemToAdminUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-returned-package-items-to-admin'
+import { ListReturnedPackageItemsToAdminController } from './controllers/package-item-controllers/list-returned-package-item.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, NestHttpModule],
@@ -74,6 +76,7 @@ import { ListUnassignedPackageItemsToAdminController } from './controllers/packa
     GetPackageItemByIdController,
     AlterPackageItemStatusController,
     ListUnassignedPackageItemsToAdminController,
+    ListReturnedPackageItemsToAdminController,
 
     // recipient controllers
     RegisterRecipientController,
@@ -113,6 +116,7 @@ import { ListUnassignedPackageItemsToAdminController } from './controllers/packa
     MarkPackageItemAsLostUseCase,
     MarkPackageItemAsDeliveredUseCase,
     ListAllPackageItemsWithoutCourierToAdminUseCase,
+    ListReturnedPackageItemToAdminUseCase,
 
     // recipient useCases
     RegisterRecipientUseCase,
