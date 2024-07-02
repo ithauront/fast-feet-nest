@@ -1,3 +1,4 @@
+import { PackageStatus } from '@/domain/delivery/enterprise/entities/package-item'
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { INestApplication } from '@nestjs/common'
@@ -8,7 +9,7 @@ import { AdminFactory } from 'test/factories/make-admin'
 import { PackageItemFactory } from 'test/factories/make-package-item'
 import { RecipientFactory } from 'test/factories/make-recipient'
 
-describe('list unassigned package item to admin tests (e2e)', () => {
+describe('list lost package item to admin tests (e2e)', () => {
   let app: INestApplication
 
   let jwt: JwtService
@@ -31,7 +32,7 @@ describe('list unassigned package item to admin tests (e2e)', () => {
     await app.init()
   })
 
-  test('[get]/package_item/list/unassigned', async () => {
+  test('[get]/package_item/list/lost', async () => {
     const admin = await adminFactory.makePrismaAdmin()
 
     const token = jwt.sign({ sub: admin.id.toString() })
@@ -41,15 +42,18 @@ describe('list unassigned package item to admin tests (e2e)', () => {
     await packageItemFactory.makePrismaPackageItem({
       title: 'package 1',
       recipientId: recipient.id,
+      status: PackageStatus.LOST,
     })
     await packageItemFactory.makePrismaPackageItem({
       title: 'package 2',
       recipientId: recipient.id,
+      status: PackageStatus.LOST,
     })
 
     await packageItemFactory.makePrismaPackageItem({
       title: 'package 3',
       recipientId: recipient.id,
+      status: PackageStatus.LOST,
     })
     await packageItemFactory.makePrismaPackageItem({
       title: 'package 4',
@@ -57,7 +61,7 @@ describe('list unassigned package item to admin tests (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .get('/package_item/list/unassigned')
+      .get('/package_item/list/lost')
       .set('Authorization', `Bearer ${token}`)
 
     expect(response.statusCode).toBe(200)
@@ -67,7 +71,6 @@ describe('list unassigned package item to admin tests (e2e)', () => {
           expect.objectContaining({ title: 'package 1' }),
           expect.objectContaining({ title: 'package 2' }),
           expect.objectContaining({ title: 'package 3' }),
-          expect.objectContaining({ title: 'package 4' }),
         ]),
       }),
     )

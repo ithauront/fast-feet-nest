@@ -32,7 +32,7 @@ describe('list returned package item to admin tests (e2e)', () => {
     await app.init()
   })
 
-  test('[get]/package_item/returned', async () => {
+  test('[get]/package_item/list/returned', async () => {
     const admin = await adminFactory.makePrismaAdmin()
 
     const token = jwt.sign({ sub: admin.id.toString() })
