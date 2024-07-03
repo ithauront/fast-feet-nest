@@ -5,7 +5,6 @@ import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
-import { AdminFactory } from 'test/factories/make-admin'
 import { CourierFactory } from 'test/factories/make-courier'
 import { PackageItemFactory } from 'test/factories/make-package-item'
 import { RecipientFactory } from 'test/factories/make-recipient'
@@ -14,7 +13,6 @@ describe('list allpackage item to courier tests (e2e)', () => {
   let app: INestApplication
 
   let jwt: JwtService
-  let adminFactory: AdminFactory
   let recipientFactory: RecipientFactory
   let packageItemFactory: PackageItemFactory
   let courierFactory: CourierFactory
@@ -22,16 +20,10 @@ describe('list allpackage item to courier tests (e2e)', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [
-        AdminFactory,
-        RecipientFactory,
-        PackageItemFactory,
-        CourierFactory,
-      ],
+      providers: [RecipientFactory, PackageItemFactory, CourierFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
-    adminFactory = moduleRef.get(AdminFactory)
     recipientFactory = moduleRef.get(RecipientFactory)
     packageItemFactory = moduleRef.get(PackageItemFactory)
     courierFactory = moduleRef.get(CourierFactory)
@@ -41,13 +33,10 @@ describe('list allpackage item to courier tests (e2e)', () => {
   })
 
   test('[get]/package_item/:courierId/list/all', async () => {
-    const admin = await adminFactory.makePrismaAdmin()
-
-    const token = jwt.sign({ sub: admin.id.toString() })
-
     const recipient = await recipientFactory.makePrismaRecipient()
 
     const courier = await courierFactory.makePrismaCourier()
+    const token = jwt.sign({ sub: courier.id.toString() })
 
     await packageItemFactory.makePrismaPackageItem({
       title: 'package 1',

@@ -72,7 +72,7 @@ describe('List courier package items of the same address tests', () => {
       address: '21 jump street 941256 Sao Paulo, SP - BR',
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ title: 'package1' }),
         expect.objectContaining({ title: 'package2' }),
       ])
@@ -118,7 +118,7 @@ describe('List courier package items of the same address tests', () => {
       address: '21 jump street 941256 Sao Paulo, SP - BR',
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ title: 'package1' }),
         expect.objectContaining({ title: 'package2' }),
       ])
@@ -209,7 +209,7 @@ describe('List courier package items of the same address tests', () => {
       address: '21 jump street 941256 Sao Paulo, SP - BR',
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ title: 'package1' }),
         expect.objectContaining({ title: 'package2' }),
       ])
@@ -292,7 +292,7 @@ describe('List courier package items of the same address tests', () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.packageItems).toHaveLength(2)
+      expect(result.value).toHaveLength(2)
     }
   })
   test('If an inactive admin cannot list courier packages', async () => {
@@ -348,7 +348,7 @@ describe('List courier package items of the same address tests', () => {
       address: '21 jump street 941256 Sao Paulo, SP - BR',
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([])
+      expect(result.value).toEqual([])
     }
   })
 })

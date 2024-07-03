@@ -17,9 +17,7 @@ interface ListCourierPackageItemsOfSameAddressUseCaseRequest {
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
 type ListCourierPackageItemsOfSameAddressUseCaseResponse = Either<
   AuthorizationError,
-  {
-    packageItems: PackageItemWithDetails[]
-  }
+  PackageItemWithDetails[]
 >
 
 @Injectable()
@@ -48,7 +46,7 @@ export class ListCourierPackageItemsOfSameAddressUseCase {
       page,
       status: PackageStatus.IN_TRANSIT,
       address,
-    }
+    } // we only list in transit because that is when the courier might need to see if he have more than one package to the same address
 
     const courierPackageItems =
       await this.packageItemRepository.findManyByParamsAndCourierId(
@@ -56,6 +54,6 @@ export class ListCourierPackageItemsOfSameAddressUseCase {
         courierId,
       )
 
-    return right({ packageItems: courierPackageItems })
+    return right(courierPackageItems)
   }
 }

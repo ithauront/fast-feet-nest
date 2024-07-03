@@ -14,11 +14,19 @@ import { PackageItemAttachmentList } from '@/domain/delivery/enterprise/entities
 
 export class PrismaPackageItemMapper {
   static PackageStatusMapping = {
-    [EntityPackageStatus.AWAITING_PICKUP]: 'AWAITING_PICKUP',
-    [EntityPackageStatus.IN_TRANSIT]: 'IN_TRANSIT',
-    [EntityPackageStatus.DELIVERED]: 'DELIVERED',
-    [EntityPackageStatus.RETURNED]: 'RETURNED',
-    [EntityPackageStatus.LOST]: 'LOST',
+    [EntityPackageStatus.AWAITING_PICKUP]: PrismaPackageStatus.AWAITING_PICKUP,
+    [EntityPackageStatus.IN_TRANSIT]: PrismaPackageStatus.IN_TRANSIT,
+    [EntityPackageStatus.DELIVERED]: PrismaPackageStatus.DELIVERED,
+    [EntityPackageStatus.RETURNED]: PrismaPackageStatus.RETURNED,
+    [EntityPackageStatus.LOST]: PrismaPackageStatus.LOST,
+  }
+
+  static mapStatusForPrisma(status: EntityPackageStatus): PrismaPackageStatus {
+    const mappedStatus = this.PackageStatusMapping[status]
+    if (!mappedStatus) {
+      throw new Error(`Invalid status for mapping: ${status}`)
+    }
+    return mappedStatus
   }
 
   static toDomain(
@@ -51,9 +59,6 @@ export class PrismaPackageItemMapper {
       .getItems()
       .map((item) => PrismaPackageItemAttachmentMapper.toPrisma(item))
 
-    const status =
-      PrismaPackageItemMapper.PackageStatusMapping[packageItem.status]
-
     return {
       id: packageItem.id.toString(),
       title: packageItem.title,
@@ -62,7 +67,7 @@ export class PrismaPackageItemMapper {
       courierId: packageItem.courierId?.toString(),
       createdAt: packageItem.createdAt,
       updatedAt: packageItem.updatedAt,
-      status: status as PrismaPackageStatus,
+      status: PrismaPackageItemMapper.mapStatusForPrisma(packageItem.status),
       attachments: {
         create: attachments,
       },

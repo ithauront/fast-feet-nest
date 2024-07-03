@@ -48,7 +48,9 @@ export class PrismaPackageItemRepository implements PackageItemRepository {
     courierId?: string | null | undefined,
   ): Promise<PackageItemWithDetails[]> {
     const where = {
-      ...(status && { status: PackageStatus[status] }),
+      ...(status && {
+        status: PrismaPackageItemMapper.mapStatusForPrisma(status),
+      }),
       ...(address && { deliveryAddress: address }),
       ...(courierId && { courierId }),
     }
