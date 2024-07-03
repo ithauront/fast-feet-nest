@@ -68,7 +68,7 @@ describe('List delivered package items to admin tests', () => {
       page: 1,
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ title: 'package2' }),
         expect.objectContaining({ title: 'package3' }),
       ])
@@ -175,7 +175,7 @@ describe('List delivered package items to admin tests', () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.packageItems).toHaveLength(2)
+      expect(result.value).toHaveLength(2)
     }
   })
 
@@ -234,7 +234,7 @@ describe('List delivered package items to admin tests', () => {
       page: 1,
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([])
+      expect(result.value).toEqual([])
     }
   })
   test('If delivered package items include attachments', async () => {
@@ -282,13 +282,9 @@ describe('List delivered package items to admin tests', () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.packageItems).toHaveLength(2)
-      expect(result.value.packageItems[0].attachments[0].title).toEqual(
-        'attachment 1',
-      )
-      expect(result.value.packageItems[1].attachments[0].title).toEqual(
-        'attachment 2',
-      )
+      expect(result.value).toHaveLength(2)
+      expect(result.value[0].attachments[0].title).toEqual('attachment 1')
+      expect(result.value[1].attachments[0].title).toEqual('attachment 2')
     }
   })
 })

@@ -17,9 +17,7 @@ interface ListDeliveredPackageItemToAdminUseCaseRequest {
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
 type ListDeliveredPackageItemToAdminUseCaseResponse = Either<
   AuthorizationError,
-  {
-    packageItems: PackageItemWithDetails[]
-  }
+  PackageItemWithDetails[]
 >
 
 @Injectable()
@@ -46,6 +44,6 @@ export class ListDeliveredPackageItemToAdminUseCase {
     const courierPackageItemInTransit =
       await this.packageItemRepository.findManyByParams(queryParams)
 
-    return right({ packageItems: courierPackageItemInTransit })
+    return right(courierPackageItemInTransit)
   }
 }
