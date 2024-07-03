@@ -15,9 +15,7 @@ interface ListAwaitingPickupPackageItemToAdminUseCaseRequest {
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
 type ListAwaitingPickupPackageItemToAdminUseCaseResponse = Either<
   AuthorizationError,
-  {
-    packageItems: PackageItemWithDetails[]
-  }
+  PackageItemWithDetails[]
 >
 
 @Injectable()
@@ -44,6 +42,6 @@ export class ListAwaitingPickupPackageItemToAdminUseCase {
     const courierPackageItemInTransit =
       await this.packageItemRepository.findManyByParams(queryParams)
 
-    return right({ packageItems: courierPackageItemInTransit })
+    return right(courierPackageItemInTransit)
   }
 }
