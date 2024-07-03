@@ -63,6 +63,8 @@ import { ListDeliveredPackageItemsToAdminController } from './controllers/packag
 import { ListDeliveredPackageItemToAdminUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-delivered-package-items-to-admin'
 import { ListAwaitingPickupPackageItemsToAdminController } from './controllers/package-item-controllers/list-awaiting-pickup.controller'
 import { ListAwaitingPickupPackageItemToAdminUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-awaiting-pickup-package-items-to-admin'
+import { ListCourierPackageItemUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-courier-package-items'
+import { ListAllCourierPackageItemController } from './controllers/package-item-controllers/list-courier-all-package-item.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, NestHttpModule],
@@ -89,6 +91,7 @@ import { ListAwaitingPickupPackageItemToAdminUseCase } from '@/domain/delivery/a
     ListInTransitPackageItemsToAdminController,
     ListDeliveredPackageItemsToAdminController,
     ListAwaitingPickupPackageItemsToAdminController,
+    ListAllCourierPackageItemController,
 
     // recipient controllers
     RegisterRecipientController,
@@ -133,6 +136,7 @@ import { ListAwaitingPickupPackageItemToAdminUseCase } from '@/domain/delivery/a
     ListInTransitPackageItemToAdminUseCase,
     ListDeliveredPackageItemToAdminUseCase,
     ListAwaitingPickupPackageItemToAdminUseCase,
+    ListCourierPackageItemUseCase,
 
     // recipient useCases
     RegisterRecipientUseCase,
