@@ -18,9 +18,7 @@ interface ListCourierPackageItemInTransitUseCaseRequest {
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
 type ListCourierPackageItemInTransitUseCaseResponse = Either<
   AuthorizationError,
-  {
-    packageItems: PackageItemWithDetails[]
-  }
+  PackageItemWithDetails[]
 >
 
 @Injectable()
@@ -53,6 +51,6 @@ export class ListCourierPackageItemInTransitUseCase {
         courierId,
       )
 
-    return right({ packageItems: courierPackageItemsInTransit })
+    return right(courierPackageItemsInTransit)
   }
 }

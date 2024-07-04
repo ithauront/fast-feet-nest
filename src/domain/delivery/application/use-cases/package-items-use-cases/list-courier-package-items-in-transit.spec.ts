@@ -65,7 +65,7 @@ describe('List courier package items intransit tests', () => {
       page: 1,
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ title: 'package2' }),
         expect.objectContaining({ title: 'package3' }),
       ])
@@ -105,7 +105,7 @@ describe('List courier package items intransit tests', () => {
       page: 1,
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ title: 'package2' }),
         expect.objectContaining({ title: 'package3' }),
       ])
@@ -193,7 +193,7 @@ describe('List courier package items intransit tests', () => {
       page: 1,
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ title: 'package3' }),
       ])
     }
@@ -261,7 +261,7 @@ describe('List courier package items intransit tests', () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.packageItems).toHaveLength(2)
+      expect(result.value).toHaveLength(2)
     }
   })
 
@@ -326,7 +326,7 @@ describe('List courier package items intransit tests', () => {
       page: 1,
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([])
+      expect(result.value).toEqual([])
     }
   })
 })

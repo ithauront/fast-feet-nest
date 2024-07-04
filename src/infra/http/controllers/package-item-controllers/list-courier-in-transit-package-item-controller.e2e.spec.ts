@@ -9,7 +9,7 @@ import { CourierFactory } from 'test/factories/make-courier'
 import { PackageItemFactory } from 'test/factories/make-package-item'
 import { RecipientFactory } from 'test/factories/make-recipient'
 
-describe('list all package item to courier tests (e2e)', () => {
+describe('list in transit package item to courier tests (e2e)', () => {
   let app: INestApplication
 
   let jwt: JwtService
@@ -32,7 +32,7 @@ describe('list all package item to courier tests (e2e)', () => {
     await app.init()
   })
 
-  test('[get]/package_item/:courierId/list/all', async () => {
+  test('[get]/package_item/:courierId/list/in_transit', async () => {
     const recipient = await recipientFactory.makePrismaRecipient()
 
     const courier = await courierFactory.makePrismaCourier()
@@ -41,20 +41,20 @@ describe('list all package item to courier tests (e2e)', () => {
     await packageItemFactory.makePrismaPackageItem({
       title: 'package 1',
       recipientId: recipient.id,
-      status: PackageStatus.DELIVERED,
+      status: PackageStatus.IN_TRANSIT,
       courierId: courier.id,
     })
     await packageItemFactory.makePrismaPackageItem({
       title: 'package 2',
       recipientId: recipient.id,
-      status: PackageStatus.DELIVERED,
+      status: PackageStatus.IN_TRANSIT,
       courierId: courier.id,
     })
 
     await packageItemFactory.makePrismaPackageItem({
       title: 'package 3',
       recipientId: recipient.id,
-      status: PackageStatus.DELIVERED,
+      status: PackageStatus.IN_TRANSIT,
       courierId: courier.id,
     })
     await packageItemFactory.makePrismaPackageItem({
@@ -62,7 +62,7 @@ describe('list all package item to courier tests (e2e)', () => {
       recipientId: recipient.id,
       courierId: courier.id,
     })
-    const url = `/package_item/${courier.id.toString()}/list/all`
+    const url = `/package_item/${courier.id.toString()}/list/in_transit`
 
     const response = await request(app.getHttpServer())
       .get(url)
@@ -75,7 +75,6 @@ describe('list all package item to courier tests (e2e)', () => {
           expect.objectContaining({ title: 'package 1' }),
           expect.objectContaining({ title: 'package 2' }),
           expect.objectContaining({ title: 'package 3' }),
-          expect.objectContaining({ title: 'package 4' }),
         ]),
       }),
     )

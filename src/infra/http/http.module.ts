@@ -67,6 +67,8 @@ import { ListCourierPackageItemUseCase } from '@/domain/delivery/application/use
 import { ListAllCourierPackageItemController } from './controllers/package-item-controllers/list-courier-all-package-item.controller'
 import { ListCourierSameAddressPackageItemController } from './controllers/package-item-controllers/list-courier-same-address-package-item.controller'
 import { ListCourierPackageItemsOfSameAddressUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-courier-package-items-of-same-address'
+import { ListCourierPackageItemInTransitUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-courier-package-items-in-transit'
+import { ListInTransitCourierPackageItemController } from './controllers/package-item-controllers/list-courier-in-transit-package-item.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, NestHttpModule],
@@ -95,6 +97,7 @@ import { ListCourierPackageItemsOfSameAddressUseCase } from '@/domain/delivery/a
     ListAwaitingPickupPackageItemsToAdminController,
     ListAllCourierPackageItemController,
     ListCourierSameAddressPackageItemController,
+    ListInTransitCourierPackageItemController,
 
     // recipient controllers
     RegisterRecipientController,
@@ -141,6 +144,7 @@ import { ListCourierPackageItemsOfSameAddressUseCase } from '@/domain/delivery/a
     ListAwaitingPickupPackageItemToAdminUseCase,
     ListCourierPackageItemUseCase,
     ListCourierPackageItemsOfSameAddressUseCase,
+    ListCourierPackageItemInTransitUseCase,
 
     // recipient useCases
     RegisterRecipientUseCase,
