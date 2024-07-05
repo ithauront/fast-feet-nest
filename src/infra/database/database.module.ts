@@ -14,6 +14,7 @@ import { LogsRepository } from '@/domain/delivery/application/repositories/logs-
 import { CourierRepository } from '@/domain/delivery/application/repositories/courier-repository'
 import { AttachmentsRepository } from '@/domain/delivery/application/repositories/attachment-repository'
 import { AdminRepository } from '@/domain/delivery/application/repositories/admin-repository'
+import { AdminFactory } from 'test/factories/make-admin'
 
 @Module({
   providers: [
@@ -28,6 +29,7 @@ import { AdminRepository } from '@/domain/delivery/application/repositories/admi
     },
     { provide: PackageItemRepository, useClass: PrismaPackageItemRepository },
     { provide: RecipientRepository, useClass: PrismaRecipientRepository },
+    AdminFactory,
   ],
   exports: [
     PrismaService,

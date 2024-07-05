@@ -54,8 +54,8 @@ POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-    "cpf": "54376587634",
-    "password": "123456"
+    "cpf": "00000000000",
+    "password": "AS4aG?2Easgaé3"
 }
 
 ###

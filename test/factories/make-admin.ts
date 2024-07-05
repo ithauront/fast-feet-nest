@@ -38,4 +38,14 @@ export class AdminFactory {
     })
     return admin
   }
+
+  async checkForExistingAdmin() {
+    try {
+      const existingAdmin = await this.prisma.admin.findFirst()
+      return !!existingAdmin
+    } catch (error) {
+      console.error('Failed to check for existing admin:', error)
+      throw error
+    }
+  }
 }
