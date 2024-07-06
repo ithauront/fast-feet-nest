@@ -18,9 +18,7 @@ interface ListCourierPackageItemDeliveredUseCaseRequest {
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
 type ListCourierPackageItemDeliveredUseCaseResponse = Either<
   AuthorizationError,
-  {
-    packageItems: PackageItemWithDetails[]
-  }
+  PackageItemWithDetails[]
 >
 
 @Injectable()
@@ -54,6 +52,6 @@ export class ListCourierPackageItemDeliveredUseCase {
         courierId,
       )
 
-    return right({ packageItems: courierPackageItemsDelivered })
+    return right(courierPackageItemsDelivered)
   }
 }

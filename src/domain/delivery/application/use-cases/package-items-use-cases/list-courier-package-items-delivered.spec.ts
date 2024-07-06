@@ -67,7 +67,7 @@ describe('List courier package items delivered tests', () => {
       page: 1,
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ title: 'package2' }),
         expect.objectContaining({ title: 'package3' }),
       ])
@@ -107,7 +107,7 @@ describe('List courier package items delivered tests', () => {
       page: 1,
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ title: 'package2' }),
         expect.objectContaining({ title: 'package3' }),
       ])
@@ -195,7 +195,7 @@ describe('List courier package items delivered tests', () => {
       page: 1,
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ title: 'package3' }),
       ])
     }
@@ -263,7 +263,7 @@ describe('List courier package items delivered tests', () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.packageItems).toHaveLength(2)
+      expect(result.value).toHaveLength(2)
     }
   })
 
@@ -328,7 +328,7 @@ describe('List courier package items delivered tests', () => {
       page: 1,
     })
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([])
+      expect(result.value).toEqual([])
     }
   })
   test('If couriers delivered package items include attachments', async () => {
@@ -376,13 +376,9 @@ describe('List courier package items delivered tests', () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.packageItems).toHaveLength(2)
-      expect(result.value.packageItems[0].attachments[0].title).toEqual(
-        'attachment 1',
-      )
-      expect(result.value.packageItems[1].attachments[0].title).toEqual(
-        'attachment 2',
-      )
+      expect(result.value).toHaveLength(2)
+      expect(result.value[0].attachments[0].title).toEqual('attachment 1')
+      expect(result.value[1].attachments[0].title).toEqual('attachment 2')
     }
   })
 })

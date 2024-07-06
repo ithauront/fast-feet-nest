@@ -69,6 +69,12 @@ import { ListCourierSameAddressPackageItemController } from './controllers/packa
 import { ListCourierPackageItemsOfSameAddressUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-courier-package-items-of-same-address'
 import { ListCourierPackageItemInTransitUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-courier-package-items-in-transit'
 import { ListInTransitCourierPackageItemController } from './controllers/package-item-controllers/list-courier-in-transit-package-item.controller'
+import { ListDeliveredCourierPackageItemController } from './controllers/package-item-controllers/list-courier-delivered-package-item.controller'
+import { ListCourierPackageItemDeliveredUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-courier-package-items-delivered'
+import { ListCourierPackageItemAwaitingPickupUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-courier-package-items-awaiting-pickup'
+import { ListAwaitingPickupCourierPackageItemController } from './controllers/package-item-controllers/list-courier-awaiting-pickup-package-item.controller'
+import { AssingPackageItemToCourierUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/assing-package-item-to-courier-use-case'
+import { AssingPackageItemToCourierController } from './controllers/package-item-controllers/assing-package-item-to-courier.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, NestHttpModule],
@@ -98,6 +104,9 @@ import { ListInTransitCourierPackageItemController } from './controllers/package
     ListAllCourierPackageItemController,
     ListCourierSameAddressPackageItemController,
     ListInTransitCourierPackageItemController,
+    ListDeliveredCourierPackageItemController,
+    ListAwaitingPickupCourierPackageItemController,
+    AssingPackageItemToCourierController,
 
     // recipient controllers
     RegisterRecipientController,
@@ -145,6 +154,9 @@ import { ListInTransitCourierPackageItemController } from './controllers/package
     ListCourierPackageItemUseCase,
     ListCourierPackageItemsOfSameAddressUseCase,
     ListCourierPackageItemInTransitUseCase,
+    ListCourierPackageItemDeliveredUseCase,
+    ListCourierPackageItemAwaitingPickupUseCase,
+    AssingPackageItemToCourierUseCase,
 
     // recipient useCases
     RegisterRecipientUseCase,
