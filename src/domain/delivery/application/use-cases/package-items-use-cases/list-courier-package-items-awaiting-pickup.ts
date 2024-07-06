@@ -18,9 +18,7 @@ interface ListCourierPackageItemAwaitingPickupUseCaseRequest {
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
 type ListCourierPackageItemAwaitingPickupUseCaseResponse = Either<
   AuthorizationError,
-  {
-    packageItems: PackageItemWithDetails[]
-  }
+  PackageItemWithDetails[]
 >
 
 @Injectable()
@@ -55,6 +53,6 @@ export class ListCourierPackageItemAwaitingPickupUseCase {
         courierId,
       )
 
-    return right({ packageItems: courierPackageItemsAwaitingPickup })
+    return right(courierPackageItemsAwaitingPickup)
   }
 }
