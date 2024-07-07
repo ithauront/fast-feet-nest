@@ -75,6 +75,8 @@ import { ListCourierPackageItemAwaitingPickupUseCase } from '@/domain/delivery/a
 import { ListAwaitingPickupCourierPackageItemController } from './controllers/package-item-controllers/list-courier-awaiting-pickup-package-item.controller'
 import { AssingPackageItemToCourierUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/assing-package-item-to-courier-use-case'
 import { AssingPackageItemToCourierController } from './controllers/package-item-controllers/assing-package-item-to-courier.controller'
+import { EditPackageItemAttachmentController } from './controllers/package-item-controllers/edit-package-item-attachments.controller'
+import { EditPackageItemAttachmentUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/edit-package-item-attachments'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, NestHttpModule],
@@ -107,6 +109,7 @@ import { AssingPackageItemToCourierController } from './controllers/package-item
     ListDeliveredCourierPackageItemController,
     ListAwaitingPickupCourierPackageItemController,
     AssingPackageItemToCourierController,
+    EditPackageItemAttachmentController,
 
     // recipient controllers
     RegisterRecipientController,
@@ -157,6 +160,7 @@ import { AssingPackageItemToCourierController } from './controllers/package-item
     ListCourierPackageItemDeliveredUseCase,
     ListCourierPackageItemAwaitingPickupUseCase,
     AssingPackageItemToCourierUseCase,
+    EditPackageItemAttachmentUseCase,
 
     // recipient useCases
     RegisterRecipientUseCase,
