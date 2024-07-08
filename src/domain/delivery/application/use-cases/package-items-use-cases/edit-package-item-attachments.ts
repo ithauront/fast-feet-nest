@@ -21,7 +21,7 @@ type EditPackageItemAttachmentUseCaseResponse = Either<
   PackageItemNotFoundError,
   PackageItem
 >
-
+// this useCase does not use autorization because the recipient does not have login, but since the packageId is not an information of easy access we assume only the recipient migth have the combination of interess to edit the attachment and the packageItemId (the attachment of delivery made by courrier is immutable)
 @Injectable()
 export class EditPackageItemAttachmentUseCase {
   constructor(
@@ -48,7 +48,7 @@ export class EditPackageItemAttachmentUseCase {
     }
 
     const currentPackageItemAttachments =
-      await this.packageItemAttachmentRepository.findByPackageItemId(
+      await this.packageItemAttachmentRepository.findManyByPackageItemId(
         packageItemId,
       )
 
@@ -57,9 +57,11 @@ export class EditPackageItemAttachmentUseCase {
     )
 
     const attachments = await Promise.all(
-      attachmentIds.map((attachmentId) =>
-        this.attachmentRepository.findById(attachmentId),
-      ),
+      attachmentIds.map(async (attachmentId) => {
+        const attachment =
+          await this.attachmentRepository.findById(attachmentId)
+        return attachment
+      }),
     )
 
     if (attachments.includes(null)) {

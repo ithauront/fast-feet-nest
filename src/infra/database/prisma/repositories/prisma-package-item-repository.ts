@@ -7,10 +7,15 @@ import { PrismaService } from '../prisma.service'
 import { PrismaPackageItemMapper } from '../mappers/prisma-package-item-mapper'
 import { PrismaPackageItemWithDetailsMapper } from '../mappers/prisma-package-item-with-details-mapper'
 import { PackageStatus } from '@prisma/client'
+import { PackageItemAttachmentRepository } from '@/domain/delivery/application/repositories/package-item-attachment-repository'
+import { DomainEvents } from '@/core/events/domain-events'
 
 @Injectable()
 export class PrismaPackageItemRepository implements PackageItemRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private packageItemAttachment: PackageItemAttachmentRepository,
+  ) {}
 
   async create(packageItem: PackageItem): Promise<void> {
     const data = PrismaPackageItemMapper.toPrisma(packageItem)
@@ -91,9 +96,20 @@ export class PrismaPackageItemRepository implements PackageItemRepository {
 
   async save(packageItem: PackageItem): Promise<void> {
     const data = PrismaPackageItemMapper.toPrisma(packageItem)
-    await this.prisma.packageItem.update({
-      where: { id: data.id },
-      data,
-    })
+
+    await Promise.all([
+      this.prisma.packageItem.update({
+        where: { id: data.id },
+        data,
+      }),
+
+      this.packageItemAttachment.createMany(
+        packageItem.attachment.getNewItems(),
+      ),
+      this.packageItemAttachment.deleteMany(
+        packageItem.attachment.getRemovedItems(),
+      ),
+    ])
+    DomainEvents.dispatchEventsForAggregate(packageItem.id)
   }
 }

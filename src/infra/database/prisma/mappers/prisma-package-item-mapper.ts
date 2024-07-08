@@ -55,11 +55,13 @@ export class PrismaPackageItemMapper {
   static toPrisma(
     packageItem: PackageItem,
   ): Prisma.PackageItemUncheckedCreateInput {
-    const attachments = packageItem.attachment
+    const attachmentsConnectIds = packageItem.attachment
       .getItems()
-      .map((item) => PrismaPackageItemAttachmentMapper.toPrisma(item))
+      .map((att) => ({
+        id: att.attachmentId.toString(),
+      }))
 
-    return {
+    const data = {
       id: packageItem.id.toString(),
       title: packageItem.title,
       deliveryAddress: packageItem.deliveryAddress,
@@ -69,8 +71,10 @@ export class PrismaPackageItemMapper {
       updatedAt: packageItem.updatedAt,
       status: PrismaPackageItemMapper.mapStatusForPrisma(packageItem.status),
       attachments: {
-        create: attachments,
+        connect: attachmentsConnectIds,
       },
     }
+
+    return data
   }
 }
