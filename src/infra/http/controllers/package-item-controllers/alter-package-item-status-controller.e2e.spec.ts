@@ -5,7 +5,8 @@ import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
-import { AdminFactory } from 'test/factories/make-admin'
+import { AttachmentFactory } from 'test/factories/make-attachment'
+import { CourierFactory } from 'test/factories/make-courier'
 import { PackageItemFactory } from 'test/factories/make-package-item'
 import { RecipientFactory } from 'test/factories/make-recipient'
 
@@ -13,9 +14,10 @@ describe('Alter package item status tests (e2e)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
-  let adminFactory: AdminFactory
+  let courierFactory: CourierFactory
   let recipientFactory: RecipientFactory
   let packageItemFactory: PackageItemFactory
+  let attachmentFactory: AttachmentFactory
 
   let token: string
   let packageItemId: string
@@ -23,26 +25,35 @@ describe('Alter package item status tests (e2e)', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [AdminFactory, RecipientFactory, PackageItemFactory],
+      providers: [
+        CourierFactory,
+        RecipientFactory,
+        PackageItemFactory,
+        AttachmentFactory,
+      ],
     }).compile()
 
     app = moduleRef.createNestApplication()
     prisma = moduleRef.get(PrismaService)
     jwt = moduleRef.get(JwtService)
-    adminFactory = moduleRef.get(AdminFactory)
+    courierFactory = moduleRef.get(CourierFactory)
     recipientFactory = moduleRef.get(RecipientFactory)
     packageItemFactory = moduleRef.get(PackageItemFactory)
+    attachmentFactory = moduleRef.get(AttachmentFactory)
 
     await app.init()
 
-    const admin = await adminFactory.makePrismaAdmin()
+    const courier = await courierFactory.makePrismaCourier({
+      isAdmin: true,
+    }) // using courier admin because only courier  of package can mark package as delivered
 
-    token = jwt.sign({ sub: admin.id.toString() })
+    token = jwt.sign({ sub: courier.id.toString() })
 
     const recipient = await recipientFactory.makePrismaRecipient()
 
     const packageItem = await packageItemFactory.makePrismaPackageItem({
       recipientId: recipient.id,
+      courierId: courier.id,
     })
 
     packageItemId = packageItem.id.toString()
@@ -92,6 +103,21 @@ describe('Alter package item status tests (e2e)', () => {
     })
     expect(packageItemOnDatabase?.status).toEqual('RETURNED')
   })
+  test('[put]/package_item/:packageItemId/status - Delivered', async () => {
+    const attachment1 = await attachmentFactory.makePrismaAttachment({}, true)
 
-  // still have to make test for delivered because of attachments
+    const response = await request(app.getHttpServer())
+      .put(`/package_item/${packageItemId}/status`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        status: 'Delivered',
+        attachmentIds: [attachment1.id.toString()],
+      })
+
+    expect(response.statusCode).toBe(200)
+    const packageItemOnDatabase = await prisma.packageItem.findFirst({
+      where: { id: packageItemId },
+    })
+    expect(packageItemOnDatabase?.status).toEqual('DELIVERED')
+  })
 })

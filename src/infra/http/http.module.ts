@@ -77,6 +77,10 @@ import { AssingPackageItemToCourierUseCase } from '@/domain/delivery/application
 import { AssingPackageItemToCourierController } from './controllers/package-item-controllers/assing-package-item-to-courier.controller'
 import { EditPackageItemAttachmentController } from './controllers/package-item-controllers/edit-package-item-attachments.controller'
 import { EditPackageItemAttachmentUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/edit-package-item-attachments'
+import { ListPackageItemsNearCourierUseCase } from '@/domain/delivery/application/use-cases/package-items-use-cases/list-package-items-near-courier'
+import { ListPackageItemNearCourierController } from './controllers/package-item-controllers/list-package-item-near-courier.controller'
+import { RequestPasswordChangeController } from './controllers/request-password-change.controller'
+import { RequestPasswordChangeUseCase } from '@/domain/delivery/application/use-cases/request-password-change'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, NestHttpModule],
@@ -92,6 +96,7 @@ import { EditPackageItemAttachmentUseCase } from '@/domain/delivery/application/
     ChangeCourierPhoneController,
     AlterCourierIsAdminController,
     SetCourierLocationController,
+
     // package item controllers
     CreatePackageItemController,
     ListAllPackageItemsToAdminController,
@@ -110,6 +115,7 @@ import { EditPackageItemAttachmentUseCase } from '@/domain/delivery/application/
     ListAwaitingPickupCourierPackageItemController,
     AssingPackageItemToCourierController,
     EditPackageItemAttachmentController,
+    ListPackageItemNearCourierController,
 
     // recipient controllers
     RegisterRecipientController,
@@ -120,6 +126,7 @@ import { EditPackageItemAttachmentUseCase } from '@/domain/delivery/application/
 
     // other controllers
     AutenticateController,
+    RequestPasswordChangeController,
   ],
   providers: [
     // admin useCases
@@ -161,6 +168,7 @@ import { EditPackageItemAttachmentUseCase } from '@/domain/delivery/application/
     ListCourierPackageItemAwaitingPickupUseCase,
     AssingPackageItemToCourierUseCase,
     EditPackageItemAttachmentUseCase,
+    ListPackageItemsNearCourierUseCase,
 
     // recipient useCases
     RegisterRecipientUseCase,
@@ -172,6 +180,7 @@ import { EditPackageItemAttachmentUseCase } from '@/domain/delivery/application/
     // others
     AutenticateUseCase,
     AuthorizationService,
+    RequestPasswordChangeUseCase,
     {
       provide: GeoLocationProvider,
       useClass: InfraGeoLocationProvider,
