@@ -20,9 +20,7 @@ interface ListPackageItemsNearCourierUseCaseRequest {
 type AuthorizationError = UnauthorizedAdminError | NotFoundOrUnauthorizedError
 type ListPackageItemsNearCourierUseCaseResponse = Either<
   AuthorizationError | UserNotFoundError,
-  {
-    packageItems: PackageItemWithDetails[]
-  }
+  PackageItemWithDetails[]
 >
 
 @Injectable()
@@ -79,6 +77,6 @@ export class ListPackageItemsNearCourierUseCase {
       .sort((a, b) => a.distance - b.distance)
       .map(({ item }) => item)
 
-    return right({ packageItems: packageItemsNearCourierSorted })
+    return right(packageItemsNearCourierSorted)
   }
 }

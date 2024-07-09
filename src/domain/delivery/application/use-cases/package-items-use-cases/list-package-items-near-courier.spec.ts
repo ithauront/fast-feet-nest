@@ -77,7 +77,7 @@ describe('List returned package items to admin tests', async () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ deliveryAddress: 'address1' }),
       ])
     }
@@ -149,7 +149,7 @@ describe('List returned package items to admin tests', async () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ deliveryAddress: 'address1' }),
         expect.objectContaining({ deliveryAddress: 'address2' }),
         expect.objectContaining({ deliveryAddress: 'address3' }),
@@ -190,7 +190,7 @@ describe('List returned package items to admin tests', async () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([])
+      expect(result.value).toEqual([])
     }
   })
   test('if admin can list nearby packages to the courier', async () => {
@@ -228,7 +228,7 @@ describe('List returned package items to admin tests', async () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ deliveryAddress: 'address1' }),
       ])
     }
@@ -381,7 +381,7 @@ describe('List returned package items to admin tests', async () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([])
+      expect(result.value).toEqual([])
     }
   })
   test('if 2 couriers are in the same area show just respective packageItems', async () => {
@@ -455,7 +455,7 @@ describe('List returned package items to admin tests', async () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.packageItems).toEqual([
+      expect(result.value).toEqual([
         expect.objectContaining({ deliveryAddress: 'address4' }),
       ])
     }
@@ -497,7 +497,7 @@ describe('List returned package items to admin tests', async () => {
     })
 
     if (result.isRight()) {
-      expect(result.value.packageItems).toHaveLength(2)
+      expect(result.value).toHaveLength(2)
     }
   })
 })
