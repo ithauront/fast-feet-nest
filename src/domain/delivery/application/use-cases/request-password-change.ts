@@ -12,7 +12,6 @@ import { Encrypter } from '../cryptography/encrypter'
 import { Injectable } from '@nestjs/common'
 
 interface RequestPasswordChangeUseCaseRequest {
-  creatorId: string
   userEmail: string
 }
 
@@ -30,29 +29,21 @@ export class RequestPasswordChangeUseCase {
   ) {}
 
   async execute({
-    creatorId,
     userEmail,
   }: RequestPasswordChangeUseCaseRequest): Promise<RequestPasswordChangeUseCaseResponse> {
     let user: Courier | Admin | null =
-      await this.courierRepository.findById(creatorId)
+      await this.courierRepository.findByEmail(userEmail)
     if (!user) {
-      user = await this.adminRepository.findById(creatorId)
+      user = await this.adminRepository.findByEmail(userEmail)
     }
     if (!user) {
-      return left(new InvalidCredentialsError())
-    }
-
-    if (user.email !== userEmail) {
       return left(new InvalidCredentialsError())
     }
 
     const expiresIn = '1h'
-    const currentTime = Math.floor(Date.now() / 1000)
-    const expirationTime = currentTime + 3600 // 1h
 
     const payload = {
       sub: user.id,
-      exp: expirationTime,
     }
 
     const uniqueAccessToken = await this.encrypter.encrypt(payload, expiresIn)

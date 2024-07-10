@@ -81,6 +81,9 @@ import { ListPackageItemsNearCourierUseCase } from '@/domain/delivery/applicatio
 import { ListPackageItemNearCourierController } from './controllers/package-item-controllers/list-package-item-near-courier.controller'
 import { RequestPasswordChangeController } from './controllers/request-password-change.controller'
 import { RequestPasswordChangeUseCase } from '@/domain/delivery/application/use-cases/request-password-change'
+import { ChangePasswordUseCase } from '@/domain/delivery/application/use-cases/change-password'
+import { ChangePasswordController } from './controllers/change-password.controller'
+import { UploadAttachmentController } from './controllers/upload-attachment.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, NestHttpModule],
@@ -127,6 +130,8 @@ import { RequestPasswordChangeUseCase } from '@/domain/delivery/application/use-
     // other controllers
     AutenticateController,
     RequestPasswordChangeController,
+    ChangePasswordController,
+    UploadAttachmentController,
   ],
   providers: [
     // admin useCases
@@ -181,6 +186,7 @@ import { RequestPasswordChangeUseCase } from '@/domain/delivery/application/use-
     AutenticateUseCase,
     AuthorizationService,
     RequestPasswordChangeUseCase,
+    ChangePasswordUseCase,
     {
       provide: GeoLocationProvider,
       useClass: InfraGeoLocationProvider,

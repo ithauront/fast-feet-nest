@@ -37,10 +37,7 @@ describe('Request password change tests', () => {
     const courier = makeCourier({ password: 'oldPassword' })
     await inMemoryCourierRepository.create(courier)
 
-    const courierId = courier.id.toString()
-
     const result = await sut.execute({
-      creatorId: courierId,
       userEmail: courier.email,
     })
 
@@ -57,10 +54,7 @@ describe('Request password change tests', () => {
     const admin = makeAdmin({ password: 'oldPassword' })
     await inMemoryAdminRepository.create(admin)
 
-    const adminId = admin.id.toString()
-
     const result = await sut.execute({
-      creatorId: adminId,
       userEmail: admin.email,
     })
 
@@ -74,29 +68,11 @@ describe('Request password change tests', () => {
     )
   })
   test('If user is unknown should send invalid credential error', async () => {
-    const creatorId = 'unknown user'
-    const creatorEmail = 'john@doe.com'
+    const creatorEmail = 'unknown@user.com'
 
     const result = await sut.execute({
-      creatorId,
       userEmail: creatorEmail,
     })
-    expect(result.isLeft())
-    expect(result.value).toBeInstanceOf(InvalidCredentialsError)
-    expect(dispatchSpy).not.toHaveBeenCalled()
-  })
-  test('If email dont match the email of the id return invalid credential error', async () => {
-    const admin = makeAdmin({ password: 'oldPassword' })
-    await inMemoryAdminRepository.create(admin)
-
-    const adminId = admin.id.toString()
-    const wrongPassword = 'wrong password'
-
-    const result = await sut.execute({
-      creatorId: adminId,
-      userEmail: wrongPassword,
-    })
-
     expect(result.isLeft())
     expect(result.value).toBeInstanceOf(InvalidCredentialsError)
     expect(dispatchSpy).not.toHaveBeenCalled()
