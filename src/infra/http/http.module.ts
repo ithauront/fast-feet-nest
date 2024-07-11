@@ -84,9 +84,11 @@ import { RequestPasswordChangeUseCase } from '@/domain/delivery/application/use-
 import { ChangePasswordUseCase } from '@/domain/delivery/application/use-cases/change-password'
 import { ChangePasswordController } from './controllers/change-password.controller'
 import { UploadAttachmentController } from './controllers/upload-attachment.controller'
+import { StorageModule } from '../storage/storage.module'
+import { UploadAndCreateAttachmentUseCase } from '@/domain/delivery/application/use-cases/upload-and-create-attachment'
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule, NestHttpModule],
+  imports: [DatabaseModule, CryptographyModule, NestHttpModule, StorageModule],
   controllers: [
     // admin controllers
     RegisterAdminController,
@@ -187,6 +189,7 @@ import { UploadAttachmentController } from './controllers/upload-attachment.cont
     AuthorizationService,
     RequestPasswordChangeUseCase,
     ChangePasswordUseCase,
+    UploadAndCreateAttachmentUseCase,
     {
       provide: GeoLocationProvider,
       useClass: InfraGeoLocationProvider,

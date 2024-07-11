@@ -118,13 +118,10 @@ somente o admin pode alterar a senha do usuario. eu fiz um fluxo mais complexo o
 
 ## fazer o mapper e implementar o repositorio do log. assim como fazer os repositorios e mappers da parte de notification. e fazer tudo isso nas tabelas do prisma porque ainda não tem.
 
-## talvez o controller para mark courier ou package as mucança de status a gente pode fazer um so controller para chamar diversos useCase a depender de o que vai vir na requisição.
 
-
-## caso de delivered mudança de status ainda da erro 500 talvez tenha algo a ver com a referencia circuar no id do packageItem ou no id do attachments. testar apos criar attachments temos tambem que adicionar o teste dele la nos testes do alter status
 
 ## no readme colocar a explicação que nos preferimos não consultar o banco de dados antes de algumas operações de mudança de status e caso estivermos mudando o status para um status que ja esta la ele vai efetuar a mudança que na verdade néao vai mudar nada. como nos pensamos que esses "erros" serão raros nos não nos preocupamos em economizar o processamento para isso. mesma coisa para o admin status do courier
 
 ## no set location do courier so o courier pode alterar seu propria location, porem nos não protegemos a rota com autorização apenas o token nesse caso. porque ele vai procurar no repositorio o courier que foi logado.
 
-## talvez no teste e2e do list delivered verificar tambem se tem attachments. e nesse caso teriamos que criar o package com attachemnts.
+## é necessario incrementar a parte de eventos no infra para que os useCase de mudança de senha realmente funcionem.

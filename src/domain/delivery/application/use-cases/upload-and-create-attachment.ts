@@ -30,17 +30,19 @@ export class UploadAndCreateAttachmentUseCase {
     if (!/^(image\/(jpeg|png))$|^application\/pdf$/.test(fileType)) {
       return left(new InvalidAttachmentTypeError(fileType))
     }
+
     const { url } = await this.uploader.upload({
       fileName,
       fileType,
       body,
     })
+
     const attachment = Attachment.create({
       title: fileName,
       link: url,
     })
 
-    await this.attachmentRepository.create(attachment)
+    await this.attachmentRepository.createWithDetails(attachment)
 
     return right(attachment)
   }
