@@ -118,6 +118,10 @@ describe('Alter package item status tests (e2e)', () => {
     const packageItemOnDatabase = await prisma.packageItem.findFirst({
       where: { id: packageItemId },
     })
+    const attachmentOnDatabase = await prisma.attachment.findFirst({
+      where: { id: attachment1.id.toString() },
+    })
+    expect(attachmentOnDatabase?.packageItemId).toEqual(packageItemId)
     expect(packageItemOnDatabase?.status).toEqual('DELIVERED')
   })
 })

@@ -48,7 +48,6 @@ describe('integration tests for the request password change flow from use case t
     await inMemoryCourierRepository.create(user)
 
     await requestPasswordChangeUseCase.execute({
-      creatorId: user.id.toString(),
       userEmail,
     })
     await waitFor(() => expect(sendEmailExecuteMock).toHaveBeenCalled())

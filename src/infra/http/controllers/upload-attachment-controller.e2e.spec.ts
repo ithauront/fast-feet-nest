@@ -1,11 +1,13 @@
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { INestApplication } from '@nestjs/common'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
 describe('upload attachment - tests (e2e)', () => {
   let app: INestApplication
+  let prisma: PrismaService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -13,6 +15,7 @@ describe('upload attachment - tests (e2e)', () => {
       providers: [],
     }).compile()
 
+    prisma = moduleRef.get(PrismaService)
     app = moduleRef.createNestApplication()
 
     await app.init()
@@ -24,6 +27,8 @@ describe('upload attachment - tests (e2e)', () => {
       .attach('file', './test/e2e/sample-upload.pdf')
 
     expect(response.statusCode).toBe(201)
+    const attachmentOnDatabase = await prisma.attachment.findFirst()
+    console.log(attachmentOnDatabase)
     expect(response.body).toEqual({
       attachmentId: expect.any(String),
     })

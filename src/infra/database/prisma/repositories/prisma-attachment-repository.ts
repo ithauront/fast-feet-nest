@@ -13,16 +13,8 @@ export class PrismaAttachmentRepository implements AttachmentsRepository {
     throw new Error('Method not implemented.')
   }
 
-  async createWithDetails(
-    attachment: Attachment,
-    packageItemId: string | null,
-    isImmutable: boolean,
-  ): Promise<void> {
-    const data = PrismaAttachmentMapper.toPrisma(
-      attachment,
-      packageItemId,
-      isImmutable,
-    )
+  async createWithDetails(attachment: Attachment): Promise<void> {
+    const data = PrismaAttachmentMapper.toPrisma(attachment, null, false)
     await this.prisma.attachment.create({ data })
   }
 
