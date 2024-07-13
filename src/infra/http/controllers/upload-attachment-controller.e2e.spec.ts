@@ -28,7 +28,7 @@ describe('upload attachment - tests (e2e)', () => {
 
     expect(response.statusCode).toBe(201)
     const attachmentOnDatabase = await prisma.attachment.findFirst()
-    console.log(attachmentOnDatabase)
+    expect(attachmentOnDatabase).toBeTruthy()
     expect(response.body).toEqual({
       attachmentId: expect.any(String),
     })

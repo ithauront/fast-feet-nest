@@ -2,7 +2,9 @@ import { DomainEvents } from '@/core/events/domain-events'
 import { EventHandler } from '@/core/events/event-handler'
 import { SendNotificationUseCase } from '../use-cases/send-notification'
 import { PackageItemStatusChangeEvent } from '@/domain/delivery/enterprise/events/package-item-status-change'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class OnMarkedAsLost implements EventHandler {
   constructor(private sendNotification: SendNotificationUseCase) {
     this.setupSubscriptions()

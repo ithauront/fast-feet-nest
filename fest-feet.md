@@ -125,3 +125,5 @@ somente o admin pode alterar a senha do usuario. eu fiz um fluxo mais complexo o
 ## no set location do courier so o courier pode alterar seu propria location, porem nos não protegemos a rota com autorização apenas o token nesse caso. porque ele vai procurar no repositorio o courier que foi logado.
 
 ## é necessario incrementar a parte de eventos no infra para que os useCase de mudança de senha realmente funcionem.
+
+## colocar os repositorios de events no databaseRepositorio? ver que tambem tem o email service e etc.
