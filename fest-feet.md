@@ -127,3 +127,5 @@ somente o admin pode alterar a senha do usuario. eu fiz um fluxo mais complexo o
 ## é necessario incrementar a parte de eventos no infra para que os useCase de mudança de senha realmente funcionem.
 
 ## colocar os repositorios de events no databaseRepositorio? ver que tambem tem o email service e etc.
+
+## nao esquecer dos logs

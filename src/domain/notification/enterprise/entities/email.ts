@@ -6,7 +6,7 @@ export interface EmailProps extends BasicEntityProps {
   recipientEmail: string
   subject: string
   body: string
-  sentAt?: Date
+  sentAt?: Date | null
 }
 
 export class Email extends Entity<EmailProps> {

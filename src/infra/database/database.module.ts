@@ -15,6 +15,10 @@ import { CourierRepository } from '@/domain/delivery/application/repositories/co
 import { AttachmentsRepository } from '@/domain/delivery/application/repositories/attachment-repository'
 import { AdminRepository } from '@/domain/delivery/application/repositories/admin-repository'
 import { AdminFactory } from 'test/factories/make-admin'
+import { NotificationsRepository } from '@/domain/notification/application/repositories/notification-repository'
+import { PrismaNotificationsRepository } from './prisma/repositories/prisma-notifications-repository'
+import { EmailRepository } from '@/domain/notification/application/repositories/email-repository'
+import { PrismaEmailRepository } from './prisma/repositories/prisma-email-repository'
 
 @Module({
   providers: [
@@ -29,6 +33,11 @@ import { AdminFactory } from 'test/factories/make-admin'
     },
     { provide: PackageItemRepository, useClass: PrismaPackageItemRepository },
     { provide: RecipientRepository, useClass: PrismaRecipientRepository },
+    {
+      provide: NotificationsRepository,
+      useClass: PrismaNotificationsRepository,
+    },
+    { provide: EmailRepository, useClass: PrismaEmailRepository },
     AdminFactory,
   ],
   exports: [
@@ -40,6 +49,8 @@ import { AdminFactory } from 'test/factories/make-admin'
     PackageItemAttachmentRepository,
     PackageItemRepository,
     RecipientRepository,
+    NotificationsRepository,
+    EmailRepository,
   ],
 })
 export class DatabaseModule {}

@@ -1,7 +1,7 @@
 import { Email } from '../../enterprise/entities/email'
 
-export interface EmailRepository {
-  findById(id: string): Promise<Email | null>
-  create(email: Email): Promise<void>
-  save(email: Email): Promise<void>
+export abstract class EmailRepository {
+  abstract findById(id: string): Promise<Email | null>
+  abstract create(email: Email): Promise<void>
+  abstract save(email: Email): Promise<void>
 }
