@@ -8,9 +8,12 @@ import { SendEmailUseCase } from '@/domain/notification/application/use-cases/se
 import { SendNotificationUseCase } from '@/domain/notification/application/use-cases/send-notification'
 import { Module } from '@nestjs/common'
 import { DatabaseModule } from '../database/database.module'
+import { EnvModule } from '../env/env.module'
+import { EmailService } from '@/domain/notification/application/services/email-service'
+import { SendInBlueEmailService } from './services/sendinblue-email-service'
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, EnvModule],
   providers: [
     SendEmailUseCase,
     SendNotificationUseCase,
@@ -21,6 +24,10 @@ import { DatabaseModule } from '../database/database.module'
     OnMarkedAsLost,
     OnMarkedAsReturned,
     OnRequestPasswordChange,
+    {
+      provide: EmailService,
+      useClass: SendInBlueEmailService,
+    },
   ],
 })
 export class EventsModule {}
