@@ -5,19 +5,19 @@ import { PackageItemStatusChangeEvent } from '@/domain/delivery/enterprise/event
 import { Injectable } from '@nestjs/common'
 
 @Injectable()
-export class OnMarkedAsReturned implements EventHandler {
+export class OnStatusChange implements EventHandler {
   constructor(private sendNotification: SendNotificationUseCase) {
     this.setupSubscriptions()
   }
 
   setupSubscriptions(): void {
     DomainEvents.register(
-      this.sendMarkAsReturnedNotification.bind(this),
+      this.statusChangeNotification.bind(this),
       PackageItemStatusChangeEvent.name,
     )
   }
 
-  private async sendMarkAsReturnedNotification({
+  private async statusChangeNotification({
     packageItem,
   }: PackageItemStatusChangeEvent) {
     await this.sendNotification.execute({

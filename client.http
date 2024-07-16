@@ -2,12 +2,15 @@
 @AdminToken = {{autenticate_admin.response.body.access_token}}
 @CourierToken ={{autenticate_courier.response.body.access_token}}
 
+@recipientId = {{create_recipient.response.body.id}}
+
 
 
 
 # @name create_courier
 POST {{baseUrl}}/users/courier
 Content-Type: application/json
+Authorization: Bearer {{AdminToken}}
 
 {
     "name": "john doe",
@@ -60,6 +63,20 @@ Content-Type: application/json
 
 ###
 
+# @name create_recipient
+POST {{baseUrl}}/users/recipient
+Content-Type: application/json
+Authorization: Bearer {{AdminToken}}
+
+{
+    "name": "Jack Doe",
+    "email": "jack@doe.com",
+    "address": "21 recipient street 424824"
+}
+
+
+###
+
 # @name create_package_item
 POST {{baseUrl}}/package_item
 Content-Type: application/json
@@ -68,13 +85,14 @@ Authorization: Bearer {{AdminToken}}
 {
     "title": "Package 2",
     "deliveryAddress": "Package Street 01 2845013",
-    "recipientId": "9f591dc1-6560-4aa6-add0-68c668ebb49f"
+    "recipientId": "bea1ac7d-5849-417b-86c4-5a2441943d37",
+    "courierId": "d2b100d9-746c-4a98-a9fc-b30180eab08a"
 }
 
 ###
 
 # @name list_all-package_items_to_admin
-GET {{baseUrl}}/package_item?page=1
+GET {{baseUrl}}/package_item/list/all?page=1
 Content-Type: application/json
 Authorization: Bearer {{AdminToken}}
 
@@ -82,19 +100,19 @@ Authorization: Bearer {{AdminToken}}
 
 
 # @name get_package_items_by_id
-GET {{baseUrl}}/package_item/e2ba2c69-6b19-4983-b89d-cd8e82d62ff2
+GET {{baseUrl}}/package_item/2f2ad775-1096-491b-873f-4fb8a5b6fda2
 Content-Type: application/json
 Authorization: Bearer {{AdminToken}}
 
 ###
 
 # @name alter_package_items_status_to_in_transit
-PUT {{baseUrl}}/package_item/e2ba2c69-6b19-4983-b89d-cd8e82d62ff2/status
+PUT {{baseUrl}}/package_item/2f2ad775-1096-491b-873f-4fb8a5b6fda2/status
 Content-Type: application/json
 Authorization: Bearer {{AdminToken}}
 
 {
-    "status": "Delivered"
+    "status": "Returned"
 }
 ###
 

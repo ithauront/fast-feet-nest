@@ -129,3 +129,5 @@ somente o admin pode alterar a senha do usuario. eu fiz um fluxo mais complexo o
 ## colocar os repositorios de events no databaseRepositorio? ver que tambem tem o email service e etc.
 
 ## nao esquecer dos logs
+
+## ero de varias notificações é porque devemos ter apenas um subscriber. vamos então modificar para ter apenas o onStatusChange e usar ele para qualquer alteração.

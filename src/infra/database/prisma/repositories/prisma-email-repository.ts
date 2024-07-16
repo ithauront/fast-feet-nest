@@ -2,7 +2,9 @@ import { EmailRepository } from '@/domain/notification/application/repositories/
 import { PrismaService } from '../prisma.service'
 import { Email } from '@/domain/notification/enterprise/entities/email'
 import { PrismaEmailMapper } from '../mappers/prisma-email-mapper'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class PrismaEmailRepository implements EmailRepository {
   constructor(private prisma: PrismaService) {}
   async findById(id: string): Promise<Email | null> {

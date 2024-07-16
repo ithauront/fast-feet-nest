@@ -1,7 +1,4 @@
-import { OnMarkedAsDelivered } from '@/domain/notification/application/subscribers/on-marked-as-delivered'
-import { OnMarkedAsInTransit } from '@/domain/notification/application/subscribers/on-marked-as-in-transit'
-import { OnMarkedAsLost } from '@/domain/notification/application/subscribers/on-marked-as-lost'
-import { OnMarkedAsReturned } from '@/domain/notification/application/subscribers/on-marked-as-returned'
+import { OnStatusChange } from '@/domain/notification/application/subscribers/on-status-change'
 import { OnRequestPasswordChange } from '@/domain/notification/application/subscribers/on-request-password-change'
 import { ReadNotificationUseCase } from '@/domain/notification/application/use-cases/read-notification'
 import { SendEmailUseCase } from '@/domain/notification/application/use-cases/send-email'
@@ -18,11 +15,8 @@ import { SendInBlueEmailService } from './services/sendinblue-email-service'
     SendEmailUseCase,
     SendNotificationUseCase,
     ReadNotificationUseCase,
-    OnMarkedAsDelivered,
-    OnMarkedAsInTransit,
-    OnMarkedAsDelivered,
-    OnMarkedAsLost,
-    OnMarkedAsReturned,
+
+    OnStatusChange,
     OnRequestPasswordChange,
     {
       provide: EmailService,

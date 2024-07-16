@@ -3,12 +3,12 @@ import { PackageItemRepository } from '@/domain/delivery/application/repositorie
 import { PackageItem } from '@/domain/delivery/enterprise/entities/package-item'
 import { PackageItemWithDetails } from '@/domain/delivery/enterprise/entities/value-object/package-item-with-details'
 import { Injectable } from '@nestjs/common'
-import { PrismaService } from '../prisma.service'
 import { PrismaPackageItemMapper } from '../mappers/prisma-package-item-mapper'
 import { PrismaPackageItemWithDetailsMapper } from '../mappers/prisma-package-item-with-details-mapper'
 import { PackageStatus } from '@prisma/client'
 import { PackageItemAttachmentRepository } from '@/domain/delivery/application/repositories/package-item-attachment-repository'
 import { DomainEvents } from '@/core/events/domain-events'
+import { PrismaService } from '../prisma.service'
 
 @Injectable()
 export class PrismaPackageItemRepository implements PackageItemRepository {
