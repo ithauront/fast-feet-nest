@@ -42,7 +42,7 @@ describe('OnRequestPasswordChange', () => {
       recipientEmail: userEmail,
       subject: 'You requested a password change',
       body: expect.stringContaining(
-        `http://localhost:3000/reset-password?token=${accessToken}`,
+        `https://fast-feet/frontend/password_reset?token=${accessToken}`,
       ),
     })
 

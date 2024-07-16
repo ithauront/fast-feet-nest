@@ -31,7 +31,7 @@ describe('Change courier phone tests', () => {
   })
 
   test('If can change password for courier user', async () => {
-    // I find this test very limited because of the use of the fakers and the security concerns that keep us from having access of the password stored. We end up testing if a fake password is diferent than another fake password but not going realy deep in what the SUT does, the only real conection with the SUT is if we touch the set password therefor updating the updateAt prop. But with a console.log() we can inspect the repository and see that the password have changed
+    // I find this test very limited because of the use of the fakers and the security concerns that keep us from having access of the password stored. We end up testing if a fake password is diferent than another fake password but not going realy deep in what the SUT does, the only real conection with the SUT is if we touch the set password therefor updating the updateAt prop. But with a console.log() we can inspect the repository and see that the password have changed. with that being said, I made an integration test that uses the real flow and token generated to change password
     const courier = makeCourier({ password: 'oldPassword' })
     await inMemoryCourierRepository.create(courier)
     expect(inMemoryCourierRepository.items[0].updatedAt).toBe(undefined)

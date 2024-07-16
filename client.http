@@ -52,6 +52,19 @@ Content-Type: application/json
 
 ###
 
+
+# @name request_password_reset
+
+POST {{baseUrl}}/auth/request_password_reset
+Content-Type: application/json
+
+{
+    "userEmail": "john@doe.com"
+}
+
+
+###
+
 # @name autenticate_admin
 POST {{baseUrl}}/sessions
 Content-Type: application/json

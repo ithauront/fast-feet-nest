@@ -55,7 +55,7 @@ describe('integration tests for the request password change flow from use case t
       recipientEmail: userEmail,
       subject: 'You requested a password change',
       body: expect.stringContaining(
-        'http://localhost:3000/reset-password?token=',
+        'https://fast-feet/frontend/password_reset?token=',
       ),
     })
     expect(inMemoryEmailRepository.items[0].subject).toEqual(
