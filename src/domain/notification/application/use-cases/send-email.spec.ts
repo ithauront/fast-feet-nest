@@ -1,6 +1,6 @@
 import { MockEmailService } from 'test/mock/mock-email-service'
 import { SendEmailUseCase } from './send-email'
-import { InMemoryEmailRepository } from '../../../../../test/repositories/in-memory-email-repostory'
+import { InMemoryEmailRepository } from '../../../../../test/repositories/in-memory-email-repository'
 
 let inMemoryEmailRepository: InMemoryEmailRepository
 let mockEmailService: MockEmailService

@@ -5,7 +5,7 @@ import { SendEmailUseCase } from '../use-cases/send-email'
 import { MockEmailService } from 'test/mock/mock-email-service'
 import { DomainEvents } from '@/core/events/domain-events'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { InMemoryEmailRepository } from 'test/repositories/in-memory-email-repostory'
+import { InMemoryEmailRepository } from 'test/repositories/in-memory-email-repository'
 
 describe('OnRequestPasswordChange', () => {
   let sendEmailUseCase: SendEmailUseCase

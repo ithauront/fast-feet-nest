@@ -6,7 +6,7 @@ import { makeCourier } from 'test/factories/make-courier'
 import { MockEmailService } from 'test/mock/mock-email-service'
 import { InMemoryAdminRepository } from '../repositories/in-memory-admin-repository'
 import { InMemoryCourierRepository } from '../repositories/in-memory-courier-repository'
-import { InMemoryEmailRepository } from '../repositories/in-memory-email-repostory'
+import { InMemoryEmailRepository } from '../repositories/in-memory-email-repository'
 import { waitFor } from 'test/utils/wait-for'
 
 import { MockInstance, vi } from 'vitest'

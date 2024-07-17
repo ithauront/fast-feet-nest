@@ -1,30 +1,37 @@
 import { makePackageItem } from 'test/factories/make-package-item'
 import { InMemoryPackageItemRepository } from 'test/repositories/in-memory-package-item-repository'
 import {
-  SendNotificationUseCase,
-  SendNotificationUseCaseRequest,
-  SendNotificationUseCaseResponse,
-} from '../use-cases/send-notification'
-import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-notifications-repository'
+  SendEmailUseCase,
+  SendEmailUseCaseRequest,
+  SendEmailUseCaseResponse,
+} from '../use-cases/send-email'
+import { InMemoryEmailRepository } from 'test/repositories/in-memory-email-repository'
 import { MockInstance, vi } from 'vitest'
 import { waitFor } from 'test/utils/wait-for'
 import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachment-repository'
 import { InMemoryPackageItemAttachmentRepository } from 'test/repositories/in-memory-package-item-attachment-repository'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { OnStatusChange } from './on-status-change'
+import { InMemoryRecipientRepository } from 'test/repositories/in-memory-recipient-repository'
+import { MockEmailService } from 'test/mock/mock-email-service'
+import { makeRecipient } from 'test/factories/make-recipient'
 
+let mockEmailService: MockEmailService
+let inMemoryRecipientRespository: InMemoryRecipientRepository
 let inMemoryPackageItemAttachmentsRepository: InMemoryPackageItemAttachmentRepository
 let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
 let inMemoryPackageItemRepository: InMemoryPackageItemRepository
-let inMemoryNotificationsRepository: InMemoryNotificationsRepository
-let sendNotificationUseCase: SendNotificationUseCase
-let sendNotificationExecuteMock: MockInstance<
-  [SendNotificationUseCaseRequest],
-  Promise<SendNotificationUseCaseResponse>
+let inMemoryEmailRepository: InMemoryEmailRepository
+let sendEmailUseCase: SendEmailUseCase
+let sendEmailExecuteMock: MockInstance<
+  [SendEmailUseCaseRequest],
+  Promise<SendEmailUseCaseResponse>
 >
 
 describe('on package item marked as in transit', () => {
-  beforeEach(() => {
+  beforeAll(() => {
+    mockEmailService = new MockEmailService()
+    inMemoryRecipientRespository = new InMemoryRecipientRepository()
     inMemoryPackageItemAttachmentsRepository =
       new InMemoryPackageItemAttachmentRepository()
     inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
@@ -32,74 +39,85 @@ describe('on package item marked as in transit', () => {
       inMemoryPackageItemAttachmentsRepository,
       inMemoryAttachmentsRepository,
     )
-    inMemoryNotificationsRepository = new InMemoryNotificationsRepository()
-    sendNotificationUseCase = new SendNotificationUseCase(
-      inMemoryNotificationsRepository,
+  })
+  beforeEach(() => {
+    inMemoryEmailRepository = new InMemoryEmailRepository()
+    sendEmailUseCase = new SendEmailUseCase(
+      inMemoryEmailRepository,
+      mockEmailService,
     )
-    sendNotificationExecuteMock = vi.spyOn(sendNotificationUseCase, 'execute')
-    new OnStatusChange(sendNotificationUseCase)
+    sendEmailExecuteMock = vi.spyOn(sendEmailUseCase, 'execute')
+    new OnStatusChange(sendEmailUseCase, inMemoryRecipientRespository)
 
     vi.clearAllMocks()
   })
 
-  test('if send notification when package item is marked as in transit', async () => {
-    const packageItem = makePackageItem()
+  test('if send email when package item is marked as in transit', async () => {
+    const recipient = makeRecipient()
+    await inMemoryRecipientRespository.create(recipient)
+    const packageItem = makePackageItem({ recipientId: recipient.id })
     await inMemoryPackageItemRepository.create(packageItem)
     packageItem.markAsInTransit(new UniqueEntityId('creatorId'))
     await inMemoryPackageItemRepository.save(packageItem)
 
     await waitFor(() => {
-      expect(sendNotificationExecuteMock).toHaveBeenCalled()
+      expect(sendEmailExecuteMock).toHaveBeenCalled()
     })
-    expect(inMemoryNotificationsRepository.items[0].title).toEqual(
+    expect(inMemoryEmailRepository.items[0].subject).toEqual(
       'Change status in your package',
     )
   })
-  test('if send notification when package item is marked as returned', async () => {
-    const packageItem = makePackageItem()
+  test('if send email when package item is marked as returned', async () => {
+    const recipient = makeRecipient()
+    await inMemoryRecipientRespository.create(recipient)
+    const packageItem = makePackageItem({ recipientId: recipient.id })
     await inMemoryPackageItemRepository.create(packageItem)
     packageItem.markAsReturned(new UniqueEntityId('creator id'))
     await inMemoryPackageItemRepository.save(packageItem)
 
     await waitFor(() => {
-      expect(sendNotificationExecuteMock).toHaveBeenCalled()
+      expect(sendEmailExecuteMock).toHaveBeenCalled()
     })
-    expect(inMemoryNotificationsRepository.items[0].title).toEqual(
+    expect(inMemoryEmailRepository.items[0].subject).toEqual(
       'Change status in your package',
     )
-    expect(inMemoryNotificationsRepository.items[0].content).toEqual(
+    expect(inMemoryEmailRepository.items[0].body).toEqual(
       'Your package is now Returned',
     )
   })
-  test('if send notification when package item is marked as lost', async () => {
-    const packageItem = makePackageItem()
+  test('if send email when package item is marked as lost', async () => {
+    const recipient = makeRecipient()
+    await inMemoryRecipientRespository.create(recipient)
+    const packageItem = makePackageItem({ recipientId: recipient.id })
     await inMemoryPackageItemRepository.create(packageItem)
     packageItem.markAsLost(new UniqueEntityId('creatorId'))
     await inMemoryPackageItemRepository.save(packageItem)
 
     await waitFor(() => {
-      expect(sendNotificationExecuteMock).toHaveBeenCalled()
+      expect(sendEmailExecuteMock).toHaveBeenCalled()
     })
-    expect(inMemoryNotificationsRepository.items[0].title).toEqual(
+    expect(inMemoryEmailRepository.items[0].subject).toEqual(
       'Change status in your package',
     )
-    expect(inMemoryNotificationsRepository.items[0].content).toEqual(
+    expect(inMemoryEmailRepository.items[0].body).toEqual(
       'Your package is now Lost',
     )
   })
-  test('if send notification when package item is marked as delivered', async () => {
-    const packageItem = makePackageItem()
+  test('if send email when package item is marked as delivered', async () => {
+    const recipient = makeRecipient()
+    await inMemoryRecipientRespository.create(recipient)
+    const packageItem = makePackageItem({ recipientId: recipient.id })
     await inMemoryPackageItemRepository.create(packageItem)
     packageItem.markAsDelivered(new UniqueEntityId('creator id'))
     await inMemoryPackageItemRepository.save(packageItem)
 
     await waitFor(() => {
-      expect(sendNotificationExecuteMock).toHaveBeenCalled()
+      expect(sendEmailExecuteMock).toHaveBeenCalled()
     })
-    expect(inMemoryNotificationsRepository.items[0].title).toEqual(
+    expect(inMemoryEmailRepository.items[0].subject).toEqual(
       'Change status in your package',
     )
-    expect(inMemoryNotificationsRepository.items[0].content).toEqual(
+    expect(inMemoryEmailRepository.items[0].body).toEqual(
       'Your package is now Delivered',
     )
   })

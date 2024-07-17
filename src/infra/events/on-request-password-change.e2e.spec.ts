@@ -7,6 +7,7 @@ import { AdminFactory } from 'test/factories/make-admin'
 import { CourierFactory } from 'test/factories/make-courier'
 import { waitFor } from 'test/utils/wait-for'
 import { PrismaService } from '../database/prisma/prisma.service'
+import { DomainEvents } from '@/core/events/domain-events'
 
 describe('Request password change tests (e2e)', () => {
   let app: INestApplication
@@ -26,6 +27,8 @@ describe('Request password change tests (e2e)', () => {
     prisma = moduleRef.get(PrismaService)
 
     await app.init()
+
+    DomainEvents.shouldRun = true
   })
 
   test('if email sent on request password change', async () => {

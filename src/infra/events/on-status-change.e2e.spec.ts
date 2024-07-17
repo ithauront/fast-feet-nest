@@ -1,3 +1,4 @@
+import { DomainEvents } from '@/core/events/domain-events'
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
@@ -43,6 +44,7 @@ describe('On status change tests (e2e)', () => {
     jwt = moduleRef.get(JwtService)
 
     await app.init()
+    DomainEvents.shouldRun = true
 
     const courier = await courierFactory.makePrismaCourier({
       isAdmin: true,
@@ -60,7 +62,7 @@ describe('On status change tests (e2e)', () => {
     packageItemId = packageItem.id.toString()
   })
 
-  test('if send notification on marked as in transit', async () => {
+  test('if send email on marked as in transit', async () => {
     const response = await request(app.getHttpServer())
       .put(`/package_item/${packageItemId}/status`)
       .set('Authorization', `Bearer ${token}`)
@@ -75,11 +77,11 @@ describe('On status change tests (e2e)', () => {
     expect(packageItemOnDatabase?.status).toEqual('IN_TRANSIT')
 
     await waitFor(async () => {
-      const notificationOnDatabase = await prisma.notification.findFirst()
-      expect(notificationOnDatabase).not.toBe(null)
+      const emailOnDatabase = await prisma.email.findFirst()
+      expect(emailOnDatabase).not.toBe(null)
     })
   })
-  test('if send notification on marked as Lost', async () => {
+  test('if send email on marked as Lost', async () => {
     const response = await request(app.getHttpServer())
       .put(`/package_item/${packageItemId}/status`)
       .set('Authorization', `Bearer ${token}`)
@@ -93,12 +95,12 @@ describe('On status change tests (e2e)', () => {
     })
     expect(packageItemOnDatabase?.status).toEqual('LOST')
     await waitFor(async () => {
-      const notificationOnDatabase = await prisma.notification.findFirst()
-      expect(notificationOnDatabase).not.toBe(null)
+      const emailOnDatabase = await prisma.email.findFirst()
+      expect(emailOnDatabase).not.toBe(null)
     })
   })
 
-  test('if send notification on marked as Returned', async () => {
+  test('if send email on marked as Returned', async () => {
     const response = await request(app.getHttpServer())
       .put(`/package_item/${packageItemId}/status`)
       .set('Authorization', `Bearer ${token}`)
@@ -112,11 +114,11 @@ describe('On status change tests (e2e)', () => {
     })
     expect(packageItemOnDatabase?.status).toEqual('RETURNED')
     await waitFor(async () => {
-      const notificationOnDatabase = await prisma.notification.findFirst()
-      expect(notificationOnDatabase).not.toBe(null)
+      const emailOnDatabase = await prisma.email.findFirst()
+      expect(emailOnDatabase).not.toBe(null)
     })
   })
-  test('if send notification on marked as Delivered', async () => {
+  test('if send email on marked as Delivered', async () => {
     const attachment1 = await attachmentFactory.makePrismaAttachment({}, true)
 
     const response = await request(app.getHttpServer())
@@ -137,8 +139,8 @@ describe('On status change tests (e2e)', () => {
     expect(attachmentOnDatabase?.packageItemId).toEqual(packageItemId)
     expect(packageItemOnDatabase?.status).toEqual('DELIVERED')
     await waitFor(async () => {
-      const notificationOnDatabase = await prisma.notification.findFirst()
-      expect(notificationOnDatabase).not.toBe(null)
+      const emailOnDatabase = await prisma.email.findFirst()
+      expect(emailOnDatabase).not.toBe(null)
     })
   })
 })
