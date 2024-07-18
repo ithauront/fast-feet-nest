@@ -5,3 +5,5 @@ node_modules
 private_key.pem
 public_key.pem
 .env.test
+# cache
+data/redis/

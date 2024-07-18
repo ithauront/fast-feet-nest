@@ -9,12 +9,14 @@ import { PackageStatus } from '@prisma/client'
 import { PackageItemAttachmentRepository } from '@/domain/delivery/application/repositories/package-item-attachment-repository'
 import { DomainEvents } from '@/core/events/domain-events'
 import { PrismaService } from '../prisma.service'
+import { CacheRepository } from '@/infra/cache/cache-repository'
 
 @Injectable()
 export class PrismaPackageItemRepository implements PackageItemRepository {
   constructor(
     private prisma: PrismaService,
     private packageItemAttachment: PackageItemAttachmentRepository,
+    private cacheRepository: CacheRepository,
   ) {}
 
   async create(packageItem: PackageItem): Promise<void> {
@@ -37,6 +39,13 @@ export class PrismaPackageItemRepository implements PackageItemRepository {
   async findPackageItemWithDetailsById(
     packageId: string,
   ): Promise<PackageItemWithDetails | null> {
+    const cacheHit = await this.cacheRepository.get(
+      `packageItem:${packageId}:details`,
+    )
+    if (cacheHit) {
+      const cacheData = JSON.parse(cacheHit)
+      return cacheData
+    }
     const packageItemWithDetails = await this.prisma.packageItem.findUnique({
       where: { id: packageId },
       include: { attachments: true },
@@ -45,13 +54,27 @@ export class PrismaPackageItemRepository implements PackageItemRepository {
     if (!packageItemWithDetails) {
       return null
     }
-    return PrismaPackageItemWithDetailsMapper.toDomain(packageItemWithDetails)
+    const packageItemToDomain = PrismaPackageItemWithDetailsMapper.toDomain(
+      packageItemWithDetails,
+    )
+    await this.cacheRepository.set(
+      `packageItem:${packageId}:details`,
+      JSON.stringify(packageItemToDomain),
+    )
+    return packageItemToDomain
   }
 
   async findManyByParamsAndCourierId(
     { page, status, address }: QueryParams,
     courierId?: string | null | undefined,
   ): Promise<PackageItemWithDetails[]> {
+    const cacheKey = `packageItems:page=${page}-status=${status || 'any'}-address=${address || 'any'}-courierId=${courierId || 'any'}`
+
+    const cacheHit = await this.cacheRepository.get(cacheKey)
+    if (cacheHit) {
+      return JSON.parse(cacheHit)
+    }
+
     const where = {
       ...(status && {
         status: PrismaPackageItemMapper.mapStatusForPrisma(status),
@@ -60,16 +83,21 @@ export class PrismaPackageItemRepository implements PackageItemRepository {
       ...(courierId && { courierId }),
     }
 
-    const packageItemWithDetails = await this.prisma.packageItem.findMany({
+    const packageItems = await this.prisma.packageItem.findMany({
       where,
       take: 20,
       skip: (page - 1) * 20,
       orderBy: { createdAt: 'desc' },
       include: { attachments: true },
     })
-    return packageItemWithDetails.map(
+    const packageItemWithDetails = packageItems.map(
       PrismaPackageItemWithDetailsMapper.toDomain,
     )
+    await this.cacheRepository.set(
+      cacheKey,
+      JSON.stringify(packageItemWithDetails),
+    )
+    return packageItemWithDetails
   }
 
   async findManyByParams({
@@ -109,6 +137,7 @@ export class PrismaPackageItemRepository implements PackageItemRepository {
       this.packageItemAttachment.deleteMany(
         packageItem.attachment.getRemovedItems(),
       ),
+      await this.cacheRepository.delete('*'),
     ])
     DomainEvents.dispatchEventsForAggregate(packageItem.id)
   }

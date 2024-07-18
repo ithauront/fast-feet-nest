@@ -17,8 +17,10 @@ import { AdminRepository } from '@/domain/delivery/application/repositories/admi
 import { AdminFactory } from 'test/factories/make-admin'
 import { EmailRepository } from '@/domain/notification/application/repositories/email-repository'
 import { PrismaEmailRepository } from './prisma/repositories/prisma-email-repository'
+import { CacheModule } from '../cache/cache.module'
 
 @Module({
+  imports: [CacheModule],
   providers: [
     PrismaService,
     { provide: AdminRepository, useClass: PrismaAdminRepository },

@@ -13,5 +13,14 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  cache:
+    container_name: fast-feet-cache
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./data/redis:/data
+
+
 volumes:
   pgdata:
