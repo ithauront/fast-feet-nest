@@ -105,21 +105,33 @@ export class PrismaPackageItemRepository implements PackageItemRepository {
     status,
     address,
   }: QueryParams): Promise<PackageItemWithDetails[]> {
+    const cacheKey = `packageItems:page=${page}-status=${status || 'any'}-address=${address || 'any'}`
+
+    const cacheHit = await this.cacheRepository.get(cacheKey)
+    if (cacheHit) {
+      return JSON.parse(cacheHit)
+    }
     const where = {
       ...(status && { status: PackageStatus[status] }),
       ...(address && { deliveryAddress: address }),
     }
 
-    const packageItemWithDetails = await this.prisma.packageItem.findMany({
+    const packageItem = await this.prisma.packageItem.findMany({
       where,
       take: 20,
       skip: (page - 1) * 20,
       orderBy: { createdAt: 'desc' },
       include: { attachments: true },
     })
-    return packageItemWithDetails.map(
+
+    const packageItemWithDetails = packageItem.map(
       PrismaPackageItemWithDetailsMapper.toDomain,
     )
+    await this.cacheRepository.set(
+      cacheKey,
+      JSON.stringify(packageItemWithDetails),
+    )
+    return packageItemWithDetails
   }
 
   async save(packageItem: PackageItem): Promise<void> {
@@ -137,7 +149,7 @@ export class PrismaPackageItemRepository implements PackageItemRepository {
       this.packageItemAttachment.deleteMany(
         packageItem.attachment.getRemovedItems(),
       ),
-      await this.cacheRepository.delete('*'),
+      await this.cacheRepository.deleteAll(),
     ])
     DomainEvents.dispatchEventsForAggregate(packageItem.id)
   }

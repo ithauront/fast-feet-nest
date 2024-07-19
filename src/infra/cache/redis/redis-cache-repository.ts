@@ -13,7 +13,7 @@ export class RedisCacheRepository implements CacheRepository {
     return this.redis.get(key)
   }
 
-  async delete(key: string): Promise<void> {
-    await this.redis.del(key)
+  async deleteAll(): Promise<void> {
+    await this.redis.flushdb()
   }
 }
