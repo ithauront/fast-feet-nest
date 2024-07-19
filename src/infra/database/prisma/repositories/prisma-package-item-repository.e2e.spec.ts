@@ -180,4 +180,31 @@ describe('prisma test repository (e2e)', async () => {
     const cacheAfterSave = await cacheRepository.get(cacheKey)
     expect(cacheAfterSave).toEqual(null)
   })
+
+  test('if can  return cached data on subsequent calls', async () => {
+    const recipient = await recipientFactory.makePrismaRecipient()
+    const attachment1 = await attachmentFactory.makePrismaAttachment({}, true)
+
+    const packageItem = await packageItemFactory.makePrismaPackageItem({
+      title: 'package 1',
+      recipientId: recipient.id,
+      deliveryAddress: '1 package street 987654',
+    })
+
+    await packageItemAttachmentFactory.makePrismaPackageItemAttachment({
+      packageItemId: packageItem.id,
+      attachmentId: attachment1.id,
+    })
+    const packageItemId = packageItem.id.toString()
+
+    await cacheRepository.set(
+      `packageItem:${packageItemId}:details`,
+      JSON.stringify({ empty: true }),
+    )
+
+    const packageItemDetails =
+      await packageItemRepository.findPackageItemWithDetailsById(packageItemId)
+
+    expect(packageItemDetails).toEqual({ empty: true })
+  })
 })
