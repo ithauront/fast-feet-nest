@@ -69,7 +69,7 @@ export class PrismaPackageItemMapper {
       courierId: packageItem.courierId?.toString(),
       createdAt: packageItem.createdAt,
       updatedAt: packageItem.updatedAt,
-      status: PrismaPackageItemMapper.mapStatusForPrisma(packageItem.status),
+      status: this.mapStatusForPrisma(packageItem.status),
       attachments: {
         connect: attachmentsConnectIds,
       },

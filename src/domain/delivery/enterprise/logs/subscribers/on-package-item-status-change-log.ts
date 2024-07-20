@@ -4,7 +4,9 @@ import { PackageItemStatusChangeEvent } from '@/domain/delivery/enterprise/event
 import { LogsRepository } from '@/domain/delivery/application/repositories/logs-repository'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { LogEntry } from '../logEntry'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class OnPackageItemStatusChangeLog implements EventHandler {
   constructor(private logsRepository: LogsRepository) {
     this.setupSubscriptions()

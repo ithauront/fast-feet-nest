@@ -128,8 +128,6 @@ somente o admin pode alterar a senha do usuario. eu fiz um fluxo mais complexo o
 
 ## colocar os repositorios de events no databaseRepositorio? ver que tambem tem o email service e etc.
 
-## nao esquecer dos logs
-
-## ero de varias notificações é porque devemos ter apenas um subscriber. vamos então modificar para ter apenas o onStatusChange e usar ele para qualquer alteração.
-
 ## como o recipient não vai ter login na aplicação eu acabei retirando todos os eventos e menções a notifications que eu tinha feito ao longo do desenvolvimento inicial e substitui por envio de email para o recipient para que notificar ele da mudança no estatos do package. dessa forma não teremos um readnotification porque não poderemos saber se o recipient leu ou não o email. porem esta mais concistente com a ideia da aplicação de o recipient não precisar se cadastrar no sistema, o que eu acho uma boa idea.
+
+## temos logs para cada alteração de status nos packages. para saber quem alterou. 

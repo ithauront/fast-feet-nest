@@ -73,6 +73,7 @@ model PackageItem {
   recipient Recipient @relation(fields: [recipientId], references: [id])
 
   attachments Attachment[]
+  LogEntry    LogEntry[]
 
   @@map("package_item")
 }
@@ -98,6 +99,19 @@ model Email {
   createdAt      DateTime  @default(now()) @map("created_at")
 
   @@map("email")
+}
+
+model LogEntry {
+  id            String        @id @default(uuid())
+  packageItemId String        @map("package_item_id")
+  previousState PackageStatus @map("previous_state")
+  newState      PackageStatus @map("new_state")
+  changedBy     String        @map("changed_by")
+  changedAt     DateTime      @default(now()) @map("changed_at")
+
+  packageItem PackageItem @relation(fields: [packageItemId], references: [id])
+
+  @@map("log_entries")
 }
 
 enum PackageStatus {
