@@ -35,7 +35,7 @@ export class OnStatusChange implements EventHandler {
     await this.sendEmail.execute({
       recipientEmail: recipient?.email,
       subject: 'Change status in your package',
-      body: `Your package is now ${packageItem.status}`,
+      body: `Your package of id ${packageItem.id} is now ${packageItem.status}`,
     })
   }
 }

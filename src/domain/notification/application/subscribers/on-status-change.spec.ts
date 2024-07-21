@@ -66,6 +66,9 @@ describe('on package item marked as in transit', () => {
     expect(inMemoryEmailRepository.items[0].subject).toEqual(
       'Change status in your package',
     )
+    expect(inMemoryEmailRepository.items[0].body).toEqual(
+      `Your package of id ${packageItem.id} is now ${packageItem.status}`,
+    )
   })
   test('if send email when package item is marked as returned', async () => {
     const recipient = makeRecipient()
@@ -82,7 +85,7 @@ describe('on package item marked as in transit', () => {
       'Change status in your package',
     )
     expect(inMemoryEmailRepository.items[0].body).toEqual(
-      'Your package is now Returned',
+      `Your package of id ${packageItem.id} is now Returned`,
     )
   })
   test('if send email when package item is marked as lost', async () => {
@@ -100,7 +103,7 @@ describe('on package item marked as in transit', () => {
       'Change status in your package',
     )
     expect(inMemoryEmailRepository.items[0].body).toEqual(
-      'Your package is now Lost',
+      `Your package of id ${packageItem.id} is now Lost`,
     )
   })
   test('if send email when package item is marked as delivered', async () => {
@@ -118,7 +121,7 @@ describe('on package item marked as in transit', () => {
       'Change status in your package',
     )
     expect(inMemoryEmailRepository.items[0].body).toEqual(
-      'Your package is now Delivered',
+      `Your package of id ${packageItem.id} is now Delivered`,
     )
   })
 })
