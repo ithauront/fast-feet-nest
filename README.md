@@ -119,9 +119,9 @@ When creating a PackageItem, the courierId field is optional to reflect situatio
 
 This approach does not rely on automated scripts or complex scheduling functionalities that would require the application to be continuously operational, simplifying maintenance and system operation.
 
-### Future Enhancements:
+### Future Enhancements
 
-    Should the application scale and operational complexities increase, there is potential to implement periodic automated notifications. Such enhancements would involve setting up scheduled tasks to automatically alert administrators of PackageItems that have been unassigned for an extended period. I chose not to implement this functionality at this stage to maintain system simplicity and avoid the overhead associated with continuous operation requirements. However, this feature could be revisited and implemented as part of future upgrades to meet growing administrative needs.
+Should the application scale and operational complexities increase, there is potential to implement periodic automated notifications. Such enhancements would involve setting up scheduled tasks to automatically alert administrators of PackageItems that have been unassigned for an extended period. I chose not to implement this functionality at this stage to maintain system simplicity and avoid the overhead associated with continuous operation requirements. However, this feature could be revisited and implemented as part of future upgrades to meet growing administrative needs.
 
 ## Password Reset Flow
 
@@ -162,3 +162,11 @@ Although reading from the database typically consumes fewer resources than writi
 ## Further Documentation
 
 Throughout the development of the application, I have placed comments at strategic points within various files. These comments are either at the beginning of a file or alongside specific sections that may require additional explanation. This practice was adopted to clarify certain parts of the code and to provide justifications for specific design and logic decisions made during the development process. These annotations aim to enhance the understandability of the codebase, making it more accessible for future developers and maintainers.
+
+## **Author** :black_nib:
+
+* **Iuri Reis** - [Iuri Reis](https://github.com/ithauront)
+
+
+## License :page_with_curl:
+This project is licensed under the [MIT License](https://opensource.org/license/mit/).
