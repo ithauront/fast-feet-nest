@@ -1,12 +1,12 @@
-# Fast-Feet
+# 🦶 Fast-Feet
 
 Welcome to the Fast-Feet application, a delivery management system designed for both delivery personnel and administrators. This application facilitates the management of deliveries, users, and recipients, providing extensive controls.
 
-## Application Rules
+## 	📋 Application Rules
 
    * The application supports two types of users: Courier and Admin.
    * Users can log in using their CPF and Password.
-   * CRUD (Create, Read, Update, Delete) operations are possible for delivery personnel. (see Absence of Delete session).
+   * CRUD (Create, Read, Update, Delete) operations are possible for delivery personnel. (see Avoiding Deletes session).
    * CRUD operations are possible for Courier.
    * CRUD operations are possible for recipients.
    * Package Items can be marked as 'Awaiting Pickup'.
@@ -18,7 +18,7 @@ Welcome to the Fast-Feet application, a delivery management system designed for 
    * Package Items assigned to a user can be listed.
    * Recipients can be notified of any status change in the delivery.
 
-## Business Rules
+## 	⚖️ Business Rules
 
    * Only Admins can perform CRUD operations on package items, couriers, and recipients.
    * Marking a package item as 'Delivered' requires a photo as mandatory evidence.
@@ -26,14 +26,103 @@ Welcome to the Fast-Feet application, a delivery management system designed for 
    * Only an Admin can change a user's password. (see Password Reset Flow)
    * A courier cannot list package items assigned to other couriers.
 
-## Concepts to Practice
+## 🚀 Getting Started
+
+To run the project locally:
+```bash
+# Clone the repository
+git clone https://github.com/ithauront/fast-feet-nest.git
+cd fast-feet-nest
+```
+ Install dependencies
+```bash
+pnpm install
+```
+   Prepare your environment
+
+   Copy the .env.example to .env and configure your variables.
+
+   Make sure you generate RSA key pairs (private_key.pem and public_key.pem) and place them in the root.
+```bash
+cp .env.example .env
+```
+Run the containers
+```bash
+docker-compose up -d
+```
+Run database migrations
+```bash
+pnpm run db:migrate
+```
+Start the development server
+```bash
+pnpm run start:dev
+```
+Use the client.http file
+You can use the preconfigured client.http file to test routes directly in REST Client extensions (like in VSCode). It includes auth, package management, and password reset flows.
+
+## 	🧠 Concepts & Methodology
 
    * DDD (Domain-Driven Design), Domain Events, Clean Architecture: Enhance the project's structure and maintainability.
    * Authentication and Authorization (RBAC - Role-Based Access Control): Secure the application effectively.
-   * Unit and End-to-End Testing: Ensure the reliability and functionality of the application through thorough testing.
+   * Unit End-to-End and integration Testing: Ensure the reliability and functionality of the application through thorough testing.
    * Integration with External Services: Expand the application's capabilities by integrating with third-party services.
+   * Guards & Custom Decorators – Used for role-based access and cleaner route protection logic.
+   * Dependency Injection – All services and logic layers are injected for better testability and loose coupling.
+   * Factory Pattern – Used for object creation in seeds and domain layers.
+   * Value Objects & Entities – Clear domain modeling using classes that encapsulate logic.
+   * Validation Layer with Pipes – Using ZodValidationPipe to ensure clean and safe input parsing.
+   * Environment Module – Centralized and strongly typed environment management using Zod + NestJS ConfigService.
 
-## Initial Admin
+## 🛠 Technologies
+
+This project leverages a robust set of technologies and patterns to ensure scalability, testability, and maintainability:
+
+   * NestJS – Modular server-side framework with built-in support for dependency injection and decorators.
+
+   * TypeScript – Static typing for safer and clearer code.
+
+   * PostgreSQL – Relational database for persistent storage.
+
+   * Redis – In-memory cache for performance-critical features.
+
+   * Prisma – Type-safe ORM and schema migration tool.
+
+   * Docker & Docker Compose – Containerized setup for database and Redis.
+
+   * Cloudflare R2 + AWS SDK – Object storage solution with abstraction for uploader interface.
+
+   * Sendinblue – Email delivery service for password reset and notifications.
+
+   * Zod – Schema validation for inputs.
+
+   * Vitest – Unit, integration, and E2E test runner.
+
+## 📘 What I Practiced
+
+This project helped me solidify several advanced backend concepts:
+
+   ✅ Implementing Clean Architecture with DDD using NestJS.
+
+   ✅ Managing multiple user types with strict business rules and RBAC.
+
+   ✅ Building a complete password reset flow with secure token handling.
+
+   ✅ Using Redis for caching.
+
+   ✅ Integrating file upload using a domain-agnostic uploader interface with Cloudflare R2.
+
+   ✅ Writing over 250 tests, covering unit, integration, and end-to-end scenarios.
+
+   ✅ Creating and protecting routes using guards and role decorators.
+
+   ✅ Implementing an audit trail system with status logs for delivery tracking.
+
+   ✅ Automating initial setup (like seeding an initial admin) in a safe, idempotent way.
+ 
+##  🧬 Application Design & Architecture
+
+### 🧑‍💼 Initial Admin Strategy
 
 According to the business rules, only an Admin can create Couriers, and there are two types of users supported by the application: Courier and Admin. This means the application does not have a higher hierarchy than Admin. Consequently, only Admins can create other Admins, as it would not be logical for Admins to be created by any other role. This presents a potential deadlock regarding how to create the first Admin. The solution was to create an Admin via a script at the initialization of the application, who can then create the first operational Admin. The initial Admin should be deactivated afterwards for security reasons.
 
@@ -61,7 +150,7 @@ if (!alreadyHasAdmin) {
 ```
 This code checks if the database already has an Admin (to handle system reboots), and if not, it creates an initial Admin with CPF '00000000000' and a password that must be set in the environment file. The system initiates with this Admin, who should immediately be used to create the first real Admin. Then, the initial Admin should be marked as inactive immediately for safety reasons.
 
-## Recipient Interaction
+### 👥 Recipient Interaction
 
 In Fast-Feet, recipients do not have user accounts and therefore cannot log in to the system. However, they play a crucial role in the delivery process and receive updates about their packages through the following means:
 
@@ -71,11 +160,11 @@ In Fast-Feet, recipients do not have user accounts and therefore cannot log in t
 
 This setup simplifies the interaction for recipients, focusing on ease of access to information rather than requiring direct engagement with the system.
 
-## Tracking Information
+### 🚚 Tracking System & Status Management
 
 Fast-Feet functions as a comprehensive tracking system, which underscores the importance of maintaining a detailed audit trail. To facilitate this, I have implemented two key features:
 
-### Absence of Delete
+#### ❌ Avoiding Deletes: Reversible States
 
 Instead of incorporating a delete feature, which could potentially lead to the loss of important information, we have designed entity lifecycles that conclude with a reversible end status. This approach ensures that changes, such as rehiring a dismissed employee or correcting errors, are manageable and not final. Each entity type has its own specific end statuses:
 
@@ -90,7 +179,7 @@ Instead of incorporating a delete feature, which could potentially lead to the l
       -  Returned
       -  Delivered
 
-### Log
+#### 📋 Log
 
 To ensure comprehensive tracking, log entries are stored in the database with the following details:
 
@@ -103,11 +192,11 @@ To ensure comprehensive tracking, log entries are stored in the database with th
 
 This log captures every modification, particularly noting who made the change and when. While currently focused on tracking status changes of package items, this feature could be expanded to include user activities, such as who created a courier or deactivated an admin.
 
-## Notifications
+### 📣 Notification System
 
 Since recipients do not have login capabilities, I decided to remove the internal notifications feature that was present in the early stages of the project. Fast-Feet now sends notifications exclusively through email, rather than using an internal message feature. This approach ensures that everyone involved, including recipients without system access, receives notifications. By centralizing all notifications on a single platform, we eliminate the need for different types of notification systems for users and non-users alike. This simplifies the communication process and enhances the efficiency of our notification system.
 
-## Management of PackageItems without Assigned CourierId
+### 🔁 Managing Unassigned PackageItems
 
 When creating a PackageItem, the courierId field is optional to reflect situations where a courier has not been assigned at the time of package creation. To ensure that these packages do not remain unassigned for long periods, it is crucial for administrators to actively manage courier assignments.
    * Notification Functionality for Pending PackageItems
@@ -119,35 +208,34 @@ When creating a PackageItem, the courierId field is optional to reflect situatio
 
 This approach does not rely on automated scripts or complex scheduling functionalities that would require the application to be continuously operational, simplifying maintenance and system operation.
 
-### Future Enhancements
 
-Should the application scale and operational complexities increase, there is potential to implement periodic automated notifications. Such enhancements would involve setting up scheduled tasks to automatically alert administrators of PackageItems that have been unassigned for an extended period. I chose not to implement this functionality at this stage to maintain system simplicity and avoid the overhead associated with continuous operation requirements. However, this feature could be revisited and implemented as part of future upgrades to meet growing administrative needs.
 
-## Password Reset Flow
+### 🔐 Password Reset Flow
 
 The project adheres to a business rule stating that only Admins can change passwords. However, I have enhanced this functionality to enable users to change their own passwords using a token received by email. This secure password reset flow is structured into two main parts: the domain layer, which handles the initial request and token generation, and the infrastructure layer, which manages token validation and password updating.
 
 This modification significantly increases security by ensuring that only the user knows their password. Admins no longer have access to user passwords. Consequently, the original rule that only Admins can change passwords has been improved to allow each user to manage their own password changes. Here is how the process is outlined:
 
-### Domain Layer
+#### 🔑 Domain Layer
 
    1.**Request Password Change Use Case (RequestPasswordChangeUseCase)**:
-      -This use case is triggered when a user initiates a password reset request. It verifies the user's identity based on the provided email and, if valid, generates a unique access token.
-      - This token, along with the user's email, is then encapsulated in a RequestPasswordChangeEvent, which is dispatched to signal that the user has requested a password change.
+       - This use case is triggered when a user initiates a password reset request. It verifies the user's identity based on the provided email and, if valid, generates a unique access token.
+       This token, along with the user's email, is then encapsulated in a RequestPasswordChangeEvent, which is dispatched to signal that the user has requested a password change.
 
    2.**Send Password Reset Email (Subscriber: OnRequestPasswordChange)**:
-      -Upon catching the RequestPasswordChangeEvent, this subscriber constructs and sends an email to the user. The email contains a link with the unique access token embedded as a query parameter.
-      - The link points to an imaginary URL (currently set to https://fast-feet/frontend/password_reset for testing purposes) where the user can complete the password reset process.
+      - Upon catching the RequestPasswordChangeEvent, this subscriber constructs and sends an email to the user. The email contains a link with the unique access token embedded as a query parameter.
+      The link points to an imaginary URL (currently set to https://fast-feet/frontend/password_reset for testing purposes) where the user can complete the password reset process.
 
-### Infrastructure Layer
+#### 🔑 Infrastructure Layer
 
    1.**Password Reset Endpoint**:
       - A dedicated endpoint handles incoming password reset requests. This endpoint extracts the access token from the headers and validates it. (The imaginary front end would need to retrieve the token from the parameters of the request password change part of this flow and pass it to this endpoint via headers.)
+      
    2.**Reset Password Use Case (ResetPasswordUseCase)**:
       -Once the new password and token are submitted, this use case is responsible for validating the token, ensuring it hasn't expired, and matches the user's session.
-      -If all validations pass, the user's password is updated in the database, and the token is invalidated to prevent reuse.
+      If all validations pass, the user's password is updated in the database, and the token is invalidated to prevent reuse.
 
-## Unnecessary Database Consultation
+### 🧠 Optimization Choices
 
 In certain scenarios, I opted against performing database consultations that could be considered standard, such as verifying the current status of a package item before updating it. Typically, such a check would confirm whether the status is indeed the valid previous state or differs from the new state being applied.
 
@@ -159,13 +247,17 @@ The decision to skip these consultations was based on the following consideratio
 
 Although reading from the database typically consumes fewer resources than writing, I determined that errors would be infrequent enough to justify a more streamlined approach. Thus, allowing operations to proceed without prior consultation is preferred, rather than consistently verifying and potentially halting operations due to redundancy or minor mistakes.
 
-## Further Documentation
+## ➕ Further Documentation
 
 Throughout the development of the application, I have placed comments at strategic points within various files. These comments are either at the beginning of a file or alongside specific sections that may require additional explanation. This practice was adopted to clarify certain parts of the code and to provide justifications for specific design and logic decisions made during the development process. These annotations aim to enhance the understandability of the codebase, making it more accessible for future developers and maintainers.
 
-## **Author** :black_nib:
+## 📅 Future Enhancements
 
-* **Iuri Reis** - [Iuri Reis](https://github.com/ithauront)
+Should the application scale and operational complexities increase, there is potential to implement periodic automated notifications. Such enhancements would involve setting up scheduled tasks to automatically alert administrators of PackageItems that have been unassigned for an extended period. I chose not to implement this functionality at this stage to maintain system simplicity and avoid the overhead associated with continuous operation requirements. However, this feature could be revisited and implemented as part of future upgrades to meet growing administrative needs.
+
+## **Author** :
+
+* **Iuri Thauront Reis** - [Iuri Thauront Reis](https://github.com/ithauront)
 
 
 ## License :page_with_curl:
